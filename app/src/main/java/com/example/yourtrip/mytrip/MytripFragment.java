@@ -1,4 +1,4 @@
-package com.example.yourtrip.ui;
+package com.example.yourtrip.mytrip;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.yourtrip.R;
 
-public class FeedFragment extends Fragment {
+public class MytripFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_feed, container, false);
+        return inflater.inflate(R.layout.fragment_trip, container, false);
     }
 }

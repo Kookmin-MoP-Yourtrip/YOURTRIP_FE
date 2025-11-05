@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.yourtrip.ui.FeedFragment;
-import com.example.yourtrip.ui.HomeFragment;
-import com.example.yourtrip.ui.MyFragment;
-import com.example.yourtrip.ui.TripFragment;
+import com.example.yourtrip.feed.FeedFragment;
+import com.example.yourtrip.home.HomeFragment;
+import com.example.yourtrip.mypage.MypageFragment;
+import com.example.yourtrip.mytrip.MytripFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
             Fragment target = null;
             int id = item.getItemId();
             if (id == R.id.nav_home) target = new HomeFragment();
-            else if (id == R.id.nav_trip) target = new TripFragment();
+            else if (id == R.id.nav_trip) target = new MytripFragment();
             else if (id == R.id.nav_feed) target = new FeedFragment();
-            else if (id == R.id.nav_my) target = new MyFragment();
+            else if (id == R.id.nav_my) target = new MypageFragment();
 
             if (target != null) {
                 switchFragment(target);

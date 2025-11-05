@@ -22,22 +22,21 @@ tools:context=".MainActivity">
 
     <!-- 🔹 네비게이션 바 (직접 배치) -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        app:itemActiveIndicatorStyle="@style/NoIndicator"
         app:itemBackground="@android:color/transparent"
-        app:itemRippleColor="@android:color/transparent"
-        app:menu="@menu/common_bottom_nav"
         app:itemIconSize="49dp"
         app:itemIconTint="@color/nav_icon_selector"
+        app:itemRippleColor="@android:color/transparent"
         app:itemTextColor="@color/nav_icon_selector"
-        app:itemActiveIndicatorStyle="@style/NoIndicator"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:menu="@menu/common_bottom_nav" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
