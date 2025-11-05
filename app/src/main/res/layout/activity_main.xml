@@ -28,21 +28,16 @@ tools:context=".MainActivity">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        app:itemBackground="@android:color/transparent"
+        app:itemRippleColor="@android:color/transparent"
         app:menu="@menu/common_bottom_nav"
         app:itemIconSize="49dp"
         app:itemIconTint="@color/nav_icon_selector"
         app:itemTextColor="@color/nav_icon_selector"
-
+        app:itemActiveIndicatorStyle="@style/NoIndicator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 🔹 네비게이션 바 (레이아웃 넣으려했는데 오류나서 일단 보류) -->
-<!--    <include-->
-<!--        android:id="@+id/bottomNav"-->
-<!--        layout="@layout/common_bottom_nav"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent" -->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
