@@ -1,12 +1,10 @@
 package com.example.yourtrip.feed;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,16 +23,12 @@ public class FeedFragment extends Fragment {
 
         Button btnNext = view.findViewById(R.id.btnNext);
 
-        // 처음에는 비활성 상태
-        btnNext.setEnabled(false);
+        btnNext.setEnabled(false); // 기본 비활성
 
-        // 3초 뒤 활성화 예시
-        new Handler().postDelayed(() -> btnNext.setEnabled(true), 3000);
-
-        // 클릭 리스너
-        btnNext.setOnClickListener(v ->
-                Toast.makeText(getContext(), "다음 버튼 클릭됨!", Toast.LENGTH_SHORT).show()
-        );
+        // 예시: 3초 뒤 활성화
+        new android.os.Handler().postDelayed(() -> {
+            btnNext.setEnabled(true);
+        }, 3000);
 
         return view;
     }
