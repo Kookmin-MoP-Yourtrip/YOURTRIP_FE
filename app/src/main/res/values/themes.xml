@@ -5,5 +5,24 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <!-- ✅ LauncherActivity 전용 Splash 테마 -->
+    <style name="Theme.YourTrip.Launcher" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- 스플래시 배경 -->
+        <item name="windowSplashScreenBackground">@color/white</item>
+<!--        <item name="android:windowSplashScreenBackground">@color/white</item>-->
+
+        <!-- 앱 로고 이미지 (mipmap/drawable 폴더에 로고 넣기) -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/yourtrip_logo</item>
+<!--        <item name="android:windowSplashScreenAnimatedIcon">@drawable/yourtrip_logo</item>-->
+
+        <!-- 애니메이션 지속시간 (1초) -->
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+<!--        <item name="android:windowSplashScreenAnimationDuration">1000</item>-->
+
+        <!-- 전환 애니메이션 (선택) -->
+<!--        <item name="windowSplashScreenExitAnimation">@anim/fade_out</item>-->
+<!--        <item name="android:windowSplashScreenExitAnimation">@anim/fade_out</item>-->
+    </style>
+
     <style name="Theme.MyAppTest" parent="Base.Theme.MyAppTest" />
 </resources>

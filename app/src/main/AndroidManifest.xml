@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!--하나의 애플리케이션-->
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,18 +12,37 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyAppTest">
 
-
-        <!--하나의 액티비티-->
+        <!-- ✅ 앱 실행 시 제일 먼저 실행될 Activity -->
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".LauncherActivity"
+            android:exported="true"
+            android:theme="@style/Theme.YourTrip.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- 로그인 화면 -->
+        <activity android:name=".auth.LoginActivity" />
+
+
+        <!-- 메인 화면 -->
+        <activity android:name=".MainActivity" />
+
+
+<!--        앱 실행 진입점 스플래시 화면으로 먼저 실행해서 수정했습니다 확인되면 밑에 부분 주석 지워주세염-->
+
+<!--        <activity-->
+<!--            android:name=".MainActivity"-->
+<!--            android:exported="true">-->
+
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
     </application>
 
 </manifest>
