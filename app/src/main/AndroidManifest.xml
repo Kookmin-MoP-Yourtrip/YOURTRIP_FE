@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.MyAppTest">
 
-        <!-- ✅ 앱 실행 시 제일 먼저 실행될 Activity -->
+        <!--  앱 실행 시 제일 먼저 실행될 Activity -->
         <activity
             android:name=".LauncherActivity"
             android:exported="true"
@@ -22,8 +22,8 @@
             </intent-filter>
         </activity>
 
-        <!-- 로그인 화면 -->
         <activity android:name=".auth.LoginActivity" />
+        <activity android:name=".auth.SignupActivity" />
 
 
         <!-- 메인 화면 -->
