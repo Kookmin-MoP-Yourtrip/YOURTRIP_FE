@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -75,26 +76,25 @@
         android:inputType="textPassword"
         android:padding="16dp" />
 
-    <!-- 로그인 버튼 -->
-
-    <Button
+    <!-- 로그인 버튼 (공통 그라데이션 스타일) -->
+    <android.widget.Button
         android:id="@+id/btnLogin"
+        style="@style/ChangeButtonStyle"
+        android:text="로그인"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:padding="16dp"
-        android:text="로그인" />
+        android:layout_marginBottom="12dp" />
 
     <!--        android:background="#FBE300"-->
 
 
     <!-- 하단 링크들 -->
-    <Button
+    <!-- 카카오 로그인 버튼 -->
+    <android.widget.Button
         android:id="@+id/btnKakaoLogin"
+        style="@style/RoundedButton.OutlineBlue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_box_round"
-        android:padding="14dp"
         android:text="카카오톡으로 로그인"
         android:textColor="#3B1E1E"
         android:backgroundTint="#FBE300" />
@@ -109,15 +109,15 @@
         android:orientation="horizontal"
         android:weightSum="3"><!-- 3개의 항목을 균등하게 나누기 위해 weightSum 설정 -->
 
-        <Button
+        <android.widget.Button
             android:id="@+id/tvFindEmail"
+            style="@style/RoundedButton.OutlineBlue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#FFFFFF"
+            android:background="@color/white"
             android:text="이메일 찾기"
             android:textColor="@color/gray_600"
-            android:layout_marginEnd="10dp"
             android:textSize="12sp" />
 
 <!--        <TextView-->
@@ -127,15 +127,15 @@
 <!--            android:textColor="@color/gray_600"-->
 <!--            android:textSize="12sp" />-->
 
-        <Button
+        <android.widget.Button
             android:id="@+id/tvFindPassword"
+            style="@style/RoundedButton.OutlineBlue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#FFFFFF"
+            android:background="@color/white"
             android:text="비밀번호 찾기"
             android:textColor="@color/gray_600"
-            android:layout_marginEnd="10dp"
             android:textSize="12sp" />
 
 <!--        <TextView-->
@@ -147,8 +147,9 @@
 <!--            android:textColor="@color/gray_600"-->
 <!--            android:textSize="12sp" />-->
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnSignUp"
+            style="@style/RoundedButton.OutlineBlue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -156,10 +157,10 @@
             android:text="회원가입"
             android:textColor="@color/gray_600"
             android:textSize="12sp" />
-
     </LinearLayout>
 
-    <Button
+    <!-- 로그인 없이 둘러보기 -->
+    <android.widget.Button
         android:id="@+id/tvSkipLogin"
         style="@style/RoundedButton.OutlineBlue"
         android:layout_width="match_parent"
