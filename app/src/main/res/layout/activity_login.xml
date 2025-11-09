@@ -63,7 +63,8 @@
         android:layout_marginBottom="10dp"
         android:hint="이메일"
         android:inputType="textEmailAddress"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:textSize="14sp"/>
 
     <!-- 비밀번호 입력 -->
     <EditText
@@ -74,7 +75,8 @@
         android:layout_marginBottom="26dp"
         android:hint="비밀번호"
         android:inputType="textPassword"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:textSize="14sp"/>
 
     <!-- 로그인 버튼 (공통 그라데이션 스타일) -->
     <android.widget.Button
@@ -83,7 +85,8 @@
         android:text="로그인"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp"
+        android:textSize="14sp"/>
 
     <!--        android:background="#FBE300"-->
 
@@ -97,7 +100,8 @@
         android:layout_height="wrap_content"
         android:text="카카오톡으로 로그인"
         android:textColor="#3B1E1E"
-        android:backgroundTint="#FBE300" />
+        android:backgroundTint="#FBE300"
+        android:textSize="14sp"/>
 
     <LinearLayout
         android:id="@+id/linkContainer"
@@ -165,7 +169,8 @@
         style="@style/RoundedButton.OutlineBlue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="로그인 없이 둘러보기" />
+        android:text="로그인 없이 둘러보기"
+        android:textSize="14sp"/>
 
 </LinearLayout>
 

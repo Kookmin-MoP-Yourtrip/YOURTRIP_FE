@@ -2,12 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#FF0000</color>
+    <color name="red">#E94E49</color>
     <color name="green">#00FF00</color>
     <color name="blue">#0000FF</color>
 
     <!-- 🩶 기본 회색 계열 -->
     <color name="gray_150">#F4F5F7</color>  <!-- 연회색 배경 -->
+    <color name="gray_200">#E9EBED</color>
+    <color name="gray_500">#9FA4A9</color>
     <color name="gray_550">#646B72</color>  <!-- 힌트용 회색 텍스트 -->
 
 
@@ -20,6 +22,9 @@
     <color name="blue_sub">#006AD4</color>
     <color name="blue_gradient_start">#7FDDFF</color>
     <color name="blue_gradient_end">#0073E6</color>
+
+
+
 
     <!--# 태그-->
     <color name="tag_skyblue">#EAF4FF</color>
