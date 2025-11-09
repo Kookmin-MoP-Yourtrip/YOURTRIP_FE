@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#FFFFFF">
 
-    android:fitsSystemWindows="true"
-    android:paddingTop="?attr/actionBarSize"
-    android:paddingBottom="?attr/actionBarSize"> <!-- ✅ 상단바 + 하단바 높이만큼 자동 여백 확보 -->
+<!--    &lt;!&ndash; ✅ 미리보기 전용 상단바 높이 확보 (실행 시 완전 무시됨) &ndash;&gt;-->
+<!--    <View-->
+<!--        android:id="@+id/topDummy"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        tools:visibility="visible" />-->
+
     <!-- 피드 텍스트 -->
     <TextView
         android:id="@+id/tvFeed"
@@ -71,8 +81,21 @@
         app:layout_constraintTop_toBottomOf="@id/btnOutline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="48dp"/>
+        android:layout_marginTop="50dp"/>
+
+    <!-- ✅ 미리보기 전용 상+하단 네비 바 크기 확보 (실행 시 무시됨) -->
+    <View
+        android:id="@+id/systemBarDummy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:visibility="gone"
+        tools:layout_height="184dp"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

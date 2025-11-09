@@ -20,22 +20,22 @@ public class FeedFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_feed, container, false);
+        // XML inflate
+        return inflater.inflate(R.layout.fragment_feed, container, false);
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         Button btnNext = view.findViewById(R.id.btnNext);
         EditText editDynamic = view.findViewById(R.id.editDynamic);
 
-        btnNext.setEnabled(false); // 기본 비활성
+        // 기본 비활성화
+        btnNext.setEnabled(false);
 
-        // 예시: 3초 뒤 활성화
-        new android.os.Handler().postDelayed(() -> {
-            btnNext.setEnabled(true);
-        }, 3000);
-
-
-
-
-
-        return view;
+        // 3초 후 활성화 (테스트용)
+        new android.os.Handler().postDelayed(() -> btnNext.setEnabled(true), 3000);
     }
 }
