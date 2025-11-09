@@ -15,13 +15,14 @@
     <color name="gray_600">#464C52</color>
     <color name="gray_700">#26282B</color>
 
-
-
     <!-- 🔵 파란색 계열 -->
-    <color name="blue_main">#0073E6</color>  <!-- 버튼/테두리 파랑 -->
+    <color name="blue_main">#0073E6</color>  <!-- 태그/버튼/테두리용 파랑 -->
     <color name="blue_sub">#006AD4</color>
     <color name="blue_gradient_start">#7FDDFF</color>
     <color name="blue_gradient_end">#0073E6</color>
 
+    <!--# 태그-->
+    <color name="tag_skyblue">#EAF4FF</color>
+    <color name="tag_blue">#0073E6</color>
 
 </resources>
