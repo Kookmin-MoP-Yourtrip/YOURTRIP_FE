@@ -1,16 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="30dp"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="40dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="10dp">
 
-    <TextView
-        android:text="로그인 화면"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        app:srcCompat="@mipmap/yourtrip_logo" />
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="200dp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:padding="0dp"
+            android:text="AI 여행 코스 플래너"
+            android:textColor="@color/gray_700"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="너의 여행은"
+            android:textColor="@color/blue_main"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="여행자들이 증명한 수많은 여행 코스 자료가 기다리고 있어요."
+            android:textColor="@color/gray_600"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!--    이메일 입력-->
+    <EditText
+        android:id="@+id/edtEmail"
+        style="@style/RoundedEditText.Default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="이메일"
+        android:inputType="textEmailAddress"
+        android:padding="16dp" />
+
+    <!-- 비밀번호 입력 -->
+    <EditText
+        android:id="@+id/edtPassword"
+        style="@style/RoundedEditText.Default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:hint="비밀번호"
+        android:inputType="textPassword"
+        android:padding="16dp" />
+
+    <!-- 로그인 버튼 -->
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:padding="16dp"
+        android:text="로그인" />
+
+    <!--        android:background="#FBE300"-->
+
+
+    <!-- 하단 링크들 -->
+    <Button
+        android:id="@+id/btnKakaoLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_box_round"
+        android:padding="14dp"
+        android:text="카카오톡으로 로그인"
+        android:textColor="#3B1E1E"
+        android:backgroundTint="#FBE300" />
+
+    <LinearLayout
+        android:id="@+id/linkContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3"><!-- 3개의 항목을 균등하게 나누기 위해 weightSum 설정 -->
+
+        <Button
+            android:id="@+id/tvFindEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:text="이메일 찾기"
+            android:textColor="@color/gray_600"
+            android:layout_marginEnd="10dp"
+            android:textSize="12sp" />
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text=" | "-->
+<!--            android:textColor="@color/gray_600"-->
+<!--            android:textSize="12sp" />-->
+
+        <Button
+            android:id="@+id/tvFindPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:text="비밀번호 찾기"
+            android:textColor="@color/gray_600"
+            android:layout_marginEnd="10dp"
+            android:textSize="12sp" />
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="18dp"-->
+<!--            android:layout_marginEnd="18dp"-->
+<!--            android:text=" | "-->
+<!--            android:textColor="@color/gray_600"-->
+<!--            android:textSize="12sp" />-->
+
+        <Button
+            android:id="@+id/btnSignUp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:text="회원가입"
+            android:textColor="@color/gray_600"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/tvSkipLogin"
+        style="@style/RoundedButton.OutlineBlue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="로그인 없이 둘러보기" />
+
+</LinearLayout>
+

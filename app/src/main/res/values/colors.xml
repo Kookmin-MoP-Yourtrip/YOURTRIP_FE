@@ -10,11 +10,16 @@
     <color name="gray_150">#F4F5F7</color>  <!-- 연회색 배경 -->
     <color name="gray_550">#646B72</color>  <!-- 힌트용 회색 텍스트 -->
 
+
     <!-- ⚫️ 텍스트 컬러 -->
+    <color name="gray_600">#464C52</color>
     <color name="gray_700">#26282B</color>
+
+
 
     <!-- 🔵 파란색 계열 -->
     <color name="blue_main">#0073E6</color>  <!-- 버튼/테두리 파랑 -->
+    <color name="blue_sub">#006AD4</color>
     <color name="blue_gradient_start">#7FDDFF</color>
     <color name="blue_gradient_end">#0073E6</color>
 
