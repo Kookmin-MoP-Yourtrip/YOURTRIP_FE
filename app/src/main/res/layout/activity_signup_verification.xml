@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- 공통 상단바 (progress=2로 변경되야함) -->
+    <include layout="@layout/view_signup_header"
+        android:id="@+id/signupHeader"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="32dp"
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="인증번호를 입력해 주세요."
+            android:textColor="@color/gray_700"
+            android:textSize="20sp"
+            android:layout_marginBottom="24dp" />
+
+        <!-- 이메일 표시 + 인증요청 버튼 -->
+        <LinearLayout
+            style="@style/RoundedTextBox.OutlineBlue"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:layout_marginBottom="14dp">
+
+            <EditText
+                android:id="@+id/tvEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingVertical="14dp"
+                android:background="@null"
+                android:textSize="14sp"
+                android:text="example@naver.com" />
+
+            <ImageButton
+                android:id="@+id/btnSendCode"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="인증번호 전송"
+                android:paddingLeft="15dp"
+                android:src="@drawable/ic_mail" />
+
+        </LinearLayout>
+
+        <!-- 인증번호 입력 -->
+        <EditText
+            android:id="@+id/edtCode"
+            style="@style/RoundedEditText.Default"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:hint="인증번호 입력"
+            android:inputType="number"
+            android:padding="16dp"
+            android:textSize="14sp" />
+
+        <!--        인증 번호 오류 메시지 표시용 TextView-->
+        <TextView
+            android:id="@+id/tvCodeError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="인증번호가 일치하지 않습니다."
+            android:textColor="@color/red"
+            android:textSize="10sp"
+            android:visibility="gone"/> <!-- 처음엔 숨겨둠 -->
+
+        <android.widget.Button
+            android:id="@+id/btnNext"
+            style="@style/ChangeButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="다음"
+            android:textSize="14sp" />
+
+        <android.widget.Button
+            android:id="@+id/btnResend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/resend_text"
+            android:textColor="@color/gray_500"
+            android:textSize="12sp"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="4dp"
+            android:background="@android:color/transparent" />
+
+    </LinearLayout>
+</LinearLayout>

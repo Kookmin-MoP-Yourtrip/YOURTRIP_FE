@@ -10,38 +10,34 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.MyAppTest">
-
-        <!--  앱 실행 시 제일 먼저 실행될 Activity -->
+        <activity
+            android:name=".auth.SignupCompleteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.SignupVerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.SignupProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.SignupPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.SignupEmailActivity"
+            android:exported="false" /> <!-- 앱 실행 시 제일 먼저 실행될 Activity -->
         <activity
             android:name=".LauncherActivity"
             android:exported="true"
             android:theme="@style/Theme.YourTrip.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".auth.LoginActivity" />
-        <activity android:name=".auth.SignupActivity" />
-
-
-        <!-- 메인 화면 -->
+        <activity android:name=".auth.SignupActivity" /> <!-- 메인 화면 -->
         <activity android:name=".MainActivity" />
-
-
-<!--        앱 실행 진입점 스플래시 화면으로 먼저 실행해서 수정했습니다 확인되면 밑에 부분 주석 지워주세염-->
-
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="true">-->
-
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
     </application>
 
 </manifest>
