@@ -1,0 +1,25 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MyAppTest" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <!--  스플래시 화면 전용 테마 -->
+    <style name="Theme.YourTrip.Launcher" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- 스플래시 배경 -->
+<!--        배경 안먹음 고쳐야함-->
+        <item name="windowSplashScreenBackground">@drawable/gradient_splash</item>
+
+
+        <!-- 앱 로고 이미지  -->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/yourtrip_logo</item>
+
+        <!-- 애니메이션 지속시간 (1초) -->
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+
+        <!-- 전환 애니메이션 (선택) -->
+<!--        애니메이션 안먹음-->
+<!--        <item name="windowSplashScreenExitAnimation">@anim/fade_out</item>-->
+    </style>
+</resources>

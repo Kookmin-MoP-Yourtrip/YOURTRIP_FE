@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+<!--    &lt;!&ndash; ✅ 미리보기 전용 상단바 높이 확보 (실행 시 완전 무시됨) &ndash;&gt;-->
+<!--    <View-->
+<!--        android:id="@+id/topDummy"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        tools:visibility="visible" />-->
+
+    <!-- 피드 텍스트 -->
+    <TextView
+        android:id="@+id/tvFeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="피드 화면"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="100dp"/>
+
+    <!-- ✅ (1) 입력 전 - 회색 배경 -->
+    <!-- ✅ (2) 입력 후 - 값이 들어간 상태로 변경될것 -->
+    <EditText
+        android:id="@+id/editDynamic"
+        style="@style/RoundedEditText.Default"
+
+        android:hint="아이디"
+
+        app:layout_constraintTop_toBottomOf="@id/tvFeed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="24dp" />
+
+    <!-- ✅ (2) 파란 테두리 입력창 (예: 이메일 표시용) -->
+    <EditText
+        android:id="@+id/tvBorder"
+        style="@style/RoundedTextBox.OutlineBlue"
+
+        android:text="dawon@naver.com"
+
+        app:layout_constraintTop_toBottomOf="@id/editDynamic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="16dp" />
+
+    <!-- ✅ (3) 파란 테두리 버튼 -->
+    <android.widget.Button
+        android:id="@+id/btnOutline"
+        style="@style/RoundedButton.OutlineBlue"
+
+        android:text="로그인 없이 둘러보기"
+
+        app:layout_constraintTop_toBottomOf="@id/tvBorder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="24dp" />
+
+    <!--  공통 그라데이션 버튼 -->
+    <android.widget.Button
+        android:id="@+id/btnNext"
+        style="@style/ChangeButtonStyle"
+
+        android:text="다음"
+
+        app:layout_constraintTop_toBottomOf="@id/btnOutline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="50dp"/>
+
+
+    <!-- 🔹 예시: 상단에 파티 태그 배치 -->
+    <include
+        android:id="@+id/tag_party1"
+        layout="@layout/view_tag_party"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- 🔹 예시: 하단에 지역 태그 배치 -->
+    <include
+        android:id="@+id/tag_location1"
+        layout="@layout/view_tag_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tag_party1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <!-- ✅ 미리보기 전용 상+하단 네비 바 크기 확보 (실행 시 무시됨) -->
+    <View
+        android:id="@+id/systemBarDummy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:visibility="gone"
+        tools:layout_height="184dp"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

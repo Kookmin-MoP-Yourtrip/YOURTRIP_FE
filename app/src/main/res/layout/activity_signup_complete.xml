@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--피그마 디자인 아직 안나와서 임시용임-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white"
+    android:padding="32dp">
+
+    <!-- 축하 메시지 -->
+    <TextView
+        android:id="@+id/tvSuccessMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입이 완료되었습니다 🎉"
+        android:textSize="20sp"
+        android:textColor="@color/gray_700"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp" />
+
+    <!-- 로그인으로 이동 버튼 -->
+    <Button
+        android:id="@+id/btnGoLogin"
+        style="@style/ChangeButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="로그인하러 가기"
+        android:textSize="16sp" />
+
+</LinearLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="NoIndicator">
+        <item name="android:color">@android:color/transparent</item>
+        <item name="android:alpha">0</item>
+    </style>
+
+    <!-- 공통 둥근 틀 -->
+    <style name="BaseRoundedBox" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">56dp</item>
+
+        <item name="android:background">@drawable/bg_box_round</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:backgroundTintMode">src_over</item>
+
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- ▶️ 그라데이션 버튼 용-->
+    <style name="ChangeButtonStyle" parent="BaseRoundedBox">
+        <item name="android:background">@drawable/bg_btn_change</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <!-- 🔲 1. 파란색 테두리 버튼 용 -->
+    <style name="RoundedButton.OutlineBlue" parent="BaseRoundedBox">
+        <item name="android:background">@drawable/bg_box_border</item>
+        <item name="android:textColor">@color/blue_main</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <!-- 🔲 2. 파란색 테두리 텍스트용 -->
+    <style name="RoundedTextBox.OutlineBlue" parent="BaseRoundedBox">
+        <item name="android:background">@drawable/bg_box_border</item>
+        <item name="android:textColor">#26282B</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+
+    <!-- ✅ 1. 입력 전 텍스트 박스 (hint 보임, 연한 회색 배경) -->
+    <style name="RoundedEditText.Default" parent="BaseRoundedBox">
+        <item name="android:backgroundTint">@color/gray_150</item>
+        <item name="android:textColorHint">@color/gray_550</item> <!-- 연한 회색 -->
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:paddingStart">16dp</item> <!-- ✅ 여백 추가 -->
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+
+    <!-- ✅ 2. 입력 된 텍스트 박스 (텍스트만 있고, 배경 동일 or 약간 강조) -->
+    <style name="RoundedEditText.Filled" parent="BaseRoundedBox">
+        <item name="android:backgroundTint">@color/gray_150</item>
+        <item name="android:textColorHint">@color/gray_550</item> <!-- 연한 회색 -->
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:paddingStart">16dp</item> <!-- ✅ 여백 추가 -->
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+</resources>
