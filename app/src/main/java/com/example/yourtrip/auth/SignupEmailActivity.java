@@ -1,3 +1,7 @@
+//백에서 회원가입 api 단계별로 분리해서 줘야함 
+// 지금 상태로 하나로 통합된 회원가입 api로는 단계별 회원가입 불가함
+// 추후 백이 수정해주면 api 연동 다시 하고 수정 들어가겠음
+
 package com.example.yourtrip.auth;
 
 import android.content.Intent;
@@ -48,7 +52,7 @@ public class SignupEmailActivity extends AppCompatActivity {
                 // 오류 문구 숨기고 다음 단계로 이동
                 tvEmailError.setVisibility(View.GONE);
 
-                // 다음 Activity로 이동 (회원가입 2단계: 비밀번호 설정 등)
+                // 다음 Activity로 이동 (회원가입 2단계: 비밀번호 설정)
                 Intent intent = new Intent(SignupEmailActivity.this, SignupVerificationActivity.class);
                 intent.putExtra("email", email);
                 startActivity(intent);
