@@ -7,18 +7,6 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-<!--    &lt;!&ndash; ✅ 미리보기 전용 상단바 높이 확보 (실행 시 완전 무시됨) &ndash;&gt;-->
-<!--    <View-->
-<!--        android:id="@+id/topDummy"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="?attr/actionBarSize"-->
-<!--        android:background="@android:color/transparent"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        tools:visibility="visible" />-->
-
     <!-- 피드 텍스트 -->
     <TextView
         android:id="@+id/tvFeed"
