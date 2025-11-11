@@ -21,7 +21,7 @@ public class RetrofitClient {
         return retrofit; //이후엔 기존 객체 재사용
     }
 
-    public static AuthService getAuthService() {
-        return getInstance().create(AuthService.class);
+    public static ApiService getAuthService() {
+        return getInstance().create(ApiService.class);
     }
 }

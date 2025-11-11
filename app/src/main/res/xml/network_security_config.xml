@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 특정 도메인에 대해 HTTP를 허용 -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">3.89.62.194</domain> <!-- IP 주소 또는 도메인 이름 설정 -->
+    </domain-config>
+</network-security-config>
