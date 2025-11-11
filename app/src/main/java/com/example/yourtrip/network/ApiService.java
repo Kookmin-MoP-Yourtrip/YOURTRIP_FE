@@ -3,6 +3,7 @@ package com.example.yourtrip.network;
 import com.example.yourtrip.model.EmailRequest;
 import com.example.yourtrip.model.LoginRequest;
 import com.example.yourtrip.model.LoginResponse;
+import com.example.yourtrip.model.PasswordRequest;
 import com.example.yourtrip.model.SignupRequest;
 import com.example.yourtrip.model.SignupResponse;
 import com.example.yourtrip.model.VerificationRequest;
@@ -29,5 +30,9 @@ public interface ApiService {
     //  이메일 인증번호 API
     @POST("/api/users/email/verify")
     Call<ResponseBody> verifyCode(@Body VerificationRequest request);
+
+    //  비밀번호 유효성 검사 API
+    @POST("/api/users/password")
+    Call<ResponseBody> setPassword(@Body PasswordRequest request);
 }
 
