@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ public class SignupProfileActivity extends AppCompatActivity {
     private Button btnComplete;
     private TextView tvNicknameError;
     private ProgressBar progressBar;
+    private ImageButton btnBack;
 
     private static final int REQUEST_IMAGE_PICK = 1;
     private Uri selectedImageUri = null; // 선택한 프로필 이미지 저장용
@@ -39,11 +41,15 @@ public class SignupProfileActivity extends AppCompatActivity {
         edtNickname = findViewById(R.id.edtNickname);
         btnComplete = findViewById(R.id.btnComplete);
         tvNicknameError = findViewById(R.id.tvNicknameError);
+        btnBack = findViewById(R.id.btnBack);
 
         //  상단 진행바 4단계 표시
         View header = findViewById(R.id.signupHeader);
         progressBar = header.findViewById(R.id.progressSignup);
         progressBar.setProgress(4);
+
+        //  상단바 뒤로가기 버튼 동작
+        btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
         //  초기 상태 버튼 비활성화
         btnComplete.setEnabled(false);

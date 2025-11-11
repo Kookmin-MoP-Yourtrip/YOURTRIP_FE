@@ -1,3 +1,7 @@
+// 백에서 이메일 인증 관련 API 분리 필요
+// 현재는 임시 코드("1234")로 인증 처리 중
+// 추후 백엔드에서 이메일 전송 및 인증 검증 API 제공 시 연동 예정
+
 package com.example.yourtrip.auth;
 
 import android.content.Intent;
@@ -24,6 +28,7 @@ public class SignupVerificationActivity extends AppCompatActivity {
     private ImageButton btnSendCode;
     private Button btnNext;
     private ProgressBar progressBar;
+    private ImageButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +44,28 @@ public class SignupVerificationActivity extends AppCompatActivity {
         btnResend = findViewById(R.id.btnResend);
         edtCode = findViewById(R.id.edtCode);
         tvCodeError = findViewById(R.id.tvCodeError);
+        btnBack = findViewById(R.id.btnBack);
 
         // include 안의 ProgressBar 접근 (공통 헤더)
         View header = findViewById(R.id.signupHeader);
         progressBar = header.findViewById(R.id.progressSignup);
         progressBar.setProgress(2); // 두 번째 단계로 표시
 
+        // 상단바 뒤로가기 버튼 동작
+        btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+
         // 이메일 데이터 표시
         String email = getIntent().getStringExtra("email");
         if (email != null) tvEmail.setText(email);
+
+        //  이전 상태 복원 (뒤로 갔다가 돌아왔을 때)
+        if (savedInstanceState != null) {
+            String savedCode = savedInstanceState.getString("code_text");
+            edtCode.setText(savedCode);
+            btnNext.setEnabled(savedCode != null && !savedCode.isEmpty());
+        } else {
+            btnNext.setEnabled(false); // 초기엔 비활성화
+        }
 
         // 인증번호 전송 버튼
         btnSendCode.setOnClickListener(v ->
@@ -66,7 +84,7 @@ public class SignupVerificationActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                btnNext.setEnabled(s.length() > 0);
+                btnNext.setEnabled(!s.toString().trim().isEmpty());
             }
 
             @Override
@@ -93,4 +111,14 @@ public class SignupVerificationActivity extends AppCompatActivity {
             }
         });
     }
+
+    //  Activity가 사라질 때 인증번호 입력값 저장
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("code_text", edtCode.getText().toString());
+    }
 }
+
+
+//onSaveInstanceState()로 인증번호 유지
