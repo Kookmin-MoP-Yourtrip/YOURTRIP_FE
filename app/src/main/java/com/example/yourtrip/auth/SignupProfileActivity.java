@@ -15,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.R;
@@ -42,6 +44,9 @@ public class SignupProfileActivity extends AppCompatActivity {
     private Uri selectedImageUri = null; // 선택한 프로필 이미지 저장용
 
     private String email; // 이전 단계에서 전달받은 이메일
+
+    // ✅ 최신 권장 방식: 이미지 선택 런처
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +98,39 @@ public class SignupProfileActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
+        // ✅ 이미지 선택 결과 처리 (registerForActivityResult)
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        selectedImageUri = result.getData().getData();
+                        imgProfileField.setImageURI(selectedImageUri);
+                    }
+                }
+        );
+
+        // 프로필 이미지 클릭 → 갤러리에서 선택
+        imgProfileField.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+//            startActivityForResult(intent, REQUEST_IMAGE_PICK);
+            imagePickerLauncher.launch(intent);
+        });
+
+        // 갤러리에서 이미지 선택 결과 처리
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
+//            selectedImageUri = data.getData();
+//            imgProfileField.setImageURI(selectedImageUri);
+//        }
+//    }
+
+
+
+
         // 완료 버튼 클릭 시
         btnComplete.setOnClickListener(v -> {
             if (!btnComplete.isEnabled()) return;
@@ -106,25 +144,8 @@ public class SignupProfileActivity extends AppCompatActivity {
             submitProfile(email, nickname, profileUrl);
         });
 
-        // 프로필 이미지 클릭 → 갤러리에서 선택
-        imgProfileField.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType("image/*");
-            startActivityForResult(intent, REQUEST_IMAGE_PICK);
-        });
+
     }
-
-    // 갤러리에서 이미지 선택 결과 처리
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
-            selectedImageUri = data.getData();
-            imgProfileField.setImageURI(selectedImageUri);
-        }
-    }
-
 
     // 프로필 등록 API 호출
     private void submitProfile(String email, String nickname, String profileUrl) {
