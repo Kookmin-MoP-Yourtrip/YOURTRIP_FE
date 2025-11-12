@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit retrofit;
-    private static final String BASE_URL = "http://3.89.62.194:8080"; //  서버 주소
+    private static final String BASE_URL = "https://yourtrip.site/"; //  서버 주소
 
     public static Retrofit getInstance() {
         if (retrofit == null) { //처음 한 번만 생성
@@ -21,7 +21,7 @@ public class RetrofitClient {
         return retrofit; //이후엔 기존 객체 재사용
     }
 
-    public static AuthService getAuthService() {
-        return getInstance().create(AuthService.class);
+    public static ApiService getAuthService() {
+        return getInstance().create(ApiService.class);
     }
 }
