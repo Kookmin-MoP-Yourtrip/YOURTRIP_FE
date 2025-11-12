@@ -81,7 +81,7 @@
     <!-- 로그인 버튼 (공통 그라데이션 스타일) -->
     <android.widget.Button
         android:id="@+id/btnLogin"
-        style="@style/ChangeButtonStyle"
+        style="@style/GradationChangeButtonStyle"
         android:text="로그인"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

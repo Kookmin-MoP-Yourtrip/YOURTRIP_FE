@@ -6,47 +6,47 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".MainActivity">
-    <!-- 상단바 -->
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topNav"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
-        app:titleCentered="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:title="">
 
-        <!-- 🔸 왼쪽: 로고 자리 (나중에 이미지 교체) -->
-        <LinearLayout
-            android:id="@+id/logoContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="8dp">
+<!--    &lt;!&ndash; 상단바 &ndash;&gt;-->
+<!--    <com.google.android.material.appbar.MaterialToolbar-->
+<!--        android:id="@+id/topNav"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="@color/white"-->
+<!--        app:titleCentered="true"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:title="">-->
 
-            <!-- 지금은 placeholder 텍스트로 표시, 나중에 @drawable/app_logo 로 변경 -->
-            <TextView
-                android:id="@+id/logoText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="YourTrip"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"/>
-        </LinearLayout>
+<!--        &lt;!&ndash; 🔸 왼쪽: 로고 자리 (나중에 이미지 교체) &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/logoContainer"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingEnd="8dp">-->
 
-    </com.google.android.material.appbar.MaterialToolbar>
+<!--            &lt;!&ndash; 지금은 placeholder 텍스트로 표시, 나중에 @drawable/app_logo 로 변경 &ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/logoText"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="YourTrip"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/black"/>-->
+<!--        </LinearLayout>-->
+<!--    </com.google.android.material.appbar.MaterialToolbar>-->
 
     <!-- 프래그먼트 표시 영역 -->
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/topNav"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

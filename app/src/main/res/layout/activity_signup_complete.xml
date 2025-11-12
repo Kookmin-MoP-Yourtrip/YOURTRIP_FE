@@ -22,7 +22,7 @@
     <!-- 로그인으로 이동 버튼 -->
     <Button
         android:id="@+id/btnGoLogin"
-        style="@style/ChangeButtonStyle"
+        style="@style/GradationChangeButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="로그인하러 가기"
