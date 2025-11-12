@@ -62,7 +62,7 @@
     <!--  공통 그라데이션 버튼 -->
     <android.widget.Button
         android:id="@+id/btnNext"
-        style="@style/ChangeButtonStyle"
+        style="@style/GradationChangeButtonStyle"
 
         android:text="다음"
 

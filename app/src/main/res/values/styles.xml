@@ -18,9 +18,17 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <!-- ▶️ 그라데이션 버튼 용-->
+    <!-- ▶️ 단색 활성화 버튼 용-->
     <style name="ChangeButtonStyle" parent="BaseRoundedBox">
         <item name="android:background">@drawable/bg_btn_change</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <!-- ▶️ 그라데이션 활성화 버튼 용-->
+    <style name="GradationChangeButtonStyle" parent="BaseRoundedBox">
+        <item name="android:background">@drawable/bg_btn_gradation_change</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:clickable">true</item>

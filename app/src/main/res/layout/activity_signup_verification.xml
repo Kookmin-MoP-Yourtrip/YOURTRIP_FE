@@ -79,7 +79,7 @@
 
         <android.widget.Button
             android:id="@+id/btnNext"
-            style="@style/ChangeButtonStyle"
+            style="@style/GradationChangeButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"

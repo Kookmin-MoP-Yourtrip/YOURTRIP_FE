@@ -45,13 +45,21 @@
                 android:text="장소, 테마, 코스 무엇이든 입력하세요!"
                 android:textColorHint="@color/gray_550"
 
+                android:drawableEnd="@drawable/ic_search"
                 app:layout_constraintTop_toBottomOf="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
+            <android.widget.Button
+                android:id="@+id/btnNext"
+                style="@style/ChangeButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="다음"
+                android:textSize="14sp"/>
+
         </LinearLayout>
-
-
-
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
