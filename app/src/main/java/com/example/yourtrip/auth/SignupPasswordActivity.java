@@ -152,7 +152,10 @@ public class SignupPasswordActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     // 비밀번호 설정 성공 시 다음 페이지로 이동
+                    //Intent intent = new Intent(SignupPasswordActivity.this, SignupProfileActivity.class);
+                    //startActivity(intent);
                     Intent intent = new Intent(SignupPasswordActivity.this, SignupProfileActivity.class);
+                    intent.putExtra("email", getIntent().getStringExtra("email"));  // ✅ 이메일 다시 전달
                     startActivity(intent);
                 } else {
                     tvPasswordError.setVisibility(View.VISIBLE);
