@@ -28,18 +28,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNav = findViewById(R.id.bottomNav);
-        topNav=findViewById(R.id.topNav);
-        logoContainer = findViewById(R.id.logoContainer);
-
-        // 로고 클릭 시 홈 이동
-        logoContainer.setOnClickListener(v ->
-                bottomNav.setSelectedItemId(R.id.nav_home)
-        );
 
         // 처음 실행 시 홈화면 표시
         if (savedInstanceState == null) {
             switchFragment(new HomeFragment(), false);
-            showLogoBar();
         }
 
         // 하단 네비게이션 바 클릭 리스너
@@ -54,14 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
             if (target != null) {
                 switchFragment(target, false);
-                showLogoBar(); // 탭 전환 시 항상 로고바
                 bottomNav.setVisibility(View.VISIBLE);
                 return true;
             }
             return false;
         });
-        // 🔹 상단 뒤로가기 버튼 동작
-        topNav.setNavigationOnClickListener(v -> onBackPressed());
 
         // ✅ 새 방식의 뒤로가기 처리
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -81,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
         // 뒤로가기로 복귀할 때 상단바·하단바 상태 복원
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            showLogoBar();
             bottomNav.setVisibility(View.VISIBLE);
         }
     }
@@ -93,23 +81,10 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
 
         if (isSubPage) {
-            showBackBar(); // 세부화면이면 뒤로가기바로 변경
             bottomNav.setVisibility(View.GONE); // 하단바 숨김
         } else {
-            showLogoBar(); // 기본 탭 화면은 로고바
             bottomNav.setVisibility(View.VISIBLE); // 하단바 표시
         }
     }
 
-    /** 🔹 기본 탭 화면: 로고바 */
-    private void showLogoBar() {
-        topNav.setNavigationIcon(null); // 뒤로가기 제거
-        logoContainer.setVisibility(View.VISIBLE); // 로고 표시
-    }
-
-    /** 🔹 세부화면: 뒤로가기바 */
-    private void showBackBar() {
-        topNav.setNavigationIcon(R.drawable.top_bar_go_back);
-        logoContainer.setVisibility(View.GONE); // 로고 숨김
-    }
 }
