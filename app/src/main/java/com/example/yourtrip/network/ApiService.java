@@ -4,6 +4,7 @@ import com.example.yourtrip.model.EmailRequest;
 import com.example.yourtrip.model.LoginRequest;
 import com.example.yourtrip.model.LoginResponse;
 import com.example.yourtrip.model.PasswordRequest;
+import com.example.yourtrip.model.ProfileRequest;
 import com.example.yourtrip.model.SignupRequest;
 import com.example.yourtrip.model.SignupResponse;
 import com.example.yourtrip.model.VerificationRequest;
@@ -34,5 +35,10 @@ public interface ApiService {
     //  비밀번호 유효성 검사 API
     @POST("/api/users/password")
     Call<ResponseBody> setPassword(@Body PasswordRequest request);
+
+    //닉네임,프로필 및 최종 프로필 등록 API
+    @POST("/api/users/profile")
+    Call<ResponseBody> setProfile(@Body ProfileRequest request);
+
 }
 
