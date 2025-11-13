@@ -4,12 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
+    android:id="@+id/trip_card"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginBottom="12dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="9dp"
 
     app:cardCornerRadius="16dp"
-    app:cardElevation="6dp"
+    app:cardElevation="4dp"
     android:clipToPadding="false">
 
     <LinearLayout
@@ -113,9 +114,9 @@
 
                     android:text="지역명"
                     android:textSize="12sp"
+                    android:textColor="@color/gray_600"
                     android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textColor="@color/gray_600" />
+                    android:ellipsize="end" />
             </LinearLayout>
 
             <!-- 인원수 태그 -->
@@ -136,9 +137,9 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:layout_width="17dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="1dp"
+                    android:layout_width="16dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="4dp"
                     android:src="@drawable/ic_party"
                     android:background="@android:color/transparent" />
 
@@ -150,9 +151,9 @@
 
                     android:text="인원 수"
                     android:textSize="12sp"
+                    android:textColor="@color/white"
                     android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textColor="@color/gray_600" />
+                    android:ellipsize="end" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

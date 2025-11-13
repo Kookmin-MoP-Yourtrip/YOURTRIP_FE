@@ -6,16 +6,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#FFFFFF">
 
+    <!-- 상단 바 -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tv_title_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="나의 여행"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/gray_700"/>
+
+    </LinearLayout>
+
     <!-- 여행 리스트 RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trip_recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
 
-        android:paddingHorizontal="16dp"
-        android:clipToPadding="false"
+        tools:listitem="@layout/item_trip_card"
+        tools:itemCount="3"
+        tools:layoutManager="LinearLayoutManager"
 
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topBar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -25,14 +49,12 @@
         android:id="@+id/btn_add_trip"
         android:layout_width="82dp"
         android:layout_height="82dp"
-
         android:src="@drawable/ic_add_course"
         android:background="@android:color/transparent"
         android:scaleType="centerInside"
 
         android:clickable="true"
         android:focusable="true"
-
 
         app:layout_constraintBottom_toTopOf="@+id/systemBarDummy"
         app:layout_constraintEnd_toEndOf="parent" />
