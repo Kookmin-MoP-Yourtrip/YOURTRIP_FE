@@ -41,11 +41,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         holder.tvLocation.setText(item.getLocation());
 
         // ⭐ 날짜 표시
+        String startK = formatKoreanDate(item.getStartDate());
+        String endK = formatKoreanDate(item.getEndDate());
+
         String period = getNightDayText(item.getStartDate(), item.getEndDate());
-        String dateText = item.getStartDate()
-                + " ~ "
-                + item.getEndDate()
-                + " (" + period + ")";
+
+        String dateText = startK + " ~ " + endK + " (" + period + ")";
 
         holder.tvDate.setText(dateText);
 
@@ -63,6 +64,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     }
 
     // ⬇️⬇️⬇️⬇️  ⭐ 바로 여기에 추가하는 게 정답! ⭐  ⬇️⬇️⬇️⬇️
+    private String formatKoreanDate(String date) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            Date parsed = sdf.parse(date);
+
+            SimpleDateFormat korean = new SimpleDateFormat("yyyy년 M월 d일", Locale.KOREA);
+            return korean.format(parsed);
+
+        } catch (Exception e) {
+            return date; // 파싱 실패하면 원본 그대로
+        }
+    }
+
     private String getNightDayText(String start, String end) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
@@ -73,6 +87,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             long diffMillis = endDate.getTime() - startDate.getTime();
             long diffDays = diffMillis / (24 * 60 * 60 * 1000);
 
+            // ⭐ 당일치기 처리
+            if (diffDays == 0) {
+                return "당일치기";
+            }
+
             long nights = diffDays;
             long days = diffDays + 1;
 
@@ -82,7 +101,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             return "";
         }
     }
-    // ⬆️⬆️⬆️⬆️  ⭐ Adapter 안 private 함수로 추가 ⭐  ⬆️⬆️⬆️⬆️
 
     static class TripViewHolder extends RecyclerView.ViewHolder {
 
