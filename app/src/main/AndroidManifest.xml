@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -36,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".auth.LoginActivity" />
-        <activity android:name=".auth.SignupActivity" /> <!-- 메인 화면 -->
+        <!-- 메인 화면 -->
         <activity android:name=".MainActivity" />
     </application>
 
