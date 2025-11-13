@@ -14,7 +14,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginEnd="6dp"
-        android:src="@drawable/icon_party"
+        android:src="@drawable/ic_party"
         android:background="@android:color/transparent" />
 
     <TextView
