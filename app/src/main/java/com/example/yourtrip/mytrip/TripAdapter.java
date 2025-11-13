@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
 
@@ -43,14 +45,22 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         // ⭐ 날짜 표시
         String startK = formatKoreanDate(item.getStartDate());
         String endK = formatKoreanDate(item.getEndDate());
-
         String period = getNightDayText(item.getStartDate(), item.getEndDate());
-
         String dateText = startK + " ~ " + endK + " (" + period + ")";
-
         holder.tvDate.setText(dateText);
 
-        holder.tvParty.setText(item.getMemberCount() + "명 참여");
+
+        // ⭐ 인원 표시 처리
+        int member = item.getMemberCount();
+
+        // ⭐ 여기 추가!! (1명 참여는 숨기기)
+        if (member <= 1) {
+            // ⭐ 인원 태그 전체 숨김 (아이콘+텍스트+배경)
+            holder.tagParty.setVisibility(View.GONE);
+        } else {
+            holder.tagParty.setVisibility(View.VISIBLE);
+            holder.tvParty.setText(member + "명 참여");
+        }
 
         // 더보기 버튼 클릭 리스너 (기능 연결은 나중)
         holder.btnMore.setOnClickListener(v -> {
@@ -61,6 +71,24 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     @Override
     public int getItemCount() {
         return courseList.size();
+    }
+    static class TripViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvTitle, tvLocation, tvDate, tvParty;
+        ImageView btnMore;
+        LinearLayout tagParty;   // ← 인원 태그 전체 레이아웃
+
+        public TripViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            tvTitle = itemView.findViewById(R.id.tv_title);
+            tvLocation = itemView.findViewById(R.id.tv_location);
+            tvDate = itemView.findViewById(R.id.tv_date);
+            tvParty = itemView.findViewById(R.id.tv_party);
+            btnMore = itemView.findViewById(R.id.btn_more);
+
+            tagParty = itemView.findViewById(R.id.tag_party);  // ← 여기!
+        }
     }
 
     // ⬇️⬇️⬇️⬇️  ⭐ 바로 여기에 추가하는 게 정답! ⭐  ⬇️⬇️⬇️⬇️
@@ -102,19 +130,4 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         }
     }
 
-    static class TripViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvTitle, tvLocation, tvDate, tvParty;
-        ImageView btnMore;
-
-        public TripViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            tvTitle = itemView.findViewById(R.id.tv_title);
-            tvLocation = itemView.findViewById(R.id.tv_location);
-            tvDate = itemView.findViewById(R.id.tv_date);
-            tvParty = itemView.findViewById(R.id.tv_party);
-            btnMore = itemView.findViewById(R.id.btn_more);
-        }
-    }
 }
