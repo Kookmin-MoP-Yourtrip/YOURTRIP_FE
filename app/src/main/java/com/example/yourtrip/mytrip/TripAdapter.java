@@ -148,6 +148,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         Window window = dialog.getWindow();
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.getDecorView().setBackground(null);
             window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // ← dim 제거!
 
             // 1) 윈도우 기준 초기화 (Gravity.TOP | Gravity.END : 오른쪽 상단 기준)
