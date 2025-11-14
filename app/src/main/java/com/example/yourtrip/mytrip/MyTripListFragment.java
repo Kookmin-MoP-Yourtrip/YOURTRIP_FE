@@ -1,3 +1,4 @@
+//MyTripFragment -> MyTripListFragment 로 이름 변경
 package com.example.yourtrip.mytrip;
 
 import android.os.Bundle;
@@ -6,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+import android.content.Intent;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,11 +23,16 @@ import com.example.yourtrip.model.MyCourseListItemResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyTripFragment extends Fragment {
+
+public class MyTripListFragment extends Fragment {
     private ImageView btnAddTrip;         // + 버튼
     private LinearLayout fabMenuLayout;   // 메뉴 레이아웃
     private boolean isMenuOpen = false;   // 토글 상태 저장
     private View dimLayer;
+
+    // 새로 추가: 메뉴 안의 버튼들
+    private LinearLayout btnAIMake;       // AI로 만들기
+    private LinearLayout btnManualMake;   // 직접 만들기
 
 
     @Override
@@ -55,8 +64,6 @@ public class MyTripFragment extends Fragment {
         dimLayer.setVisibility(view.GONE);
         fabMenuLayout.setVisibility(View.GONE);
 
-
-
         btnAddTrip.setOnClickListener(v -> {
             if (isMenuOpen) {
                 closeMenu();
@@ -66,7 +73,25 @@ public class MyTripFragment extends Fragment {
         });
         dimLayer.setOnClickListener(v -> closeMenu());
 
+
+        //  추가: 메뉴 안의 버튼 연결
+        btnAIMake = view.findViewById(R.id.btn_upload);          // AI로 만들기
+        btnManualMake = view.findViewById(R.id.btn_manual_make); // 직접 만들기
+
+
+        //  추가: "AI로 만들기" 클릭 이벤트
+        btnAIMake.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "AI 제작 기능 준비 중입니다.", Toast.LENGTH_SHORT).show();
+        });
+
+        //  추가: "직접 만들기" 클릭 이벤트 → CreateCourseBasicFragment 이동
+        btnManualMake.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), CreateCourseBasicActivity.class);
+            startActivity(intent);
+            closeMenu();
+        });
     }
+    
 
     // ---------------------------
     // 더미데이터 생성 함수
