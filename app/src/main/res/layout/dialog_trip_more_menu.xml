@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
 
-    android:background="@drawable/bg_trip_more_menu"
+    android:background="@drawable/bg_menu"
     android:elevation="3dp"
     android:layout_margin="5dp"
 
@@ -24,7 +24,7 @@
         <ImageView
             android:layout_width="14dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_more_upload"
+            android:src="@drawable/ic_menu_upload"
             android:backgroundTint="@android:color/transparent"/>
         <TextView
             android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
         <ImageView
             android:layout_width="14dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_more_edit"
+            android:src="@drawable/ic_menu_edit"
             android:backgroundTint="@android:color/transparent"/>
         <TextView
             android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
         <ImageView
             android:layout_width="14dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_more_delete"
+            android:src="@drawable/ic_menu_delete"
             android:backgroundTint="@android:color/transparent"/>
         <TextView
             android:layout_width="wrap_content"

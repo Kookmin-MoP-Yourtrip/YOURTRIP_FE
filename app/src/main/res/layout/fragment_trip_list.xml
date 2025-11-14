@@ -44,12 +44,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <View
+        android:id="@+id/fab_dim"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#45000000"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:visibility="visible"/> <!-- 기본: gone or invisible -->
+
     <!-- 플로팅 버튼 (+) -->
     <ImageView
         android:id="@+id/btn_add_trip"
         android:layout_width="82dp"
         android:layout_height="82dp"
-        android:src="@drawable/ic_add_course"
+        android:src="@drawable/fab_add_course"
         android:background="@android:color/transparent"
         android:scaleType="centerInside"
 
@@ -57,8 +70,76 @@
         android:focusable="true"
 
         app:layout_constraintBottom_toTopOf="@+id/systemBarDummy"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
 
+        android:visibility="visible"/>
+    <!-- (+) 누르면 뜨는 코스 추가 메뉴 -->
+    <LinearLayout
+        android:id="@+id/fab_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_menu"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="26dp"
+        android:elevation="8dp"
+
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="9dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_add_trip"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:visibility="visible"> <!-- 기본: gone or invisible -->
+
+        <!-- AI로 만들기 -->
+        <LinearLayout
+            android:id="@+id/btn_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_marginVertical="10dp">
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_menu_star"
+                android:backgroundTint="@android:color/transparent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:text="AI로 만들기"
+                android:textSize="14sp"
+                android:textColor="@color/gray_700"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+
+        <!-- 직접 만들기 -->
+        <LinearLayout
+            android:id="@+id/btn_manual_make"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_marginVertical="10dp">
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_menu_edit"
+                android:backgroundTint="@android:color/transparent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:text="직접 만들기"
+                android:textSize="14sp"
+                android:textColor="@color/gray_700"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <!-- ✅ 미리보기 전용 하단 네비 바 크기 확보 (실행 시 무시됨) -->
     <View

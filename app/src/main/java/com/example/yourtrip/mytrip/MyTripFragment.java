@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyTripFragment extends Fragment {
+    private ImageView btnAddTrip;         // + 버튼
+    private LinearLayout fabMenuLayout;   // 메뉴 레이아웃
+    private boolean isMenuOpen = false;   // 토글 상태 저장
+    private View dimLayer;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_trip_list, container, false);
@@ -36,6 +44,28 @@ public class MyTripFragment extends Fragment {
         TripAdapter adapter = new TripAdapter(dummyList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+
+
+        // Floating Action Button + 메뉴 초기화
+        btnAddTrip = view.findViewById(R.id.btn_add_trip);
+        fabMenuLayout = view.findViewById(R.id.fab_menu);
+        dimLayer = view.findViewById(R.id.fab_dim);
+
+        // fab 누르기 전 초기상태:
+        dimLayer.setVisibility(view.GONE);
+        fabMenuLayout.setVisibility(View.GONE);
+
+
+
+        btnAddTrip.setOnClickListener(v -> {
+            if (isMenuOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+        dimLayer.setOnClickListener(v -> closeMenu());
+
     }
 
     // ---------------------------
@@ -56,5 +86,54 @@ public class MyTripFragment extends Fragment {
         list.add(new MyCourseListItemResponse("경주 야간 사적지 투어", "경북 경주", "2025-09-08", "2025-09-09", 5));
 
         return list;
+    }
+
+    // ---------------------------
+    // 메뉴 열기
+    // ---------------------------
+    private void openMenu() {
+        // dim 나타남
+        fabMenuLayout.setVisibility(View.VISIBLE);
+        dimLayer.setAlpha(0f);
+        dimLayer.animate().alpha(1f).setDuration(150).start();
+
+        // menu 나타남
+        dimLayer.setVisibility(View.VISIBLE);
+        fabMenuLayout.setAlpha(0f);
+        fabMenuLayout.setTranslationY(40f);
+
+        fabMenuLayout.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(150)
+                .start();
+
+        // + → X 아이콘
+        btnAddTrip.setImageResource(R.drawable.fab_close_menu);
+        isMenuOpen = true;
+    }
+
+    // ---------------------------
+    // 메뉴 닫기
+    // ---------------------------
+    private void closeMenu() {
+        // dim 서서히 사라짐
+        dimLayer.animate()
+                .alpha(0f)
+                .setDuration(150)
+                .withEndAction(() -> dimLayer.setVisibility(View.GONE))
+                .start();
+
+        // 메뉴 사라짐
+        fabMenuLayout.animate()
+                .alpha(0f)
+                .translationY(40f)
+                .setDuration(150)
+                .withEndAction(() -> fabMenuLayout.setVisibility(View.GONE))
+                .start();
+
+        // X → + 아이콘 복귀
+        btnAddTrip.setImageResource(R.drawable.fab_add_course);
+        isMenuOpen = false;
     }
 }
