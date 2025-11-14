@@ -29,7 +29,7 @@
 
     </LinearLayout>
 
-    <!-- 여행 리스트 RecyclerView -->
+    <!-- 여행 리스트 RecyclerView : 여행 카드 리스트 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trip_recycler"
         android:layout_width="0dp"
@@ -44,6 +44,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+<!--    메뉴 펼칠 때 화면 어둡게-->
     <View
         android:id="@+id/fab_dim"
         android:layout_width="0dp"
