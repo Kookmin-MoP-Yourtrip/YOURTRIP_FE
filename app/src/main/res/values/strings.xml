@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">YourTrip</string>
     <string name="resend_text"><u>인증번호 다시 받기</u></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_create_course_basic">CreateCourseBasicActivity</string>
 
 </resources>

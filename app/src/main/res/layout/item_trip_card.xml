@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/trip_card"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="9dp"
+
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- 제목 & 날짜 & 더보기-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_more"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- 코스제목-->
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="대전 맛도리 빵집 투어 ✏️"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray_700"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+
+                    android:layout_marginBottom="4dp"/>
+
+                <!--날짜-->
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="2025년 11월 9일~11월 10일 (2박 3일)"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_550" />
+            </LinearLayout>
+
+            <!--더보기-->
+            <ImageView
+                android:id="@+id/btn_more"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+
+                android:src="@drawable/ic_three_dots"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <!--지역 & 참여인원-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- 지역 태그 -->
+            <LinearLayout
+                android:id="@+id/tag_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+
+                android:background="@drawable/bg_tag_location"
+                android:clipToPadding="false"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="17dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="1dp"
+                    android:src="@drawable/ic_location"
+                    android:background="@android:color/transparent" />
+
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+
+                    android:text="지역명"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray_600"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+            </LinearLayout>
+
+            <!-- 인원수 태그 -->
+            <LinearLayout
+                android:id="@+id/tag_party"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+
+                android:background="@drawable/bg_tag_party"
+                android:clipToPadding="false"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_party"
+                    android:background="@android:color/transparent" />
+
+                <TextView
+                    android:id="@+id/tv_party"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+
+                    android:text="인원 수"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

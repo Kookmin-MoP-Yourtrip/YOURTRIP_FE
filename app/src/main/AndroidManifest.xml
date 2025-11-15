@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -11,6 +12,22 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.MyAppTest">
+
+
+
+        <!-- 앱 실행 시 제일 먼저 실행될 Activity -->
+        <activity
+            android:name=".LauncherActivity"
+            android:exported="true"
+            android:theme="@style/Theme.YourTrip.Launcher">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+<!--        회원가입 및 로그인-->
+        <activity android:name=".auth.LoginActivity" />
         <activity
             android:name=".auth.SignupCompleteActivity"
             android:exported="false" />
@@ -25,20 +42,14 @@
             android:exported="false" />
         <activity
             android:name=".auth.SignupEmailActivity"
-            android:exported="false" /> <!-- 앱 실행 시 제일 먼저 실행될 Activity -->
-        <activity
-            android:name=".LauncherActivity"
-            android:exported="true"
-            android:theme="@style/Theme.YourTrip.Launcher">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".auth.LoginActivity" />
         <!-- 메인 화면 -->
         <activity android:name=".MainActivity" />
+
+<!--        나의 여행-->
+        <activity android:name=".mytrip.CreateCourseBasicActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

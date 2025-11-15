@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.yourtrip.feed.FeedFragment;
 import com.example.yourtrip.home.HomeFragment;
 import com.example.yourtrip.mypage.MypageFragment;
-import com.example.yourtrip.mytrip.MytripFragment;
+import com.example.yourtrip.mytrip.MyTripListFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.nav_home) target = new HomeFragment();
-            else if (id == R.id.nav_trip) target = new MytripFragment();
+            else if (id == R.id.nav_trip) target = new MyTripListFragment();
             else if (id == R.id.nav_feed) target = new FeedFragment();
             else if (id == R.id.nav_my) target = new MypageFragment();
 

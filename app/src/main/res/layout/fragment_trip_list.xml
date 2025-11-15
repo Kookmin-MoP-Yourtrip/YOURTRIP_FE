@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#FFFFFF">
+
+    <!-- 상단 바 -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tv_title_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="나의 여행"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/gray_700"/>
+
+    </LinearLayout>
+
+    <!-- 여행 리스트 RecyclerView : 여행 카드 리스트 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trip_recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        tools:listitem="@layout/item_trip_card"
+        tools:itemCount="3"
+        tools:layoutManager="LinearLayoutManager"
+
+        app:layout_constraintTop_toBottomOf="@+id/topBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+<!--    메뉴 펼칠 때 화면 어둡게-->
+    <View
+        android:id="@+id/fab_dim"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#45000000"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:visibility="visible"/> <!-- 기본: gone or invisible -->
+
+    <!-- 플로팅 버튼 (+) -->
+    <ImageView
+        android:id="@+id/btn_add_trip"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
+        android:src="@drawable/fab_add_course"
+        android:background="@android:color/transparent"
+        android:scaleType="centerInside"
+
+        android:clickable="true"
+        android:focusable="true"
+
+        app:layout_constraintBottom_toTopOf="@+id/systemBarDummy"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:visibility="visible"/>
+    <!-- (+) 누르면 뜨는 코스 추가 메뉴 -->
+    <LinearLayout
+        android:id="@+id/fab_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_menu"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="26dp"
+        android:elevation="8dp"
+
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="9dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_add_trip"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:visibility="visible"> <!-- 기본: gone or invisible -->
+
+        <!-- AI로 만들기 -->
+        <LinearLayout
+            android:id="@+id/btn_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_marginVertical="10dp">
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_menu_star"
+                android:backgroundTint="@android:color/transparent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:text="AI로 만들기"
+                android:textSize="14sp"
+                android:textColor="@color/gray_700"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+
+        <!-- 직접 만들기 -->
+        <LinearLayout
+            android:id="@+id/btn_manual_make"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:layout_marginVertical="10dp">
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_menu_edit"
+                android:backgroundTint="@android:color/transparent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:text="직접 만들기"
+                android:textSize="14sp"
+                android:textColor="@color/gray_700"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ✅ 미리보기 전용 하단 네비 바 크기 확보 (실행 시 무시됨) -->
+    <View
+        android:id="@+id/systemBarDummy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:visibility="gone"
+        tools:layout_height="62dp"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
