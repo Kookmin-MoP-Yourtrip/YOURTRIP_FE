@@ -5,6 +5,7 @@ import com.example.yourtrip.model.LoginRequest;
 import com.example.yourtrip.model.PasswordRequest;
 import com.example.yourtrip.model.ProfileRequest;
 import com.example.yourtrip.model.VerificationRequest;
+import com.example.yourtrip.model.MyCourseCreateRequest;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -32,6 +33,9 @@ public interface ApiService {
     // 로그인 API
     @POST("/api/users/login")
     Call<ResponseBody> login(@Body LoginRequest request);
+
+    @POST("/api/my-courses")
+    Call<ResponseBody> createMyCourse(@Body MyCourseCreateRequest request);
 
 
 }
