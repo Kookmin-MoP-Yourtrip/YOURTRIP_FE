@@ -1,24 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <!--  상단바 -->
+    <!-- 상단바 -->
     <include
         android:id="@+id/topBar"
-        layout="@layout/view_common_top_bar" />
+        layout="@layout/view_common_top_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!--  본문 영역 -->
-    <FrameLayout
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
+    <!-- 전체 콘텐츠 영역 -->
+    <LinearLayout
+        android:id="@+id/contentArea"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/btnNext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
 
-        <!-- fragment_create_course_basic.xml 내용 넣으면 됨 -->
-    </FrameLayout>
+        <TextView
+            android:id="@+id/tvInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기본적인 코스 정보를 입력해 주세요."
+            android:textSize="16sp"
+            android:textColor="@color/gray_700"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="12dp" />
 
-</LinearLayout>
+
+        <!-- BLOCK 1: 코스 제목 -->
+        <LinearLayout
+            android:id="@+id/block_title"
+            style="@style/FormBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="6dp"
+                android:text="✏️ 코스 제목"
+                android:textColor="@color/gray_700"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/etCourseTitle"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                style="@style/RoundedEditText.Default"
+                android:hint="예시: 대전 맛도리 빵집 투어"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+
+        <!-- BLOCK 2: 여행지 -->
+        <LinearLayout
+            android:id="@+id/block_location"
+            style="@style/FormBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="28dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="6dp"
+                android:text="✈️ 여행지"
+                android:textColor="@color/gray_700"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/etLocation"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                style="@style/RoundedEditText.Default"
+                android:hint="예시: 대전"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+
+        <!-- BLOCK 3: 여행 날짜 -->
+        <LinearLayout
+            android:id="@+id/block_date"
+            style="@style/FormBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="28dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="6dp"
+                android:text="📅 여행 날짜"
+                android:textColor="@color/gray_700"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/btnStartDate"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    style="@style/RoundedEditText.Default"
+                    android:hint="여행 출발 날짜"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:focusable="false"
+                    android:clickable="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  ~  "
+                    android:textColor="@color/gray_600"
+                    android:textSize="14sp"/>
+
+                <EditText
+                    android:id="@+id/btnEndDate"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    style="@style/RoundedEditText.Default"
+                    android:hint="여행 종료 날짜"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:focusable="false"
+                    android:clickable="true"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <!-- 다음 버튼 (하단 고정) -->
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="0dp"
+        style="@style/ChangeButtonStyle"
+        android:layout_margin="30dp"
+        android:text="다음"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -45,7 +45,7 @@ public class SignupProfileActivity extends AppCompatActivity {
 
     private String email; // 이전 단계에서 전달받은 이메일
 
-    // ✅ 최신 권장 방식: 이미지 선택 런처
+    //  최신 권장 방식: 이미지 선택 런처
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     @Override
@@ -98,7 +98,7 @@ public class SignupProfileActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // ✅ 이미지 선택 결과 처리 (registerForActivityResult)
+        //  이미지 선택 결과 처리 (registerForActivityResult)
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -138,7 +138,7 @@ public class SignupProfileActivity extends AppCompatActivity {
             String nickname = edtNickname.getText().toString().trim();
             String profileUrl = (selectedImageUri != null) ? selectedImageUri.toString() : null;
 
-            // ✅ 디버깅 로그 추가
+            //  디버깅 로그 추가
             Log.d("SignupProfileActivity", "email=" + email + ", nickname=" + nickname);
 
             submitProfile(email, nickname, profileUrl);

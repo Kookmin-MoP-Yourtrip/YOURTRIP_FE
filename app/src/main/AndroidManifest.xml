@@ -48,7 +48,8 @@
         <activity android:name=".MainActivity" />
 
 <!--        나의 여행-->
-        <activity android:name=".mytrip.CreateCourseBasicActivity" />
+        <activity android:name=".mytrip.CreateCourseBasicActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

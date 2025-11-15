@@ -86,12 +86,12 @@ public class MyTripListFragment extends Fragment {
 
         //  추가: "직접 만들기" 클릭 이벤트 → CreateCourseBasicFragment 이동
         btnManualMake.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), CreateCourseBasicActivity.class);
+            Intent intent = new Intent(requireActivity(), CreateCourseBasicActivity.class);
             startActivity(intent);
             closeMenu();
         });
     }
-    
+
 
     // ---------------------------
     // 더미데이터 생성 함수

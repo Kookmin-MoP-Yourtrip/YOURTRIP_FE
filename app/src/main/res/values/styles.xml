@@ -70,4 +70,9 @@
         <item name="android:paddingEnd">16dp</item>
     </style>
 
+
+<!--    margin 공통-->
+    <style name="FormBlock">
+        <item name="android:layout_marginTop">24dp</item>
+    </style>
 </resources>
