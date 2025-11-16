@@ -204,7 +204,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
         // 1) 커스텀 레이아웃 inflate
         View popupView = LayoutInflater.from(context)
-                .inflate(R.layout.popup_trip_more_menu, null);
+                .inflate(R.layout.popup_trip_card_more, null);
 
         // 2) PopupWindow 생성
         PopupWindow popupWindow = new PopupWindow(
