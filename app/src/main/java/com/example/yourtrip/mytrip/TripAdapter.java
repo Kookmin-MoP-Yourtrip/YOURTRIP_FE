@@ -1,6 +1,5 @@
 package com.example.yourtrip.mytrip;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -10,10 +9,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -133,71 +132,145 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             return "";
         }
     }
-
-    private void showMoreMenu(View anchor) {
+//
+//    private void showMoreMenu(View anchor) {
+//        Context context = anchor.getContext();
+//        Dialog dialog = new Dialog(context);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setContentView(R.layout.dialog_trip_more_menu);
+//
+//        // 배경 투명하게 (둥근 모서리 shape 보이게)
+//        if (dialog.getWindow() != null) {
+//            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        }
+//
+//        Window window = dialog.getWindow();
+//        if (window != null) {
+//            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            window.getDecorView().setBackground(null);
+//            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // ← dim 제거!
+//
+//            // 1) 윈도우 기준 초기화 (Gravity.TOP | Gravity.END : 오른쪽 상단 기준)
+//            window.setGravity(Gravity.TOP | Gravity.END);
+//            WindowManager.LayoutParams params = window.getAttributes();
+//
+//            // 2) 앵커의 절대좌표
+//            int[] location = new int[2];
+//            anchor.getLocationOnScreen(location);
+//
+//            // 3) 화면(윈도우)의 가로 길이 구하기
+//            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//            Display display = wm.getDefaultDisplay();
+//            Point size = new Point();
+//            display.getSize(size);
+//            int windowWidth = size.x;   // ← 화면 가로폭
+//
+//            // 4) anchor의 좌우 x의 절대좌표 계산
+//            int anchorLeft   = location[0];
+//            int anchorRight  = anchorLeft + anchor.getWidth();
+//
+//            // 5) 다이얼로그를 오른쪽 상단 윈도우 기준 상대위치로 초기화
+//            int anchor_x = windowWidth - (location[0] + anchor.getWidth());
+//            params.x = anchor_x-3; //margin 길이만큼 제외
+//            params.y = location[1] + 10;
+//
+//            window.setAttributes(params);
+//        }
+//
+//        // 메뉴 버튼 클릭 연결
+//        LinearLayout btnUpload = dialog.findViewById(R.id.btn_upload);
+//        LinearLayout btnEdit = dialog.findViewById(R.id.btn_edit);
+//        LinearLayout btnDelete = dialog.findViewById(R.id.btn_delete);
+//
+//        btnUpload.setOnClickListener(v -> {
+//            dialog.dismiss();
+//            // TODO 업로드 기능 연결
+//        });
+//
+//        btnEdit.setOnClickListener(v -> {
+//            dialog.dismiss();
+//            // TODO 편집 기능 연결
+//        });
+//
+//        btnDelete.setOnClickListener(v -> {
+//            dialog.dismiss();
+//            // TODO 삭제 기능 연결
+//        });
+//
+//        dialog.show();
+//    }
+    private void showMoreMenu(View anchor) { // 앵커는 더보기 버튼
         Context context = anchor.getContext();
-        Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_trip_more_menu);
 
-        // 배경 투명하게 (둥근 모서리 shape 보이게)
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
+        // 1) 커스텀 레이아웃 inflate
+        View popupView = LayoutInflater.from(context)
+                .inflate(R.layout.dialog_trip_more_menu, null);
 
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.getDecorView().setBackground(null);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // ← dim 제거!
+        // 2) PopupWindow 생성
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true // 밖 터치시 닫기
+        );
 
-            // 1) 윈도우 기준 초기화 (Gravity.TOP | Gravity.END : 오른쪽 상단 기준)
-            window.setGravity(Gravity.TOP | Gravity.END);
-            WindowManager.LayoutParams params = window.getAttributes();
+        // 3) 배경 투명하게 (shape의 둥근 모서리 보이게)
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setElevation(20f); // 그림자(Optional)
 
-            // 2) 앵커의 절대좌표
-            int[] location = new int[2];
-            anchor.getLocationOnScreen(location);
+        // (1) 앵커의 절대 좌표 구하기
+        int[] location = new int[2];
+        anchor.getLocationOnScreen(location);
+        int anchorX = location[0];
+        int anchorY = location[1];
+        int anchorWidth = anchor.getWidth();
+        int anchorHeight = anchor.getHeight();
 
-            // 3) 화면(윈도우)의 가로 길이 구하기
-            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            int windowWidth = size.x;   // ← 화면 가로폭
+        // anchorX + anchorWidth가 팝업의 오른쪽 모서리가 되어야함
+        //
 
-            // 4) anchor의 좌우 x의 절대좌표 계산
-            int anchorLeft   = location[0];
-            int anchorRight  = anchorLeft + anchor.getWidth();
+        // (2) 화면 전체 폭 구하기
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int windowWidth = size.x;
 
-            // 5) 다이얼로그를 오른쪽 상단 윈도우 기준 상대위치로 초기화
-            int anchor_x = windowWidth - (location[0] + anchor.getWidth());
-            params.x = anchor_x-3; //margin 길이만큼 제외
-            params.y = location[1] + 10;
+        // (3) PopupView 측정 (너비 구해야 오른쪽 정렬 가능)
+        popupView.measure(
+                View.MeasureSpec.UNSPECIFIED,
+                View.MeasureSpec.UNSPECIFIED
+        );
+        int popupWidth = popupView.getMeasuredWidth();
 
-            window.setAttributes(params);
-        }
+        // (4) 너가 계산하던 anchor_x 공식 그대로 적용
+        //    windowWidth - (anchorLeft + anchorWidth)
+        int finalX = anchorX + anchorWidth - popupWidth  - 3;      // margin 보정
+        int finalY = anchorY +anchorHeight + 10;      // 아래 offset
 
-        // 메뉴 버튼 클릭 연결
-        LinearLayout btnUpload = dialog.findViewById(R.id.btn_upload);
-        LinearLayout btnEdit = dialog.findViewById(R.id.btn_edit);
-        LinearLayout btnDelete = dialog.findViewById(R.id.btn_delete);
+        // (5) showAtLocation으로 절대좌표 배치
+        popupWindow.showAtLocation(anchor, Gravity.TOP | Gravity.START, finalX, finalY);
+
+        // 5) 메뉴 클릭 연결
+        LinearLayout btnUpload = popupView.findViewById(R.id.btn_upload);
+        LinearLayout btnEdit = popupView.findViewById(R.id.btn_edit);
+        LinearLayout btnDelete = popupView.findViewById(R.id.btn_delete);
 
         btnUpload.setOnClickListener(v -> {
-            dialog.dismiss();
-            // TODO 업로드 기능 연결
+            popupWindow.dismiss();
+            // TODO 업로드 기능
         });
 
         btnEdit.setOnClickListener(v -> {
-            dialog.dismiss();
-            // TODO 편집 기능 연결
+            popupWindow.dismiss();
+            // TODO 편집 기능
         });
 
         btnDelete.setOnClickListener(v -> {
-            dialog.dismiss();
-            // TODO 삭제 기능 연결
+            popupWindow.dismiss();
+            // TODO 삭제 기능
         });
-
-        dialog.show();
     }
+
 }
