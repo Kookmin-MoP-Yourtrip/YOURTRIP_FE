@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_location" />
+                tools:listitem="@layout/item_location_course" />
 
             <!-- 🔹 테마별 인기 코스 태그 타이틀 -->
             <TextView
