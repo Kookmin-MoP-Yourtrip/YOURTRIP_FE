@@ -1,2 +1,5 @@
-# YOURTRIP_FE
-YOURTRIP 프론트엔드 레포지토리
+## 🌍 YOURTRIP — AI 기반 여행 코스 플래너
+여행 여정 설계의 번거로움을 줄여주는 여행 코스 공유 & 코스 생성 어플
+<br>
+📘 팀 노션 바로가기:
+👉 https://www.notion.so/2025-2-_-2-_1-26b77c61398180168bcfd3eee08b8e0c
