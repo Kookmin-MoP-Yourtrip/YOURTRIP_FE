@@ -93,7 +93,8 @@
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
 
-                android:background="@drawable/bg_tag_location"
+                android:background="@drawable/bg_tag"
+                android:backgroundTint="@color/tag_skyblue"
                 android:clipToPadding="false"
 
                 app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +131,8 @@
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="6dp"
 
-                android:background="@drawable/bg_tag_party"
+                android:background="@drawable/bg_tag"
+                android:backgroundTint="@color/tag_blue"
                 android:clipToPadding="false"
 
                 app:layout_constraintEnd_toEndOf="parent"

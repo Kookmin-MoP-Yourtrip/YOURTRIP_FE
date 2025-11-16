@@ -9,7 +9,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
 
-    android:background="@drawable/bg_menu"
+    android:background="@drawable/bg_box_round"
     android:elevation="3dp"
 
     android:layout_marginEnd="3dp"

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_theme_tag"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="6dp"
+
+    android:background="@drawable/bg_theme_tag_selector"
+    android:backgroundTint="@color/tag_skyblue"
+    android:clipToPadding="false"
+
+    android:text="지역명"
+    android:textSize="12sp"
+    android:textColor="@color/gray_600"
+    android:textStyle="bold"
+    android:maxLines="1"
+    android:ellipsize="end"
+    />

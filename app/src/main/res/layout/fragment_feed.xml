@@ -73,25 +73,6 @@
         android:layout_marginTop="50dp"/>
 
 
-    <!-- 🔹 예시: 상단에 파티 태그 배치 -->
-    <include
-        android:id="@+id/tag_party1"
-        layout="@layout/view_tag_party"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!-- 🔹 예시: 하단에 지역 태그 배치 -->
-    <include
-        android:id="@+id/tag_location1"
-        layout="@layout/view_tag_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tag_party1"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
     <!-- ✅ 미리보기 전용 상+하단 네비 바 크기 확보 (실행 시 무시됨) -->
     <View
         android:id="@+id/systemBarDummy"
