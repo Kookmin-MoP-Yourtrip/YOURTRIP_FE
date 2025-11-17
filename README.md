@@ -26,3 +26,4 @@ YOURTRIP은 AI 기반 추천 코스를 제공할 뿐만 아니라,
 친구와 함께 실시간 공동 편집이 가능해
 여행 계획을 더 쉽고, 더 즐겁게 만들 수 있는 것을 목표로 합니다.
 <img width="923" height="512" alt="image" src="https://github.com/user-attachments/assets/b2ee6713-d32f-48a5-89f6-3b62a3659f9a" />
+<img width="925" height="512" alt="image" src="https://github.com/user-attachments/assets/106d60be-83ad-4f4e-9df0-1f6555110150" />
