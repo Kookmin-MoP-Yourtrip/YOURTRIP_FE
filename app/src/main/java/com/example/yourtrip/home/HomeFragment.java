@@ -5,14 +5,87 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.adapter.PopularCourseAdapter;
+import com.example.yourtrip.model.HomePopularCourseItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
+
+    private RecyclerView rvPopular;
+    private PopularCourseAdapter popularAdapter;
+
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home_main, container, false);
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
+    ) {
+        View view = inflater.inflate(R.layout.fragment_home_main, container, false);
+
+        initViews(view);       // 뷰 초기화
+        setupPopularRecycler(); // 인기 코스 RecyclerView 셋업
+        loadDummyPopularData(); // 더미 데이터 주입
+
+        return view;
+    }
+
+    // ----------------------------
+    // 1. 뷰 초기화
+    // ----------------------------
+    private void initViews(View view) {
+        rvPopular = view.findViewById(R.id.rv_popular_course);
+    }
+
+    // ----------------------------
+    // 2. 인기 코스 RecyclerView 설정
+    // ----------------------------
+    private void setupPopularRecycler() {
+        rvPopular.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        popularAdapter = new PopularCourseAdapter(new ArrayList<>());
+        rvPopular.setAdapter(popularAdapter);
+
+        // 클릭 이벤트 예시
+        popularAdapter.setOnItemClickListener(item -> {
+            // TODO: 상세 페이지 이동
+            // Toast.makeText(getContext(), item.title, Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    // ----------------------------
+    // 3. 더미 데이터 주입
+    // ----------------------------
+    private void loadDummyPopularData() {
+        List<HomePopularCourseItem> dummy = new ArrayList<>();
+
+        dummy.add(new HomePopularCourseItem(
+                "대전 맛도리 빵집 투어",
+                "대전 유성구, 중구",
+                R.drawable.ic_edit
+        ));
+        dummy.add(new HomePopularCourseItem(
+                "대전 맛도리 빵집 투어",
+                "대전 유성구, 중구",
+                R.drawable.ic_edit
+        ));
+
+        dummy.add(new HomePopularCourseItem(
+                "성수 카페 투어",
+                "서울 성동구",
+                R.drawable.ic_go
+        ));
+
+        // Adapter에 데이터 전달
+        popularAdapter.updateList(dummy);
     }
 }
