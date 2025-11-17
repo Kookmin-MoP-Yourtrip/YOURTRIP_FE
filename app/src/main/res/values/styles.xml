@@ -18,6 +18,14 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <!-- 회색(gray150) 버튼 용-->
+    <style name="RoundedButton.gray" parent="BaseRoundedBox">
+        <item name="android:background">@drawable/bg_btn_gray150</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+    </style>
+
     <!-- ▶️ 단색 활성화 버튼 용-->
     <style name="ChangeButtonStyle" parent="BaseRoundedBox">
         <item name="android:background">@drawable/bg_btn_change</item>
