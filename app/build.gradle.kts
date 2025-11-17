@@ -66,5 +66,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    // 태그리스트
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
+
 
 }

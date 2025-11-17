@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="18dp"
+        android:paddingVertical="12dp">
+
+        <!-- 사진 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp">
+
+            <ImageView
+                android:id="@+id/imgThumbnail"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:background="@drawable/bg_box_round_12dp"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- 포크 수 태그 -->
+            <LinearLayout
+                android:id="@+id/forkCountContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="7dp"
+                android:paddingVertical="4dp"
+
+                android:background="@drawable/bg_tag"
+                android:backgroundTint="@color/white"
+                android:clipToPadding="false"
+
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginEnd="1dp"
+                    android:src="@drawable/ic_fork"
+                    android:background="@android:color/transparent" />
+
+                <TextView
+                    android:id="@+id/tv_forkCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+
+                    android:text="22"
+                    android:textSize="10sp"
+                    android:textColor="@color/gray_700"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- 코스 위치 -->
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="대전 유성구,  중구"
+                    android:textSize="14sp"
+                    android:textColor="@color/gray_550"
+                    android:maxLines="1"
+                    android:ellipsize="end"/>
+
+                <!--코스 제목 -->
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="대전 맛도리 빵집 투어 ✏️"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/gray_700"/>
+            </LinearLayout>
+
+            <!--태그 리스트 -->
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/tagContainer"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start"
+                app:alignItems="center"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+<!--    <?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.cardview.widget.CardView-->
+<!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_marginBottom="16dp"-->
+<!--app:cardCornerRadius="12dp"-->
+<!--app:cardUseCompatPadding="true"-->
+<!--app:cardElevation="2dp">-->
+
+<!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:padding="12dp">-->
+
+<!--    &lt;!&ndash; 대표 이미지 &ndash;&gt;-->
+<!--    <ImageView-->
+<!--        android:id="@+id/imgThumbnail"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="170dp"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        android:adjustViewBounds="true"-->
+<!--        android:background="@color/gray_100"-->
+
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+
+<!--    &lt;!&ndash; 좋아요 카운트 버블 &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:id="@+id/likeContainer"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="28dp"-->
+<!--        android:background="@drawable/bg_like_bubble"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:paddingHorizontal="8dp"-->
+<!--        android:gravity="center_vertical"-->
+
+<!--        app:layout_constraintTop_toTopOf="@id/imgThumbnail"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/imgThumbnail"-->
+<!--        android:layout_margin="8dp">-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="16dp"-->
+<!--            android:layout_height="16dp"-->
+<!--            android:src="@drawable/ic_like_filled"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvLikeCount"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="112"-->
+<!--            android:textSize="12sp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:layout_marginStart="4dp"/>-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; 지역명 &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/tvLocation"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="서울 용산구, 종로구"-->
+<!--        android:textColor="@color/gray_700"-->
+<!--        android:textSize="12sp"-->
+<!--        android:layout_marginTop="10dp"-->
+
+<!--        app:layout_constraintTop_toBottomOf="@id/imgThumbnail"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+
+<!--    &lt;!&ndash; 코스 제목 &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/tvTitle"-->
+<!--        android:lay-->

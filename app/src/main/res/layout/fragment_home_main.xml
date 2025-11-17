@@ -7,26 +7,39 @@
     android:background="#FFFFFF">
 
     <!-- 상단 바 홈 바로가기 - 스크롤 제외 -->
-    <LinearLayout
+
+    <ImageView
         android:id="@+id/topBar"
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
+        android:src="@drawable/logo"
+
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/logo"/>
+    <!-- 검색창 -->
+    <EditText
+        android:id="@+id/tvSearch"
+        style="@style/RoundedEditText.Default"
 
-    </LinearLayout>
+        android:text="장소, 테마, 코스 무엇이든 입력하세요!"
+        android:textColorHint="@color/gray_550"
+        android:drawableEnd="@drawable/ic_search"
+        app:layout_constraintTop_toBottomOf="@+id/topBar"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="16dp"/>
 
-    <!-- 스크롤 부분 -->
-    <ScrollView
+
+    <!-- 🔹 스크롤 가능한 컨텐츠 전체 영역 -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/homeScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/topBar"
+        android:fillViewport="true"
+
+        app:layout_constraintTop_toBottomOf="@id/tvSearch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -35,19 +48,70 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp">
 
-            <!-- 검색창 -->
-            <EditText
-                android:id="@+id/tvBorder"
-                style="@style/RoundedEditText.Default"
+            <!-- 🔹 요즘 뜨는 인기 코스 섹션 타이틀 -->
+            <TextView
+                android:id="@+id/tv_popular_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="요즘 뜨는 인기 코스"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingTop="20dp"
+                android:paddingBottom="8dp" />
 
-                android:text="장소, 테마, 코스 무엇이든 입력하세요!"
-                android:textColorHint="@color/gray_550"
+            <!-- 🔹 인기 코스 세로 리스트 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_popular_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_popular_course" />
 
-                android:drawableEnd="@drawable/ic_search"/>
+            <!-- 🔹 장소별 코스 타이틀 -->
+            <TextView
+                android:id="@+id/tv_location_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="추천 장소별 여행 코스"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingTop="24dp"
+                android:paddingBottom="8dp" />
+
+            <!-- 🔹 장소별 코스 가로 리스트 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_location_course"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_location" />
+
+            <!-- 🔹 테마별 인기 코스 태그 타이틀 -->
+            <TextView
+                android:id="@+id/tv_theme_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="테마별 인기 코스"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingTop="24dp"
+                android:paddingBottom="8dp" />
+
+            <!-- 🔹 테마 태그 리스트 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_theme_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_tag" />
 
         </LinearLayout>
-    </ScrollView>
+
+    </androidx.core.widget.NestedScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

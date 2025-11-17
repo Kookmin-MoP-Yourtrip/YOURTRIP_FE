@@ -3,10 +3,14 @@
     android:shape="rectangle">
 
     <!-- 둥근 모서리 -->
-    <corners android:radius="16dp" />
+    <corners android:radius="12dp" />
 
     <!-- 색상은 나중에 style에서 tint로 덮어쓰기 -->
-    <solid android:color="@android:color/white" />
+    <solid android:color="@color/gray_150" />
 
+    <!-- 선택적으로 외곽선 추가 (기본은 없음) -->
+    <stroke
+        android:width="2dp"
+        android:color="@android:color/transparent" />
 
 </shape>

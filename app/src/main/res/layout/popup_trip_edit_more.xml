@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/trip_more_menu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    android:background="@drawable/bg_box_round"
+    android:elevation="3dp"
+
+    android:layout_marginEnd="3dp"
+    android:layout_marginStart="3dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="5dp"
+
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="26dp">
+
+    <!-- 정보 수정하기 -->
+    <LinearLayout
+        android:id="@+id/btn_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:layout_marginVertical="10dp">
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_menu_upload"
+            android:backgroundTint="@android:color/transparent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:text="업로드하기"
+            android:textSize="14sp"
+            android:textColor="@color/gray_700"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+
+    <!-- 일행 초대하기 -->
+    <LinearLayout
+        android:id="@+id/btn_invite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:layout_marginVertical="10dp">
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_menu_meta"
+            android:backgroundTint="@android:color/transparent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:text="일행 초대하기"
+            android:textSize="14sp"
+            android:textColor="@color/gray_700"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+    <!-- 업로드하기 -->
+    <LinearLayout
+        android:id="@+id/btn_meta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@android:color/transparent"
+        android:layout_marginVertical="10dp">
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_menu_invite"
+            android:backgroundTint="@android:color/transparent"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:text="정보 수정하기"
+            android:textSize="14sp"
+            android:textColor="@color/gray_700"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+</LinearLayout>
+
