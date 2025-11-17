@@ -7,7 +7,8 @@
     android:paddingHorizontal="12dp"
     android:paddingVertical="6dp"
 
-    android:background="@drawable/bg_tag"
+    android:background="@drawable/bg_theme_tag_selector"
+    android:backgroundTint="@color/tag_skyblue"
     android:clipToPadding="false"
 
     android:text="지역명"

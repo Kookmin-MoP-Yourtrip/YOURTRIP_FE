@@ -6,7 +6,7 @@
     <corners android:radius="30dp" />
 
     <!-- 색상은 나중에 style에서 tint로 덮어쓰기 -->
-    <solid android:color="@color/gray_150" />
+    <solid android:color="@color/red" />
 
 
 </shape>

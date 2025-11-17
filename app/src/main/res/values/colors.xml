@@ -30,4 +30,8 @@
     <color name="tag_skyblue">#EAF4FF</color>
     <color name="tag_blue">#0073E6</color>
 
+    <color name="tag_yellow">#FCF9EA</color>
+    <color name="tag_pink">#FFF6F4</color>
+    <color name="tag_green">#EFFBF7</color>
+    <color name="tag_purple">#F3F4FF</color>
 </resources>
