@@ -50,7 +50,7 @@ public class PopularCourseAdapter extends RecyclerView.Adapter<PopularCourseAdap
     @Override
     public PopularCourseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.item_popular_course, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_upload_course, parent, false);
         return new ViewHolder(view);
     }
 

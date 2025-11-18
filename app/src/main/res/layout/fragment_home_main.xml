@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_popular_course" />
+                tools:listitem="@layout/item_upload_course" />
 
             <!-- 요즘 뜨는 인기 코스 _ 더보기 버튼 -->
             <android.widget.Button
@@ -116,7 +116,7 @@
                 android:textSize="16dp"
                 android:drawableEnd="@drawable/ic_go"
 
-                android:layout_marginBottom="48dp"
+                android:layout_marginBottom="40dp"
                 android:paddingHorizontal="22dp"
                 android:paddingVertical="10dp" />
 
@@ -147,14 +147,6 @@
                     android:background="@android:color/transparent"/>
             </LinearLayout>
 
-            <!--추천 장소별 여행 코스 _ 리스트 -->
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/rv_location_course"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:nestedScrollingEnabled="false"-->
-<!--                tools:listitem="@layout/item_location_course"-->
-<!--                android:layout_marginBottom="48dp"/>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,7 +154,8 @@
             android:backgroundTint="@color/gray_150"
             android:paddingHorizontal="10dp"
             android:paddingVertical="16dp"
-            android:layout_marginHorizontal="16dp">
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp">
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -343,7 +336,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-
+                android:layout_marginTop="40dp"
                 android:paddingVertical="9dp"
                 android:paddingHorizontal="18dp" >
 
@@ -364,23 +357,159 @@
                     android:background="@android:color/transparent"/>
             </LinearLayout>
 
-            <!-- 🔹 테마별 인기 코스 _ 리스트 -->
+            <!-- 🔹 테마별 인기 코스 _ 태그 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="18dp"
+                android:paddingBottom="6dp">
+
+                <!-- 🔹 힐링 -->
+                <TextView
+                    android:id="@+id/tag_healing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp"
+
+                    android:background="@drawable/bg_theme_tag_selector"
+                    android:text="힐링"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray_700"
+
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center" />
+
+                <!-- 🔹 액티비티 -->
+                <TextView
+                    android:id="@+id/tag_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp"
+
+                    android:background="@drawable/bg_theme_tag_selector"
+                    android:text="액티비티"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray_700"
+
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center" />
+
+                <!-- 🔹 맛집탐방 -->
+                <TextView
+                    android:id="@+id/tag_food"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp"
+
+                    android:background="@drawable/bg_theme_tag_selector"
+                    android:text="맛집탐방"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray_700"
+
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center" />
+
+                <!-- 🔹 감성 -->
+                <TextView
+                    android:id="@+id/tag_sensibility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp"
+
+                    android:background="@drawable/bg_theme_tag_selector"
+                    android:text="감성"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray_700"
+
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center" />
+
+                <!-- 🔹 문화/전시 -->
+                <TextView
+                    android:id="@+id/tag_culture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp"
+
+                    android:background="@drawable/bg_theme_tag_selector"
+                    android:text="문화/전시"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray_700"
+
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="18dp"
+                android:paddingBottom="10dp">
+                <!-- 🔹 자연 -->
+                <TextView
+                    android:id="@+id/tag_nature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp"
+
+                    android:background="@drawable/bg_theme_tag_selector"
+                    android:text="자연"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray_700"
+
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center" />
+
+                <!-- 🔹 쇼핑 -->
+                <TextView
+                    android:id="@+id/tag_shopping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp"
+
+                    android:background="@drawable/bg_theme_tag_selector"
+                    android:text="쇼핑"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray_700"
+
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <!-- 요즘 뜨는 인기 코스 _ 리스트  -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_theme_tags"
+                android:id="@+id/rv_theme_course"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_tag" />
+                tools:listitem="@layout/item_upload_course" />
 
             <!-- 테마별 인기 코스 _ 더보기 버튼 -->
             <android.widget.Button
                 android:id="@+id/btn_theme_course_more"
                 style="@style/RoundedButton.gray"
-                android:layout_width="180dp"
+                android:layout_width="195dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
 
-                android:text="인기 코스 더보기"
+                android:text="테마별 코스 더보기"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:drawableEnd="@drawable/ic_go"
@@ -389,6 +518,7 @@
                 android:paddingHorizontal="22dp"
                 android:paddingVertical="10dp" />
         </LinearLayout>
+
 
     </androidx.core.widget.NestedScrollView>
 
