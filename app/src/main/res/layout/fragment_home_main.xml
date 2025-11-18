@@ -146,13 +146,195 @@
             </LinearLayout>
 
             <!--추천 장소별 여행 코스 _ 리스트 -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_location_course"
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/rv_location_course"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:nestedScrollingEnabled="false"-->
+<!--                tools:listitem="@layout/item_location_course"-->
+<!--                android:layout_marginBottom="48dp"/>-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_box_round"
+            android:backgroundTint="@color/gray_150"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="16dp"
+            android:layout_marginHorizontal="16dp">
+
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_location_course"
-                android:layout_marginBottom="48dp"/>
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:background="@android:color/transparent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@android:color/transparent">
+                    <!-- 🔹 홍대 -->
+                    <FrameLayout
+                        android:id="@+id/location0"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_marginHorizontal="6dp"
+                        android:background="@drawable/bg_circle"
+                        android:clipToOutline="true">
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/location0"
+                            android:background="@drawable/bg_circle" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#33000000" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="홍대"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:background="@android:color/transparent"
+                                android:layout_gravity="center"/>
+                    </FrameLayout>
+
+
+                    <!-- 🔹 성수 -->
+                    <FrameLayout
+                        android:id="@+id/location1"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_marginHorizontal="6dp"
+                        android:background="@drawable/bg_circle"
+                        android:clipToOutline="true">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/location1"
+                            android:background="@drawable/bg_circle" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#33000000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="성수"
+                            android:background="@android:color/transparent"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="14sp" />
+                    </FrameLayout>
+
+
+                    <!-- 🔹 제주도 -->
+                    <FrameLayout
+                        android:id="@+id/location2"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_marginHorizontal="6dp"
+                        android:background="@drawable/bg_circle"
+                        android:clipToOutline="true">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/location2"
+                            android:background="@drawable/bg_circle" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#33000000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="제주도"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:background="@android:color/transparent"
+                            android:layout_gravity="center"/>
+
+                    </FrameLayout>
+
+
+                    <!-- 🔹 강릉 -->
+                    <FrameLayout
+                        android:id="@+id/location3"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_marginHorizontal="6dp"
+                        android:background="@drawable/bg_circle"
+                        android:clipToOutline="true">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/location3"
+                            android:background="@drawable/bg_circle" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#33000000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="강릉"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:background="@android:color/transparent"
+                            android:layout_gravity="center"/>
+                    </FrameLayout>
+
+
+                    <!-- 🔹 서촌 -->
+                    <FrameLayout
+                        android:id="@+id/location4"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_marginHorizontal="6dp"
+                        android:background="@drawable/bg_circle"
+                        android:clipToOutline="true">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/location4"
+                            android:background="@drawable/bg_circle" />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#33000000" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="서촌"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:background="@android:color/transparent"
+                            android:layout_gravity="center"/>
+                    </FrameLayout>
+
+                </LinearLayout></HorizontalScrollView></LinearLayout>
+
 
 
             <!-- 🔹 테마별 인기 코스 _ 타이틀 -->
