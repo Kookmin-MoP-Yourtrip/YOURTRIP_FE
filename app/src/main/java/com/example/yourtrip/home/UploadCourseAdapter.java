@@ -18,7 +18,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PopularCourseAdapter extends RecyclerView.Adapter<PopularCourseAdapter.ViewHolder> {
+public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapter.ViewHolder> {
 
     private List<HomePopularCourseItem> itemList = new ArrayList<>();
     private Context context;
@@ -35,7 +35,7 @@ public class PopularCourseAdapter extends RecyclerView.Adapter<PopularCourseAdap
     }
 
     // 생성자
-    public PopularCourseAdapter(List<HomePopularCourseItem> list) {
+    public UploadCourseAdapter(List<HomePopularCourseItem> list) {
         this.itemList = list;
     }
 
@@ -48,7 +48,7 @@ public class PopularCourseAdapter extends RecyclerView.Adapter<PopularCourseAdap
     // 1. viewHolder: item XML 안의 view를 꺼내와서 java에서 사용가능하도록 함
     @NonNull
     @Override
-    public PopularCourseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UploadCourseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_upload_course, parent, false);
         return new ViewHolder(view);
@@ -56,7 +56,7 @@ public class PopularCourseAdapter extends RecyclerView.Adapter<PopularCourseAdap
 
     // 2. onBindViewHolder: 실제 1개 데이터(item)를 XML에 연동
     @Override
-    public void onBindViewHolder(@NonNull PopularCourseAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UploadCourseAdapter.ViewHolder holder, int position) {
         HomePopularCourseItem item = itemList.get(position);
 
         // 이미지 (리소스)
