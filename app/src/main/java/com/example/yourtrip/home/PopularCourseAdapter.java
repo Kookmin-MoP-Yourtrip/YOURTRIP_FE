@@ -45,6 +45,7 @@ public class PopularCourseAdapter extends RecyclerView.Adapter<PopularCourseAdap
         notifyDataSetChanged();
     }
 
+    // 1. viewHolder: item XML 안의 view를 꺼내와서 java에서 사용가능하도록 함
     @NonNull
     @Override
     public PopularCourseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -53,6 +54,7 @@ public class PopularCourseAdapter extends RecyclerView.Adapter<PopularCourseAdap
         return new ViewHolder(view);
     }
 
+    // 2. onBindViewHolder: 실제 1개 데이터(item)를 XML에 연동
     @Override
     public void onBindViewHolder(@NonNull PopularCourseAdapter.ViewHolder holder, int position) {
         HomePopularCourseItem item = itemList.get(position);
@@ -74,7 +76,7 @@ public class PopularCourseAdapter extends RecyclerView.Adapter<PopularCourseAdap
         for (String tag : item.tags) {
 
             View tagView = LayoutInflater.from(context)
-                    .inflate(R.layout.item_tag, holder.tagContainer, false);
+                    .inflate(R.layout.item_tag_for_list, holder.tagContainer, false);
 
             TextView tv = tagView.findViewById(R.id.tv_theme_tag);
             tv.setText(tag);
@@ -99,6 +101,7 @@ public class PopularCourseAdapter extends RecyclerView.Adapter<PopularCourseAdap
         });
     }
 
+    // 3. getItemCount: 몇개를 렌더링 할지
     @Override
     public int getItemCount() {
         return itemList != null ? itemList.size() : 0;

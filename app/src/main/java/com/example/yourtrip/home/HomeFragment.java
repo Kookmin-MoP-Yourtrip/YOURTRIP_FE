@@ -88,7 +88,33 @@ public class HomeFragment extends Fragment {
 
         ));
 
+        dummy.add(new HomePopularCourseItem(
+                "여수 가족 여행 루트",
+                "전남 여수시",
+                R.drawable.dummy4,
+                List.of("가족", "힐링")
+        ));
+
+        dummy.add(new HomePopularCourseItem(
+                "부산 야경 드라이브 코스",
+                "부산 해운대구",
+                R.drawable.dummy5,
+                List.of("자차", "가성비")
+        ));
+
+        dummy.add(new HomePopularCourseItem(
+                "부산 야경 드라이브 코스",
+                "부산 해운대구",
+                R.drawable.dummy5,
+                List.of("자차", "가성비")
+        ));
+
+        // ⭐ 여기서 5개로 제한해서 Adapter에 전달
+        List<HomePopularCourseItem> topFive = dummy.size() > 5
+                ? dummy.subList(0, 5)
+                : dummy;
+
         // Adapter에 데이터 전달
-        popularAdapter.updateList(dummy);
+        popularAdapter.updateList(topFive);
     }
 }
