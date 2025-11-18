@@ -48,6 +48,8 @@
             app:layout_constraintEnd_toEndOf="parent" />
     </LinearLayout>
 
+
+
     <!-- 🔹 스크롤 가능한 컨텐츠 전체 영역 -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollContainer"
@@ -335,8 +337,6 @@
 
                 </LinearLayout></HorizontalScrollView></LinearLayout>
 
-
-
             <!-- 🔹 테마별 인기 코스 _ 타이틀 -->
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -385,14 +385,12 @@
                 android:textSize="16dp"
                 android:drawableEnd="@drawable/ic_go"
 
-                android:layout_marginBottom="48dp"
+                android:layout_marginBottom="220dp"
                 android:paddingHorizontal="22dp"
                 android:paddingVertical="10dp" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
