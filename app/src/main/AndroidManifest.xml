@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".YourTripApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -50,6 +51,8 @@
 <!--        나의 여행-->
         <activity android:name=".mytrip.CreateCourseBasicActivity"
             android:exported="false"/>
+
+
     </application>
 
 </manifest>

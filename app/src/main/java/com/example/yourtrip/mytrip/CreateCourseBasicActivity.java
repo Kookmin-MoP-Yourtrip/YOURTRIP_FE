@@ -225,7 +225,15 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
                             "입력값 오류", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    Log.e("MyCourseCreate", "기타 에러 코드: " + response.code());
+                    try {
+                        String errorBody = response.errorBody() != null
+                                ? response.errorBody().string()
+                                : "null";
+                        Log.e("MyCourseCreate", "기타 에러 코드: " + response.code()
+                                + ", errorBody = " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
