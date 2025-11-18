@@ -1,4 +1,4 @@
-package com.example.yourtrip.adapter;
+package com.example.yourtrip.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
