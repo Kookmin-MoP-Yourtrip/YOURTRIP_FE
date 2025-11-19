@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 일차를 가로로 스크롤할 수 있는 RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTripDays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp" />
+
+    <!-- 선택된 일차에 대한 세부 정보 입력 칸 -->
+    <LinearLayout
+        android:id="@+id/detailInputContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="8dp">
+
+        <!-- 예시로 일차 정보 입력 칸(추후 동적으로 추가될 내용) -->
+        <EditText
+            android:id="@+id/etPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="장소 입력"
+            android:padding="12dp"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="세부 정보 입력"
+            android:padding="12dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

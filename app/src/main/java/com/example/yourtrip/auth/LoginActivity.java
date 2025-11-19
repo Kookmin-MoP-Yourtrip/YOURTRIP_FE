@@ -117,6 +117,10 @@ public class LoginActivity extends AppCompatActivity {
                                 .putString("accessToken", token)
                                 .apply();
 
+                        // 저장된 토큰 Logcat 확인
+                        String savedToken = prefs.getString("accessToken", "NULL");
+                        Log.d("LOGIN_TOKEN", "Saved Token: " + savedToken);
+
                         Toast.makeText(LoginActivity.this, "로그인 성공!", Toast.LENGTH_SHORT).show();
 
                         // 메인 페이지로 이동

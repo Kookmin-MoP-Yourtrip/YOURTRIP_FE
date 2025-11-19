@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
+
+<!-- 상단바 포함 -->
+<include
+    android:id="@+id/top_bar"
+    layout="@layout/view_common_top_bar" />
+
+
+<!-- 나머지 콘텐츠 레이아웃 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- item_trip_card 레이아웃 -->
+        <include
+            android:id="@+id/item_trip_card"
+            layout="@layout/item_trip_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!-- 프래그먼트를 추가할 공간 (하단에 배치) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"> <!-- 고정된 높이 설정 -->
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom" />  <!-- 화면 하단에 배치 -->
+    </LinearLayout>
+
+</LinearLayout>

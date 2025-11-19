@@ -45,20 +45,24 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
 <!--    메뉴 펼칠 때 화면 어둡게-->
+    <!-- 기본: gone or invisible -->
+
+    <!-- 플로팅 버튼 (+) -->
     <View
         android:id="@+id/fab_dim"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#45000000"
 
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
 
-        android:visibility="visible"/> <!-- 기본: gone or invisible -->
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <!-- 플로팅 버튼 (+) -->
     <ImageView
         android:id="@+id/btn_add_trip"
         android:layout_width="82dp"
