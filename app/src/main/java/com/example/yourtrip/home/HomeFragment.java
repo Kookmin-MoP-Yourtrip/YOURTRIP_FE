@@ -41,6 +41,24 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_main, container, false);
 
         initViews(view);       // 뷰 초기화
+        // 🔹 검색창 클릭 → 검색 화면으로 이동
+        EditText tvSearch = view.findViewById(R.id.tvSearch);
+
+        tvSearch.setFocusable(false);   // 클릭 시 키보드가 뜨지 않도록
+        tvSearch.setClickable(true);
+
+        tvSearch.setOnClickListener(v -> {
+            Fragment fragment = new HomeSearchFragment();
+
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+
         setupPopularRecycler(); // 인기 코스 RecyclerView 셋업
         setupThemeRecycler(); // 테마 코스 RecyclerView 셋업
 
@@ -52,6 +70,7 @@ public class HomeFragment extends Fragment {
         setupTagClickListeners(); // 태그 클릭 이벤트 적용
 
         tagHealing.performClick();
+
 
         return view;
     }
