@@ -28,10 +28,15 @@
 
     <!--# 태그-->
     <color name="tag_skyblue">#EAF4FF</color>
+    <color name="tag_skyblue_active">#CDE5FF</color>
     <color name="tag_blue">#0073E6</color>
 
     <color name="tag_yellow">#FCF9EA</color>
+    <color name="tag_yellow_active">#FDF2BA</color>
     <color name="tag_pink">#FFF6F4</color>
+    <color name="tag_pink_active">#FFE9E3</color>
     <color name="tag_green">#EFFBF7</color>
+    <color name="tag_green_active">#BAF9E4</color>
     <color name="tag_purple">#F3F4FF</color>
+    <color name="tag_purple_active">#DCDFFF</color>
 </resources>

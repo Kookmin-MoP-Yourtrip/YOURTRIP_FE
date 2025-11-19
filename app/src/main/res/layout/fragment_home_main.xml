@@ -372,7 +372,7 @@
                     android:id="@+id/tag_healing"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="힐링" />
 
                 <!-- 🔹 액티비티 -->
@@ -380,7 +380,7 @@
                     android:id="@+id/tag_activity"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="액티비티" />
 
                 <!-- 🔹 맛집탐방 -->
@@ -388,7 +388,7 @@
                     android:id="@+id/tag_food"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="맛집탐방" />
 
                 <!-- 🔹 감성 -->
@@ -396,7 +396,7 @@
                     android:id="@+id/tag_sensibility"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="감성" />
 
                 <!-- 🔹 문화/전시 -->
@@ -404,7 +404,7 @@
                     android:id="@+id/tag_culture"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="문화/전시" />
             </LinearLayout>
             <LinearLayout
@@ -419,14 +419,14 @@
                     android:id="@+id/tag_nature"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="자연" />
 
                 <TextView
                     android:id="@+id/tag_shopping"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="쇼핑" />
 
             </LinearLayout>
