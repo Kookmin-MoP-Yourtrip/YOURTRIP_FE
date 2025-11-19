@@ -9,11 +9,12 @@ public class HomePopularCourseItem {
     public int likeCount;
     public List<String> tags;
 
-    public HomePopularCourseItem(String title, String location, int imageRes) {
+
+    public HomePopularCourseItem(String title, String location, int imageRes, List<String> tags) {
         this.title = title;
         this.location = location;
         this.imageRes = imageRes;
         this.likeCount = 0;
-        this.tags = List.of("맛집탐방", "쇼핑"); // 기본 테스트용
+        this.tags = tags; // 기본 테스트용
     }
 }

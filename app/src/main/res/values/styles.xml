@@ -78,6 +78,15 @@
         <item name="android:paddingEnd">16dp</item>
     </style>
 
+    <style name="ThemeTag">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_theme_tag_selector</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
 
 <!--    margin 공통-->
     <style name="FormBlock">
