@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/trip_more_menu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    android:background="@drawable/bg_box_round"
+    android:elevation="3dp"
+
+    android:layout_marginEnd="3dp"
+    android:layout_marginStart="3dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="5dp"
+
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="26dp">
+
+    <!-- 정보 수정하기 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:text="최신순"
+        android:textSize="14sp"
+        android:textColor="@color/gray_700"
+        android:background="@android:color/transparent"/>
+
+    <!-- 정보 수정하기 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:text="인기순"
+        android:textSize="14sp"
+        android:textColor="@color/gray_700"
+        android:background="@android:color/transparent"/>
+
+</LinearLayout>
+

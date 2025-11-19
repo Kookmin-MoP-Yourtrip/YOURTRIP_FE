@@ -8,5 +8,4 @@
     <!-- 색상은 나중에 style에서 tint로 덮어쓰기 -->
     <solid android:color="@android:color/white" />
 
-
 </shape>

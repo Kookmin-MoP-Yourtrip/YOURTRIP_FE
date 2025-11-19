@@ -78,14 +78,41 @@
         <item name="android:paddingEnd">16dp</item>
     </style>
 
-    <style name="ThemeTag">
+
+    <!-- 태그 -->
+    <style name="Tag">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/bg_theme_tag_selector</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:textStyle">bold</item>
+
         <item name="android:textColor">@color/gray_700</item>
         <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="Tag.Movetype" parent="Tag">
+        <item name="android:background">@drawable/bg_tag_movetype_selector</item>
+    </style>
+
+    <style name="Tag.Partner" parent="Tag">
+        <item name="android:background">@drawable/bg_tag_partner_selector</item>
+    </style>
+
+    <style name="Tag.Theme" parent="Tag">
+        <item name="android:background">@drawable/bg_tag_theme_selector</item>
+    </style>
+
+
+    <style name="Tag.Period" parent="Tag">
+        <item name="android:background">@drawable/bg_tag_period_selector</item>
+    </style>
+
+    <style name="Tag.Budget" parent="Tag">
+        <item name="android:background">@drawable/bg_tag_budget_selector</item>
+    </style>
+
+    <!-- 홈 한정 테마 태그 -->
+    <style name="Tag.Home" parent="Tag">
+        <item name="android:background">@drawable/bg_tag_theme_home_selector</item>
     </style>
 
 <!--    margin 공통-->

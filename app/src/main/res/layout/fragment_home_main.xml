@@ -32,20 +32,36 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- 검색창 -->
-        <EditText
-            android:id="@+id/tvSearch"
-            style="@style/RoundedEditText.Default"
-
-            android:hint="장소, 테마, 코스 무엇이든 입력하세요!"
-            android:textColorHint="@color/gray_550"
-            android:drawableEnd="@drawable/ic_search"
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="9dp"
+            android:paddingEnd="10dp"
+            android:layout_marginBottom="8dp"
 
             app:layout_constraintTop_toBottomOf="@+id/topBar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/tvSearch"
+                style="@style/RoundedEditText.Default"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="장소, 테마, 코스 무엇이든 입력하세요!"
+                android:textColorHint="@color/gray_550" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+
+                android:background="@android:color/transparent"
+
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_search"
+                android:padding="8dp" />
+        </RelativeLayout>
     </LinearLayout>
 
 
@@ -372,7 +388,7 @@
                     android:id="@+id/tag_healing"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="힐링" />
 
                 <!-- 🔹 액티비티 -->
@@ -380,7 +396,7 @@
                     android:id="@+id/tag_activity"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="액티비티" />
 
                 <!-- 🔹 맛집탐방 -->
@@ -388,7 +404,7 @@
                     android:id="@+id/tag_food"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="맛집탐방" />
 
                 <!-- 🔹 감성 -->
@@ -396,7 +412,7 @@
                     android:id="@+id/tag_sensibility"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="감성" />
 
                 <!-- 🔹 문화/전시 -->
@@ -404,7 +420,7 @@
                     android:id="@+id/tag_culture"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="문화/전시" />
             </LinearLayout>
             <LinearLayout
@@ -419,14 +435,14 @@
                     android:id="@+id/tag_nature"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="자연" />
 
                 <TextView
                     android:id="@+id/tag_shopping"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    style="@style/ThemeTag"
+                    style="@style/Tag.Home"
                     android:text="쇼핑" />
 
             </LinearLayout>
