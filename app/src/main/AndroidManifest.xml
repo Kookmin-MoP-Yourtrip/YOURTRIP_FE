@@ -51,6 +51,7 @@
 <!--        나의 여행-->
         <activity android:name=".mytrip.CreateCourseBasicActivity"
             android:exported="false"/>
+        <activity android:name=".mytrip.CreateCourseDetailActivity"/>
 
 
     </application>

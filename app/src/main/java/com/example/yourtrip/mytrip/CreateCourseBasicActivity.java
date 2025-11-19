@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -158,32 +159,61 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 
     // 다음 버튼 클릭 이벤트
     private void setNextButton() {
-        btnNext.setOnClickListener(v -> submitCourse());
+        btnNext.setOnClickListener(v -> {
+            // 입력값을 받아오기
+            String title = etCourseTitle.getText().toString().trim();
+            String location = etLocation.getText().toString().trim();
+            String startDate = etStartDate.getText().toString().trim();
+            String endDate = etEndDate.getText().toString().trim();
+
+            // 간단 유효성 검사
+            if (title.isEmpty() || location.isEmpty() || startDate.isEmpty() || endDate.isEmpty()) {
+                Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!isValidDateRange(startDate, endDate)) {
+                Toast.makeText(this, "시작일은 종료일 이후일 수 없습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // 요청 객체 생성
+            MyCourseCreateRequest request = new MyCourseCreateRequest(title, location, startDate, endDate);
+
+            // API 요청 보내기
+            submitCourse(request);
+
+            // Intent로 데이터를 넘기기 (CreateCourseDetailActivity로)
+            Intent intent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
+            intent.putExtra("courseTitle", title);
+            intent.putExtra("location", location);
+            intent.putExtra("startDate", startDate);
+            intent.putExtra("endDate", endDate);
+
+            // 로그로 Intent 데이터를 확인
+            Log.d(TAG, "Intent data - courseTitle: " + title);
+            Log.d(TAG, "Intent data - location: " + location);
+            Log.d(TAG, "Intent data - startDate: " + startDate);
+            Log.d(TAG, "Intent data - endDate: " + endDate);
+
+
+            // 다음 화면으로 이동
+            startActivity(intent);
+        });
     }
 
 
     // API 요청
-    private void submitCourse() {
+    private void submitCourse(MyCourseCreateRequest request) {
 
-        String title = etCourseTitle.getText().toString().trim();
-        String location = etLocation.getText().toString().trim();
-        String start = etStartDate.getText().toString().trim();
-        String end = etEndDate.getText().toString().trim();
-
-        // 간단 유효성 검사
-        if (title.isEmpty() || location.isEmpty() || start.isEmpty() || end.isEmpty()) {
-            Toast.makeText(this, "모든 항목을 입력해주세요.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!isValidDateRange(start, end)) {
-            Toast.makeText(this, "시작일은 종료일 이후일 수 없습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // 요청 객체 생성
-        MyCourseCreateRequest request =
-                new MyCourseCreateRequest(title, location, start, end);
+//        String title = etCourseTitle.getText().toString().trim();
+//        String location = etLocation.getText().toString().trim();
+//        String startDate = etStartDate.getText().toString().trim();
+//        String endDate = etEndDate.getText().toString().trim();
+//
+//        // 요청 객체 생성
+//        MyCourseCreateRequest request =
+//                new MyCourseCreateRequest(title, location, startDate, endDate);
 
         btnNext.setEnabled(false);
 
@@ -204,11 +234,6 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
                     Toast.makeText(CreateCourseBasicActivity.this,
                             "코스 생성 완료!", Toast.LENGTH_SHORT).show();
 
-                    /*
-                    // TODO: 나중에 다음 화면으로 이동 예정
-                    Intent intent = new Intent(CreateCourseBasicActivity.this, CreateCourseMapActivity.class);
-                    startActivity(intent);
-                    */
 
                 } else if (response.code() == 400) {
                     // 서버에서 준 에러 메시지 파싱
