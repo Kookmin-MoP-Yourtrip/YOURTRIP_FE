@@ -111,13 +111,13 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/tag.walking"
+                    android:id="@+id/tag_search_walking"
                     style="@style/Tag.Movetype"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
                     android:text="뚜벅이" />
                 <TextView
-                    android:id="@+id/tag.car"
+                    android:id="@+id/tag_search_car"
                     style="@style/Tag.Movetype"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
@@ -156,28 +156,28 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tag.solo"
+                    android:id="@+id/tag_search_solo"
                     style="@style/Tag.Partner"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
                     android:text="혼자" />
 
                 <TextView
-                    android:id="@+id/tag.couple"
+                    android:id="@+id/tag_search_couple"
                     style="@style/Tag.Partner"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
                     android:text="연인" />
 
                 <TextView
-                    android:id="@+id/tag.friends"
+                    android:id="@+id/tag_search_friends"
                     style="@style/Tag.Partner"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
                     android:text="친구" />
 
                 <TextView
-                    android:id="@+id/tag.family"
+                    android:id="@+id/tag_search_family"
                     style="@style/Tag.Partner"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
@@ -217,28 +217,28 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tag.one_day"
+                android:id="@+id/tag_search_one_day"
                 style="@style/Tag.Period"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:text="하루" />
 
             <TextView
-                android:id="@+id/tag.one_night_two_days"
+                android:id="@+id/tag_search_one_night_two_days"
                 style="@style/Tag.Period"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:text="1박 2일" />
 
             <TextView
-                android:id="@+id/tag.weekend"
+                android:id="@+id/tag_search_weekend"
                 style="@style/Tag.Period"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:text="주말" />
 
             <TextView
-                android:id="@+id/tag.long_term"
+                android:id="@+id/tag_search_long_term"
                 style="@style/Tag.Period"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
@@ -278,28 +278,28 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tag.healing"
+                android:id="@+id/tag_search_healing"
                 style="@style/Tag.Theme"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:text="힐링" />
 
             <TextView
-                android:id="@+id/tag.activity"
+                android:id="@+id/tag_search_activity"
                 style="@style/Tag.Theme"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:text="액티비티" />
 
             <TextView
-                android:id="@+id/tag.food_tour"
+                android:id="@+id/tag_search_food_tour"
                 style="@style/Tag.Theme"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:text="맛집탐방" />
 
             <TextView
-                android:id="@+id/tag.emotional"
+                android:id="@+id/tag_search_emotional"
                 style="@style/Tag.Theme"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
@@ -313,21 +313,21 @@
             android:layout_marginTop="10dp">
 
             <TextView
-                android:id="@+id/tag.culture_exhibition"
+                android:id="@+id/tag_search_culture_exhibition"
                 style="@style/Tag.Theme"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:text="문화/전시" />
 
             <TextView
-                android:id="@+id/tag.nature"
+                android:id="@+id/tag_search_nature"
                 style="@style/Tag.Theme"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
                 android:text="자연" />
 
             <TextView
-                android:id="@+id/tag.shopping"
+                android:id="@+id/tag_search_shopping"
                 style="@style/Tag.Theme"
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp"
@@ -366,21 +366,21 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tag.budget"
+                    android:id="@+id/tag_search_budget"
                     style="@style/Tag.Budget"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
                     android:text="가성비" />
 
                 <TextView
-                    android:id="@+id/tag.normal"
+                    android:id="@+id/tag_search_normal"
                     style="@style/Tag.Budget"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
                     android:text="보통" />
 
                 <TextView
-                    android:id="@+id/tag.premium"
+                    android:id="@+id/tag_search_premium"
                     style="@style/Tag.Budget"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
