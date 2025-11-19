@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
+
+<!-- 상단바 포함 -->
+<include
+    android:id="@+id/top_bar"
+    layout="@layout/view_common_top_bar" />
+
+
+<!-- 나머지 콘텐츠 레이아웃 -->
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
+    <!-- item_trip_card 레이아웃 -->
+    <include
+        android:id="@+id/item_trip_card"
+        layout="@layout/item_trip_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="나의 코스 생성 디테일 페이지"
-        android:textSize="30sp"/>
+        android:layout_marginTop="15dp" />
 
-    <TextView
-        android:id="@+id/tvCourseTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Course Title"
-        android:textSize="20sp"/>
-    <!-- 여기 추가할 UI 요소들 -->
+
+</LinearLayout>
 </LinearLayout>

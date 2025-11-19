@@ -206,20 +206,12 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
     // API 요청
     private void submitCourse(MyCourseCreateRequest request) {
 
-//        String title = etCourseTitle.getText().toString().trim();
-//        String location = etLocation.getText().toString().trim();
-//        String startDate = etStartDate.getText().toString().trim();
-//        String endDate = etEndDate.getText().toString().trim();
-//
-//        // 요청 객체 생성
-//        MyCourseCreateRequest request =
-//                new MyCourseCreateRequest(title, location, startDate, endDate);
-
         btnNext.setEnabled(false);
 
         apiService.createMyCourse(request).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<ResponseBody>
+ call, Response<ResponseBody> response) {
                 btnNext.setEnabled(true);
 
                 if (response.isSuccessful()) {
