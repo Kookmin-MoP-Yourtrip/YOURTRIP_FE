@@ -18,6 +18,7 @@ import com.example.yourtrip.R;
 import com.example.yourtrip.model.HomeCourseItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -321,43 +322,65 @@ public class HomeFragment extends Fragment {
     private void loadAllDummyCourseData() {
         allCourseDummyList = new ArrayList<>();
 
-        allCourseDummyList.add(new HomeCourseItem(
-                "대전 맛도리 빵집 투어",
-                "대전 유성구, 중구",
-                R.drawable.dummy1,
-                List.of("자차", "쇼핑", "힐링")
-        ));
+        allCourseDummyList.add(new HomeCourseItem("홍대 카페 투어", "서울 마포구", R.drawable.dummy2,
+                Arrays.asList("맛집탐방", "친구", "주말")));
 
-        allCourseDummyList.add(new HomeCourseItem(
-                "춘천 감성 카페 투어",
-                "강원 춘천시",
-                R.drawable.dummy3,
-                List.of("감성", "하루", "힐링")
-        ));
+        allCourseDummyList.add(new HomeCourseItem("부산 힐링 여행", "부산 해운대구", R.drawable.dummy3,
+                Arrays.asList("힐링", "장기", "가족")));
 
-        allCourseDummyList.add(new HomeCourseItem(
-                "성수 카페 투어",
-                "서울 성동구",
-                R.drawable.dummy2,
-                List.of("혼자", "쇼핑", "프리미엄")
-        ));
+        allCourseDummyList.add(new HomeCourseItem("강릉 바다 드라이브", "강원 강릉시", R.drawable.dummy4,
+                Arrays.asList("자차", "연인", "자연", "1박 2일")));
 
-        allCourseDummyList.add(new HomeCourseItem(
-                "여수 가족 여행 루트",
-                "전남 여수시",
-                R.drawable.dummy4,
-                List.of("가족", "힐링")
-        ));
+        allCourseDummyList.add(new HomeCourseItem("제주 감성 사진 스팟 투어", "제주 제주시", R.drawable.dummy5,
+                Arrays.asList("감성", "하루", "친구")));
 
-        allCourseDummyList.add(new HomeCourseItem(
-                "부산 야경 드라이브 코스",
-                "부산 해운대구",
-                R.drawable.dummy5,
-                List.of("자차", "가성비")
-        ));
+        allCourseDummyList.add(new HomeCourseItem("서울 숲 산책 힐링 코스", "서울 성동구", R.drawable.dummy4,
+                Arrays.asList("힐링", "혼자", "하루")));
 
-        // 필요한 만큼 계속 추가
+        allCourseDummyList.add(new HomeCourseItem("전주 한옥마을 맛집투어", "전북 전주시", R.drawable.dummy1,
+                Arrays.asList("맛집탐방", "가성비", "주말")));
+
+        allCourseDummyList.add(new HomeCourseItem("대전 문화예술 전시 투어", "대전 서구", R.drawable.dummy2,
+                Arrays.asList("문화/전시", "혼자", "하루")));
+
+        allCourseDummyList.add(new HomeCourseItem("인천 소래습지 자연 여행", "인천 남동구", R.drawable.dummy3,
+                Arrays.asList("자연", "가족", "하루")));
+
+        allCourseDummyList.add(new HomeCourseItem("속초 액티비티 체험", "강원 속초시", R.drawable.dummy4,
+                Arrays.asList("액티비티", "친구", "1박 2일")));
+
+        allCourseDummyList.add(new HomeCourseItem("부천 쇼핑 데이트 코스", "경기 부천시", R.drawable.dummy5,
+                Arrays.asList("쇼핑", "연인", "하루")));
+
+        allCourseDummyList.add(new HomeCourseItem("광주 힐링 사색 여행", "광주 동구", R.drawable.dummy3,
+                Arrays.asList("힐링", "혼자", "가성비")));
+
+        allCourseDummyList.add(new HomeCourseItem("울산 대왕암 해안 산책", "울산 동구", R.drawable.dummy1,
+                Arrays.asList("자연", "연인", "하루")));
+
+        allCourseDummyList.add(new HomeCourseItem("대구 근교 카페 투어", "대구 수성구", R.drawable.dummy2,
+                Arrays.asList("감성", "친구", "주말")));
+
+        allCourseDummyList.add(new HomeCourseItem("여수 낭만 야경 여행", "전남 여수시", R.drawable.dummy3,
+                Arrays.asList("감성", "연인", "1박 2일", "프리미엄")));
+
+        allCourseDummyList.add(new HomeCourseItem("제주 액티비티 종합 코스", "제주 서귀포시", R.drawable.dummy4,
+                Arrays.asList("액티비티", "친구", "장기")));
+
+        allCourseDummyList.add(new HomeCourseItem("안산 호수공원 산책", "경기 안산시", R.drawable.dummy5,
+                Arrays.asList("힐링", "가족", "하루")));
+
+        allCourseDummyList.add(new HomeCourseItem("포항 바다 감성 드라이브", "경북 포항시", R.drawable.dummy5,
+                Arrays.asList("자차", "감성", "주말")));
+
+        allCourseDummyList.add(new HomeCourseItem("순천 국가정원 자연 힐링", "전남 순천시", R.drawable.dummy1,
+                Arrays.asList("자연", "가족", "하루")));
+
+        allCourseDummyList.add(new HomeCourseItem("서울 종로 문화유산 투어", "서울 종로구", R.drawable.dummy2,
+                Arrays.asList("문화/전시", "혼자", "하루")));
     }
+
+
 
 }
 
