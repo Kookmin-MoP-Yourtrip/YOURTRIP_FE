@@ -54,28 +54,28 @@
     </RelativeLayout>
 
 
-<!--    &lt;!&ndash; 🔹 태그 리스트 + 정렬 버튼 &ndash;&gt;-->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/searchFilterArea"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:paddingHorizontal="16dp"-->
-<!--        android:paddingVertical="12dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/searchContainer"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent">-->
+    <!-- 🔹 태그 리스트 + 정렬 버튼 -->
+    <LinearLayout
+        android:id="@+id/searchFilterArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/searchContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-<!--        &lt;!&ndash; 태그리스트 &ndash;&gt;-->
-<!--        <HorizontalScrollView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
-<!--            <LinearLayout-->
-<!--                android:id="@+id/tagListContainer"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="horizontal" />-->
-<!--        </HorizontalScrollView>-->
+        <!-- 태그리스트 -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/tagListContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
 
 <!--        <TextView-->
 <!--            android:id="@+id/tag.walking"-->
@@ -84,7 +84,7 @@
 <!--            android:paddingVertical="8dp"-->
 <!--            android:text="정렬" />-->
 
-<!--    </LinearLayout>-->
+    </LinearLayout>
 
     <!-- 검색 결과 리스트 -->
     <androidx.recyclerview.widget.RecyclerView
