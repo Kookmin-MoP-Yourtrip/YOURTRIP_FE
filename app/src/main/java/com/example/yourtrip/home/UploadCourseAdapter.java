@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
 import com.example.yourtrip.commonUtil.TagColorManager;
-import com.example.yourtrip.model.HomePopularCourseItem;
+import com.example.yourtrip.model.HomeCourseItem;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
@@ -20,12 +20,12 @@ import java.util.List;
 
 public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapter.ViewHolder> {
 
-    private List<HomePopularCourseItem> itemList = new ArrayList<>();
+    private List<HomeCourseItem> itemList = new ArrayList<>();
     private Context context;
 
     // 클릭 이벤트 인터페이스
     public interface OnItemClickListener {
-        void onClick(HomePopularCourseItem item);
+        void onClick(HomeCourseItem item);
     }
 
     private OnItemClickListener listener;
@@ -35,12 +35,12 @@ public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapte
     }
 
     // 생성자
-    public UploadCourseAdapter(List<HomePopularCourseItem> list) {
+    public UploadCourseAdapter(List<HomeCourseItem> list) {
         this.itemList = list;
     }
 
     // 리스트 갱신
-    public void updateList(List<HomePopularCourseItem> newList) {
+    public void updateList(List<HomeCourseItem> newList) {
         this.itemList = newList;
         notifyDataSetChanged();
     }
@@ -57,7 +57,7 @@ public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapte
     // 2. onBindViewHolder: 실제 1개 데이터(item)를 XML에 연동
     @Override
     public void onBindViewHolder(@NonNull UploadCourseAdapter.ViewHolder holder, int position) {
-        HomePopularCourseItem item = itemList.get(position);
+        HomeCourseItem item = itemList.get(position);
 
         // 이미지 (리소스)
         holder.imgThumbnail.setImageResource(item.imageRes);

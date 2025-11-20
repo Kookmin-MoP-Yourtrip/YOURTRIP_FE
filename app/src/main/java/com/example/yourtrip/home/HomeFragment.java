@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
-import com.example.yourtrip.model.HomePopularCourseItem;
+import com.example.yourtrip.model.HomeCourseItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView rvThemeCourse;
     private UploadCourseAdapter popularAdapter;
     private UploadCourseAdapter themeAdapter;
-    private List<HomePopularCourseItem> allCourseDummyList = new ArrayList<>();
+    private List<HomeCourseItem> allCourseDummyList = new ArrayList<>();
 
 
     // 1. onCreateView(): 화면 XML 초기화 -
@@ -135,16 +135,16 @@ public class HomeFragment extends Fragment {
     // 태그별 코스 필터링 함수 (추후 구현 - 더미로 확인)
     private void filterCourseByTag(String tag) {
 
-        List<HomePopularCourseItem> matched = new ArrayList<>();
+        List<HomeCourseItem> matched = new ArrayList<>();
 
-        for (HomePopularCourseItem item : allCourseDummyList) {
+        for (HomeCourseItem item : allCourseDummyList) {
             if (item.tags.contains(tag)) {
                 matched.add(item);
             }
         }
 
         // 인기순 상위 5개만
-        List<HomePopularCourseItem> topFive =
+        List<HomeCourseItem> topFive =
                 matched.size() > 5 ? matched.subList(0, 5) : matched;
 
         themeAdapter.updateList(topFive);
@@ -206,22 +206,22 @@ public class HomeFragment extends Fragment {
 
     // 인기순 코스 더미 데이터 주입
     private void loadDummyPopularData() {
-        List<HomePopularCourseItem> dummy = new ArrayList<>();
+        List<HomeCourseItem> dummy = new ArrayList<>();
 
-        dummy.add(new HomePopularCourseItem(
+        dummy.add(new HomeCourseItem(
                 "대전 맛도리 빵집 투어",
                 "대전 유성구, 중구",
                 R.drawable.dummy1,
                 List.of("자차", "쇼핑")
         ));
-        dummy.add(new HomePopularCourseItem(
+        dummy.add(new HomeCourseItem(
                 "춘천 감성 카페 투어",
                 "강원 춘천시",
                 R.drawable.dummy3,
                 List.of("감성", "하루")
         ));
 
-        dummy.add(new HomePopularCourseItem(
+        dummy.add(new HomeCourseItem(
                 "성수 카페 투어",
                 "서울 성동구",
                 R.drawable.dummy2,
@@ -229,21 +229,21 @@ public class HomeFragment extends Fragment {
 
         ));
 
-        dummy.add(new HomePopularCourseItem(
+        dummy.add(new HomeCourseItem(
                 "여수 가족 여행 루트",
                 "전남 여수시",
                 R.drawable.dummy4,
                 List.of("가족", "힐링")
         ));
 
-        dummy.add(new HomePopularCourseItem(
+        dummy.add(new HomeCourseItem(
                 "부산 야경 드라이브 코스",
                 "부산 해운대구",
                 R.drawable.dummy5,
                 List.of("자차", "가성비")
         ));
 
-        dummy.add(new HomePopularCourseItem(
+        dummy.add(new HomeCourseItem(
                 "부산 야경 드라이브 코스",
                 "부산 해운대구",
                 R.drawable.dummy5,
@@ -251,7 +251,7 @@ public class HomeFragment extends Fragment {
         ));
 
         // ⭐ 여기서 5개로 제한해서 Adapter에 전달
-        List<HomePopularCourseItem> topFive = dummy.size() > 5
+        List<HomeCourseItem> topFive = dummy.size() > 5
                 ? dummy.subList(0, 5)
                 : dummy;
 
@@ -263,35 +263,35 @@ public class HomeFragment extends Fragment {
     private void loadAllDummyCourseData() {
         allCourseDummyList = new ArrayList<>();
 
-        allCourseDummyList.add(new HomePopularCourseItem(
+        allCourseDummyList.add(new HomeCourseItem(
                 "대전 맛도리 빵집 투어",
                 "대전 유성구, 중구",
                 R.drawable.dummy1,
                 List.of("자차", "쇼핑", "힐링")
         ));
 
-        allCourseDummyList.add(new HomePopularCourseItem(
+        allCourseDummyList.add(new HomeCourseItem(
                 "춘천 감성 카페 투어",
                 "강원 춘천시",
                 R.drawable.dummy3,
                 List.of("감성", "하루", "힐링")
         ));
 
-        allCourseDummyList.add(new HomePopularCourseItem(
+        allCourseDummyList.add(new HomeCourseItem(
                 "성수 카페 투어",
                 "서울 성동구",
                 R.drawable.dummy2,
                 List.of("혼자", "쇼핑", "프리미엄")
         ));
 
-        allCourseDummyList.add(new HomePopularCourseItem(
+        allCourseDummyList.add(new HomeCourseItem(
                 "여수 가족 여행 루트",
                 "전남 여수시",
                 R.drawable.dummy4,
                 List.of("가족", "힐링")
         ));
 
-        allCourseDummyList.add(new HomePopularCourseItem(
+        allCourseDummyList.add(new HomeCourseItem(
                 "부산 야경 드라이브 코스",
                 "부산 해운대구",
                 R.drawable.dummy5,
