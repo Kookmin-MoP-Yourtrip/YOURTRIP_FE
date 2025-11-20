@@ -1,6 +1,8 @@
 package com.example.yourtrip.home;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,8 @@ public class HomeSearchFragment extends Fragment {
 
     private EditText etSearch;
     private ImageView btnSearch;
+    private boolean lastEnabledState = false;   // 이전 버튼 활성 상태 기억
+
 
     private final List<TextView> tagViews = new ArrayList<>();
     private final ArrayList<String> selectedTags = new ArrayList<>();
@@ -35,12 +39,24 @@ public class HomeSearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_search, container, false);
 
         initViews(view);
+        btnSearch.setEnabled(false);  // ⭐ 초기 비활성화
+
         // 모든 태그 초기 텍스트 색상 지정
         for (TextView tag : tagViews) {
             tag.setTextColor(getResources().getColor(R.color.gray_500));
         }
         setupTagClickListeners();
         setupSearchButton();
+
+        // 🔹 검색창 입력 감지해서 버튼 상태 변경
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateSearchButtonState();
+            }
+            @Override public void afterTextChanged(Editable s) {}
+        });
+
 
         return view;
     }
@@ -84,6 +100,48 @@ public class HomeSearchFragment extends Fragment {
         tagViews.add(tv);
     }
 
+    // 검색 아이콘 활성화 동작
+    private void updateSearchButtonState() {
+
+        boolean hasKeyword = !etSearch.getText().toString().trim().isEmpty();
+        boolean hasTags = !selectedTags.isEmpty();
+        boolean enable = hasKeyword || hasTags;
+
+        // 상태가 변하지 않았으면 그대로 종료 (애니메이션도 없음)
+        if (enable == lastEnabledState) return;
+
+        // 상태 업데이트
+        btnSearch.setEnabled(enable);
+        lastEnabledState = enable;
+
+        // 활성 → 비활성은 애니메이션 없음
+        if (!enable) {
+            btnSearch.setColorFilter(
+                    getResources().getColor(R.color.gray_150),
+                    android.graphics.PorterDuff.Mode.SRC_IN
+            );
+            return;
+        }
+
+        // ⭐ 비활성 → 활성 될 때만 애니메이션
+        btnSearch.setColorFilter(
+                getResources().getColor(R.color.blue_main),
+                android.graphics.PorterDuff.Mode.SRC_IN
+        );
+
+        btnSearch.animate()
+                .scaleX(1.15f)
+                .scaleY(1.15f)
+                .setDuration(120)
+                .withEndAction(() ->
+                        btnSearch.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(120)
+                );
+    }
+
+
 
     // 🔹 태그 다중선택 로직
     private void setupTagClickListeners() {
@@ -107,6 +165,7 @@ public class HomeSearchFragment extends Fragment {
                 } else {
                     selectedTags.remove(tagText);
                 }
+                updateSearchButtonState();   // ⭐ 태그 클릭 후 버튼상태 갱신
             });
         }
     }

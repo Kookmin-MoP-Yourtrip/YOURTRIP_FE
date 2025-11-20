@@ -46,6 +46,7 @@
             android:layout_height="40dp"
 
             android:background="@android:color/transparent"
+            app:tint="@color/search_icon_tint"
 
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
