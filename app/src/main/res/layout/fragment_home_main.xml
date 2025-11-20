@@ -468,7 +468,7 @@
                 android:textSize="16dp"
                 android:drawableEnd="@drawable/ic_go"
 
-                android:layout_marginBottom="220dp"
+                android:layout_marginBottom="200dp"
                 android:paddingHorizontal="22dp"
                 android:paddingVertical="10dp" />
         </LinearLayout>
