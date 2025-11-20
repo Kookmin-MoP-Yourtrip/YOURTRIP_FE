@@ -22,6 +22,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     private Button btnPopularMore; //인기 코스 더보기 버튼
+    private Button btnThemeMore;
     private TextView tagHealing, tagActivity, tagFood, tagSensibility, tagCulture, tagNature, tagShopping;
     private List<TextView> allTags = new ArrayList<>();
     private View location0, location1, location2, location3, location4;
@@ -46,6 +47,38 @@ public class HomeFragment extends Fragment {
 
         Button btnPopularMore = view.findViewById(R.id.btn_popular_course_more); //인기코스 더보기 버튼
         this.btnPopularMore = btnPopularMore;
+
+        Button btnThemeMore = view.findViewById(R.id.btn_theme_course_more);
+
+        btnThemeMore.setOnClickListener(v -> {
+            // ⭐ 현재 선택된 태그 찾기
+            String selectedTheme = null;
+
+            for (TextView tv : allTags) {
+                if (tv.isSelected()) {
+                    selectedTheme = tv.getText().toString();
+                    break;
+                }
+            }
+
+            if (selectedTheme == null) return; // 선택된 태그가 없다면 종료
+
+            // ⭐ 이동용 번들 생성
+            Bundle bundle = new Bundle();
+            bundle.putString("keyword", "");
+            bundle.putStringArrayList("tags", new ArrayList<>(List.of(selectedTheme)));
+            bundle.putString("mode", "theme");
+
+            // ⭐ 검색결과 페이지로 이동
+            HomeSearchResultFragment fragment = new HomeSearchResultFragment();
+            fragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         // 🔹 검색창 클릭 → 검색 화면으로 이동
         EditText tvSearch = view.findViewById(R.id.tvSearch);
