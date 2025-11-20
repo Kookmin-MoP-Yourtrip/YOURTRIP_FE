@@ -39,7 +39,9 @@ public class HomeSearchResultFragment extends Fragment {
 
         // ⭐ 전달받은 검색데이터
         Bundle args = getArguments();
+        String mode = "search";   // 기본은 검색 모드
         if (args != null) {
+            mode = args.getString("mode", "search");  // ⭐ 여기 추가!
             keyword = args.getString("keyword", "");
             selectedTags = args.getStringArrayList("tags");
         }
@@ -129,10 +131,15 @@ public class HomeSearchResultFragment extends Fragment {
                 Arrays.asList("문화/전시", "혼자", "하루")));
 
 
-        List<HomeCourseItem> filteredList =
-                filterCourses(dummy, keyword, selectedTags);
+        List<HomeCourseItem> finalList;
 
-        UploadCourseAdapter adapter = new UploadCourseAdapter(filteredList);
+        if (mode.equals("all")) {
+            finalList = dummy;                // 전체 리스트
+        } else {
+            finalList = filterCourses(dummy, keyword, selectedTags); // 필터링된 리스트
+        }
+
+        UploadCourseAdapter adapter = new UploadCourseAdapter(finalList);
         rv.setAdapter(adapter);
 
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+    private Button btnPopularMore; //인기 코스 더보기 버튼
     private TextView tagHealing, tagActivity, tagFood, tagSensibility, tagCulture, tagNature, tagShopping;
     private List<TextView> allTags = new ArrayList<>();
     private View location0, location1, location2, location3, location4;
@@ -41,6 +43,10 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home_main, container, false);
 
         initViews(view);       // 뷰 초기화
+
+        Button btnPopularMore = view.findViewById(R.id.btn_popular_course_more); //인기코스 더보기 버튼
+        this.btnPopularMore = btnPopularMore;
+
         // 🔹 검색창 클릭 → 검색 화면으로 이동
         EditText tvSearch = view.findViewById(R.id.tvSearch);
 
@@ -71,6 +77,23 @@ public class HomeFragment extends Fragment {
 
         tagHealing.performClick();
 
+        btnPopularMore.setOnClickListener(v -> {
+            // ⭐ 검색 결과 화면으로 이동 + 필터 완전 비활성(default 전체 리스트)
+            Bundle bundle = new Bundle();
+            bundle.putString("mode", "all");          // 전체 코스 모드
+            bundle.putString("keyword", "");          // 검색어 없음
+            bundle.putStringArrayList("tags", null);  // 태그 없음
+
+            HomeSearchResultFragment fragment = new HomeSearchResultFragment();
+            fragment.setArguments(bundle);
+
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         return view;
     }
@@ -103,6 +126,8 @@ public class HomeFragment extends Fragment {
                 tagSensibility, tagCulture,
                 tagNature, tagShopping
         );
+
+
     }
 
     // 태그 클릭 리스너
