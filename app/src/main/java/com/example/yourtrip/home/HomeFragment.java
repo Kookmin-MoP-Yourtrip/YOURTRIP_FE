@@ -102,7 +102,6 @@ public class HomeFragment extends Fragment {
         setupPopularRecycler(); // 인기 코스 RecyclerView 셋업
         setupThemeRecycler(); // 테마 코스 RecyclerView 셋업
 
-        loadDummyPopularData(); // 더미 데이터 주입
         loadAllDummyCourseData();
 
         setupLocationClickEvents();   // ⭐ 장소 버튼 클릭 이벤트 적용
@@ -263,60 +262,6 @@ public class HomeFragment extends Fragment {
         // 예: 검색 API 호출, 결과 리스트 페이지 이동 등
     }
 
-    // 인기순 코스 더미 데이터 주입
-    private void loadDummyPopularData() {
-        List<HomeCourseItem> dummy = new ArrayList<>();
-
-        dummy.add(new HomeCourseItem(
-                "대전 맛도리 빵집 투어",
-                "대전 유성구, 중구",
-                R.drawable.dummy1,
-                List.of("자차", "쇼핑")
-        ));
-        dummy.add(new HomeCourseItem(
-                "춘천 감성 카페 투어",
-                "강원 춘천시",
-                R.drawable.dummy3,
-                List.of("감성", "하루")
-        ));
-
-        dummy.add(new HomeCourseItem(
-                "성수 카페 투어",
-                "서울 성동구",
-                R.drawable.dummy2,
-                List.of("혼자", "쇼핑", "프리미엄", "힐링")
-
-        ));
-
-        dummy.add(new HomeCourseItem(
-                "여수 가족 여행 루트",
-                "전남 여수시",
-                R.drawable.dummy4,
-                List.of("가족", "힐링")
-        ));
-
-        dummy.add(new HomeCourseItem(
-                "부산 야경 드라이브 코스",
-                "부산 해운대구",
-                R.drawable.dummy5,
-                List.of("자차", "가성비")
-        ));
-
-        dummy.add(new HomeCourseItem(
-                "부산 야경 드라이브 코스",
-                "부산 해운대구",
-                R.drawable.dummy5,
-                List.of("자차", "가성비")
-        ));
-
-        // ⭐ 여기서 5개로 제한해서 Adapter에 전달
-        List<HomeCourseItem> topFive = dummy.size() > 5
-                ? dummy.subList(0, 5)
-                : dummy;
-
-        // Adapter에 데이터 전달
-        popularAdapter.updateList(topFive);
-    }
 
     // theme 코스 전용 더미데이터
     private void loadAllDummyCourseData() {
@@ -378,9 +323,16 @@ public class HomeFragment extends Fragment {
 
         allCourseDummyList.add(new HomeCourseItem("서울 종로 문화유산 투어", "서울 종로구", R.drawable.dummy2,
                 Arrays.asList("문화/전시", "혼자", "하루")));
+        // ⭐ 인기 top5 뽑아서 RecyclerView에 적용
+        List<HomeCourseItem> topFive = allCourseDummyList.size() > 5
+                ? allCourseDummyList.subList(0, 5)
+                : allCourseDummyList;
+
+        popularAdapter.updateList(topFive);
     }
 
 
-
 }
+
+
 
