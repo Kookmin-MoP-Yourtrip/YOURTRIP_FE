@@ -109,17 +109,22 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("LoginResponse", "서버 응답: " + body);
 
                         JSONObject json = new JSONObject(body);
-                        String token = json.optString("accessToken", ""); // accessToken 추출
+                        // accessToken 추출
+                        String token = json.optString("accessToken", "");
+                        // userId
+                        int userId = json.optInt("userId", -1);
 
                         // SharedPreferences에 JWT 토큰 저장
                         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                         prefs.edit()
                                 .putString("accessToken", token)
+                                .putInt("userId", userId)
                                 .apply();
 
                         // 저장된 토큰 Logcat 확인
                         String savedToken = prefs.getString("accessToken", "NULL");
-                        Log.d("LOGIN_TOKEN", "Saved Token: " + savedToken);
+                        Log.d("LOGIN", "Saved Token: " + savedToken);
+                        Log.d("LOGIN", "Saved userId: " + userId);
 
                         Toast.makeText(LoginActivity.this, "로그인 성공!", Toast.LENGTH_SHORT).show();
 
