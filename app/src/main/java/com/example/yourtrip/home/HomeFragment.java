@@ -228,7 +228,6 @@ public class HomeFragment extends Fragment {
         themeAdapter = new UploadCourseAdapter(new ArrayList<>());
         rvThemeCourse.setAdapter(themeAdapter);
     }
-
     // 장소별 코스 클릭 리스너
     private void setupLocationClickEvents() {
         View.OnClickListener listener = v -> {
@@ -238,16 +237,27 @@ public class HomeFragment extends Fragment {
 
             if (id == R.id.location0) keyword = "홍대";
             else if (id == R.id.location1) keyword = "성수";
-            else if (id == R.id.location2) keyword = "제주도";
+            else if (id == R.id.location2) keyword = "제주";
             else if (id == R.id.location3) keyword = "강릉";
             else if (id == R.id.location4) keyword = "서촌";
 
-            // 🔹 검색창에 자동 입력
-            EditText tvSearch = requireView().findViewById(R.id.tvSearch);
-            tvSearch.setText(keyword);
+            // ⭐ 장소 검색 결과 페이지로 이동
+            Bundle bundle = new Bundle();
+            bundle.putString("mode", "location");
+            bundle.putString("keyword", keyword);
+            bundle.putStringArrayList("tags", null);
 
-            // 🔹 검색 실행 (추후 구현)
-             runHomeSearch(keyword);
+            // 검색결과 프래그먼트 생성
+            HomeSearchResultFragment fragment = new HomeSearchResultFragment();
+            fragment.setArguments(bundle);
+
+            // 이동
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment)
+                    .addToBackStack(null)
+                    .commit();
         };
 
         location0.setOnClickListener(listener);
@@ -257,10 +267,6 @@ public class HomeFragment extends Fragment {
         location4.setOnClickListener(listener);
     }
 
-    private void runHomeSearch(String keyword) {
-        // TODO: 홈 검색 로직 추후 구현
-        // 예: 검색 API 호출, 결과 리스트 페이지 이동 등
-    }
 
 
     // theme 코스 전용 더미데이터
