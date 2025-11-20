@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 tripListFragment.setArguments(bundle);
 
                 // MyTripListFragment를 동적으로 추가
-                switchFragment(tripListFragment, true);
+                switchFragment(tripListFragment, false);
             }
         }
     }
