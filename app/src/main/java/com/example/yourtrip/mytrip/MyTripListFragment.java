@@ -1,4 +1,4 @@
-//시연 코드 -> 시연 후 밑에 주석 코드로 다시 변경하기
+//MyTripFragment -> MyTripListFragment 로 이름 변경
 package com.example.yourtrip.mytrip;
 
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.content.Intent;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,19 +23,17 @@ import com.example.yourtrip.model.MyCourseListItemResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyTripListFragment extends Fragment {
-    private RecyclerView recyclerView;
-    private TripAdapter adapter;
-    private List<MyCourseListItemResponse> courseList = new ArrayList<>();
 
+public class MyTripListFragment extends Fragment {
     private ImageView btnAddTrip;         // + 버튼
     private LinearLayout fabMenuLayout;   // 메뉴 레이아웃
     private boolean isMenuOpen = false;   // 토글 상태 저장
     private View dimLayer;
 
-    //    // 새로 추가: 메뉴 안의 버튼들
+    // 새로 추가: 메뉴 안의 버튼들
     private LinearLayout btnAIMake;       // AI로 만들기
     private LinearLayout btnManualMake;   // 직접 만들기
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,24 +44,16 @@ public class MyTripListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.trip_recycler);
+        RecyclerView recyclerView = view.findViewById(R.id.trip_recycler);
 
-        // Fragment에서 전달받은 데이터 처리
-        Bundle args = getArguments();
-        if (args != null) {
-            MyCourseListItemResponse newCourse = (MyCourseListItemResponse) args.getSerializable("newCourse");
-            if (newCourse != null) {
-                courseList.add(newCourse);  // 새로운 코스를 리스트에 추가
-            }
-        }
+        // 1) 더미데이터 생성
+        List<MyCourseListItemResponse> dummyList = getDummyCourses();
 
-        // 기존 더미 데이터와 결합
-        courseList.addAll(getDummyCourses());
-
-        // 어댑터 설정
-        adapter = new TripAdapter(courseList);
+        // 2) 어댑터 생성 및 설정
+        TripAdapter adapter = new TripAdapter(dummyList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+
 
         // Floating Action Button + 메뉴 초기화
         btnAddTrip = view.findViewById(R.id.btn_add_trip);
@@ -70,7 +61,7 @@ public class MyTripListFragment extends Fragment {
         dimLayer = view.findViewById(R.id.fab_dim);
 
         // fab 누르기 전 초기상태:
-        dimLayer.setVisibility(View.GONE);
+        dimLayer.setVisibility(view.GONE);
         fabMenuLayout.setVisibility(View.GONE);
 
         btnAddTrip.setOnClickListener(v -> {
@@ -81,6 +72,7 @@ public class MyTripListFragment extends Fragment {
             }
         });
         dimLayer.setOnClickListener(v -> closeMenu());
+
 
         //  추가: 메뉴 안의 버튼 연결
         btnAIMake = view.findViewById(R.id.btn_upload);          // AI로 만들기
@@ -100,7 +92,10 @@ public class MyTripListFragment extends Fragment {
         });
     }
 
-    // 더미 데이터 생성 함수
+
+    // ---------------------------
+    // 더미데이터 생성 함수
+    // ---------------------------
     private List<MyCourseListItemResponse> getDummyCourses() {
         List<MyCourseListItemResponse> list = new ArrayList<>();
 
@@ -118,7 +113,9 @@ public class MyTripListFragment extends Fragment {
         return list;
     }
 
+    // ---------------------------
     // 메뉴 열기
+    // ---------------------------
     private void openMenu() {
         // dim 나타남
         fabMenuLayout.setVisibility(View.VISIBLE);
@@ -141,7 +138,9 @@ public class MyTripListFragment extends Fragment {
         isMenuOpen = true;
     }
 
+    // ---------------------------
     // 메뉴 닫기
+    // ---------------------------
     private void closeMenu() {
         // dim 서서히 사라짐
         dimLayer.animate()
@@ -166,7 +165,8 @@ public class MyTripListFragment extends Fragment {
 
 
 
-//MyTripFragment -> MyTripListFragment 로 이름 변경
+
+//시연 코드
 //package com.example.yourtrip.mytrip;
 //
 //import android.os.Bundle;
@@ -177,7 +177,6 @@ public class MyTripListFragment extends Fragment {
 //import android.widget.LinearLayout;
 //import android.widget.Toast;
 //import android.content.Intent;
-//
 //
 //import androidx.annotation.NonNull;
 //import androidx.annotation.Nullable;
@@ -191,17 +190,19 @@ public class MyTripListFragment extends Fragment {
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//
 //public class MyTripListFragment extends Fragment {
+//    private RecyclerView recyclerView;
+//    private TripAdapter adapter;
+//    private List<MyCourseListItemResponse> courseList = new ArrayList<>();
+//
 //    private ImageView btnAddTrip;         // + 버튼
 //    private LinearLayout fabMenuLayout;   // 메뉴 레이아웃
 //    private boolean isMenuOpen = false;   // 토글 상태 저장
 //    private View dimLayer;
 //
-//    // 새로 추가: 메뉴 안의 버튼들
+//    //    // 새로 추가: 메뉴 안의 버튼들
 //    private LinearLayout btnAIMake;       // AI로 만들기
 //    private LinearLayout btnManualMake;   // 직접 만들기
-//
 //
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -212,16 +213,24 @@ public class MyTripListFragment extends Fragment {
 //    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 //        super.onViewCreated(view, savedInstanceState);
 //
-//        RecyclerView recyclerView = view.findViewById(R.id.trip_recycler);
+//        recyclerView = view.findViewById(R.id.trip_recycler);
 //
-//        // 1) 더미데이터 생성
-//        List<MyCourseListItemResponse> dummyList = getDummyCourses();
+//        // Fragment에서 전달받은 데이터 처리
+//        Bundle args = getArguments();
+//        if (args != null) {
+//            MyCourseListItemResponse newCourse = (MyCourseListItemResponse) args.getSerializable("newCourse");
+//            if (newCourse != null) {
+//                courseList.add(newCourse);  // 새로운 코스를 리스트에 추가
+//            }
+//        }
 //
-//        // 2) 어댑터 생성 및 설정
-//        TripAdapter adapter = new TripAdapter(dummyList);
+//        // 기존 더미 데이터와 결합
+//        courseList.addAll(getDummyCourses());
+//
+//        // 어댑터 설정
+//        adapter = new TripAdapter(courseList);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        recyclerView.setAdapter(adapter);
-//
 //
 //        // Floating Action Button + 메뉴 초기화
 //        btnAddTrip = view.findViewById(R.id.btn_add_trip);
@@ -229,7 +238,7 @@ public class MyTripListFragment extends Fragment {
 //        dimLayer = view.findViewById(R.id.fab_dim);
 //
 //        // fab 누르기 전 초기상태:
-//        dimLayer.setVisibility(view.GONE);
+//        dimLayer.setVisibility(View.GONE);
 //        fabMenuLayout.setVisibility(View.GONE);
 //
 //        btnAddTrip.setOnClickListener(v -> {
@@ -240,7 +249,6 @@ public class MyTripListFragment extends Fragment {
 //            }
 //        });
 //        dimLayer.setOnClickListener(v -> closeMenu());
-//
 //
 //        //  추가: 메뉴 안의 버튼 연결
 //        btnAIMake = view.findViewById(R.id.btn_upload);          // AI로 만들기
@@ -260,10 +268,7 @@ public class MyTripListFragment extends Fragment {
 //        });
 //    }
 //
-//
-//    // ---------------------------
-//    // 더미데이터 생성 함수
-//    // ---------------------------
+//    // 더미 데이터 생성 함수
 //    private List<MyCourseListItemResponse> getDummyCourses() {
 //        List<MyCourseListItemResponse> list = new ArrayList<>();
 //
@@ -281,9 +286,7 @@ public class MyTripListFragment extends Fragment {
 //        return list;
 //    }
 //
-//    // ---------------------------
 //    // 메뉴 열기
-//    // ---------------------------
 //    private void openMenu() {
 //        // dim 나타남
 //        fabMenuLayout.setVisibility(View.VISIBLE);
@@ -306,9 +309,7 @@ public class MyTripListFragment extends Fragment {
 //        isMenuOpen = true;
 //    }
 //
-//    // ---------------------------
 //    // 메뉴 닫기
-//    // ---------------------------
 //    private void closeMenu() {
 //        // dim 서서히 사라짐
 //        dimLayer.animate()
@@ -330,3 +331,6 @@ public class MyTripListFragment extends Fragment {
 //        isMenuOpen = false;
 //    }
 //}
+//
+//
+//

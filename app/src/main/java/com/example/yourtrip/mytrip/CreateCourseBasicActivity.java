@@ -1,3 +1,4 @@
+//detail 코스 작성 페이지로 넘어가는 코드
 package com.example.yourtrip.mytrip;
 
 import android.os.Bundle;
@@ -14,12 +15,10 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.R;
-import com.example.yourtrip.model.MyCourseListItemResponse;
+import com.example.yourtrip.model.MyCourseCreateRequest;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.example.yourtrip.MainActivity;
-
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -82,6 +81,7 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 
     // 날짜 선택 기능 (MaterialDateRangePicker 활용)
     private void setDatePicker() {
+
         // 클릭 시 키보드 안 뜨게 설정 (EditText지만 클릭 전용)
         etStartDate.setFocusable(false);
         etStartDate.setClickable(true);
@@ -121,8 +121,10 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
         });
     }
 
+
     //  입력 필드 변경 감지하여 버튼 활성화
     private void setInputWatchers() {
+
         TextWatcher watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -155,6 +157,7 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
         btnNext.setEnabled(isValid);
     }
 
+
     // 다음 버튼 클릭 이벤트
     private void setNextButton() {
         btnNext.setOnClickListener(v -> {
@@ -175,15 +178,93 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
                 return;
             }
 
-            // 여행 코스 정보 담기
-            MyCourseListItemResponse newCourse = new MyCourseListItemResponse(title, location, startDate, endDate, 1);
+            // 요청 객체 생성
+            MyCourseCreateRequest request = new MyCourseCreateRequest(title, location, startDate, endDate);
 
-            // Intent로 데이터 전달
-            Intent intent = new Intent(CreateCourseBasicActivity.this, MainActivity.class);
-            intent.putExtra("newCourse", newCourse);  // 데이터를 Intent에 담아 전달
+            // API 요청 보내기
+            submitCourse(request);
+
+            // Intent로 데이터를 넘기기 (CreateCourseDetailActivity로)
+            Intent intent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
+            intent.putExtra("courseTitle", title);
+            intent.putExtra("location", location);
+            intent.putExtra("startDate", startDate);
+            intent.putExtra("endDate", endDate);
+
+            // 로그로 Intent 데이터를 확인
+            Log.d(TAG, "Intent data - courseTitle: " + title);
+            Log.d(TAG, "Intent data - location: " + location);
+            Log.d(TAG, "Intent data - startDate: " + startDate);
+            Log.d(TAG, "Intent data - endDate: " + endDate);
+
+
+            // 다음 화면으로 이동
             startActivity(intent);
         });
     }
+
+
+    // API 요청
+    private void submitCourse(MyCourseCreateRequest request) {
+
+        btnNext.setEnabled(false);
+
+        apiService.createMyCourse(request).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody>
+ call, Response<ResponseBody> response) {
+                btnNext.setEnabled(true);
+
+                if (response.isSuccessful()) {
+
+                    try {
+                        String body = response.body() != null ? response.body().string() : "null";
+                        Log.d("MyCourseCreate", "성공(201): " + body);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(CreateCourseBasicActivity.this,
+                            "코스 생성 완료!", Toast.LENGTH_SHORT).show();
+
+
+                } else if (response.code() == 400) {
+                    // 서버에서 준 에러 메시지 파싱
+                    try {
+                        String errorMsg = response.errorBody() != null
+                                ? response.errorBody().string()
+                                : "잘못된 요청입니다.";
+                        Log.e("MyCourseCreate", "400 오류: " + errorMsg);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(CreateCourseBasicActivity.this,
+                            "입력값 오류", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    try {
+                        String errorBody = response.errorBody() != null
+                                ? response.errorBody().string()
+                                : "null";
+                        Log.e("MyCourseCreate", "기타 에러 코드: " + response.code()
+                                + ", errorBody = " + errorBody);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                btnNext.setEnabled(true);
+                Log.e("MyCourseCreate", "API 실패: " + t.getMessage());
+                Toast.makeText(CreateCourseBasicActivity.this,
+                        "네트워크 오류", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     // 날짜 범위 비교
     private boolean isValidDateRange(String start, String end) {
@@ -200,8 +281,11 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 
 
 
-//detail 코스 작성 페이지로 넘어가는 코드
-// 시연 끝나면 이거로 다시 돌려두기 주석 삭제 금지
+
+
+
+
+//시연 코드
 //package com.example.yourtrip.mytrip;
 //
 //import android.os.Bundle;
@@ -218,10 +302,12 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 //import androidx.appcompat.app.AppCompatActivity;
 //
 //import com.example.yourtrip.R;
-//import com.example.yourtrip.model.MyCourseCreateRequest;
+//import com.example.yourtrip.model.MyCourseListItemResponse;
 //import com.example.yourtrip.network.ApiService;
 //import com.example.yourtrip.network.RetrofitClient;
 //import com.google.android.material.datepicker.MaterialDatePicker;
+//import com.example.yourtrip.MainActivity;
+//
 //
 //import java.io.IOException;
 //import java.text.SimpleDateFormat;
@@ -284,7 +370,6 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 //
 //    // 날짜 선택 기능 (MaterialDateRangePicker 활용)
 //    private void setDatePicker() {
-//
 //        // 클릭 시 키보드 안 뜨게 설정 (EditText지만 클릭 전용)
 //        etStartDate.setFocusable(false);
 //        etStartDate.setClickable(true);
@@ -324,10 +409,8 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 //        });
 //    }
 //
-//
 //    //  입력 필드 변경 감지하여 버튼 활성화
 //    private void setInputWatchers() {
-//
 //        TextWatcher watcher = new TextWatcher() {
 //            @Override
 //            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -360,7 +443,6 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 //        btnNext.setEnabled(isValid);
 //    }
 //
-//
 //    // 다음 버튼 클릭 이벤트
 //    private void setNextButton() {
 //        btnNext.setOnClickListener(v -> {
@@ -381,93 +463,15 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 //                return;
 //            }
 //
-//            // 요청 객체 생성
-//            MyCourseCreateRequest request = new MyCourseCreateRequest(title, location, startDate, endDate);
+//            // 여행 코스 정보 담기
+//            MyCourseListItemResponse newCourse = new MyCourseListItemResponse(title, location, startDate, endDate, 1);
 //
-//            // API 요청 보내기
-//            submitCourse(request);
-//
-//            // Intent로 데이터를 넘기기 (CreateCourseDetailActivity로)
-//            Intent intent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
-//            intent.putExtra("courseTitle", title);
-//            intent.putExtra("location", location);
-//            intent.putExtra("startDate", startDate);
-//            intent.putExtra("endDate", endDate);
-//
-//            // 로그로 Intent 데이터를 확인
-//            Log.d(TAG, "Intent data - courseTitle: " + title);
-//            Log.d(TAG, "Intent data - location: " + location);
-//            Log.d(TAG, "Intent data - startDate: " + startDate);
-//            Log.d(TAG, "Intent data - endDate: " + endDate);
-//
-//
-//            // 다음 화면으로 이동
+//            // Intent로 데이터 전달
+//            Intent intent = new Intent(CreateCourseBasicActivity.this, MainActivity.class);
+//            intent.putExtra("newCourse", newCourse);  // 데이터를 Intent에 담아 전달
 //            startActivity(intent);
 //        });
 //    }
-//
-//
-//    // API 요청
-//    private void submitCourse(MyCourseCreateRequest request) {
-//
-//        btnNext.setEnabled(false);
-//
-//        apiService.createMyCourse(request).enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody>
-// call, Response<ResponseBody> response) {
-//                btnNext.setEnabled(true);
-//
-//                if (response.isSuccessful()) {
-//
-//                    try {
-//                        String body = response.body() != null ? response.body().string() : "null";
-//                        Log.d("MyCourseCreate", "성공(201): " + body);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    Toast.makeText(CreateCourseBasicActivity.this,
-//                            "코스 생성 완료!", Toast.LENGTH_SHORT).show();
-//
-//
-//                } else if (response.code() == 400) {
-//                    // 서버에서 준 에러 메시지 파싱
-//                    try {
-//                        String errorMsg = response.errorBody() != null
-//                                ? response.errorBody().string()
-//                                : "잘못된 요청입니다.";
-//                        Log.e("MyCourseCreate", "400 오류: " + errorMsg);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    Toast.makeText(CreateCourseBasicActivity.this,
-//                            "입력값 오류", Toast.LENGTH_SHORT).show();
-//
-//                } else {
-//                    try {
-//                        String errorBody = response.errorBody() != null
-//                                ? response.errorBody().string()
-//                                : "null";
-//                        Log.e("MyCourseCreate", "기타 에러 코드: " + response.code()
-//                                + ", errorBody = " + errorBody);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                btnNext.setEnabled(true);
-//                Log.e("MyCourseCreate", "API 실패: " + t.getMessage());
-//                Toast.makeText(CreateCourseBasicActivity.this,
-//                        "네트워크 오류", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-//
 //
 //    // 날짜 범위 비교
 //    private boolean isValidDateRange(String start, String end) {
@@ -481,11 +485,13 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 //        }
 //    }
 //}
+//
+//
+//
 
-
-
+//
 //api 연동 전
-
+//
 //package com.example.yourtrip.mytrip;
 //
 //import android.os.Bundle;
@@ -493,7 +499,7 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 //import android.widget.ImageView;
 //import android.widget.TextView;
 //
-//import androidx.appcompat.app.AppCompatActivity;
+//import androidx.appcompat.app.AppCompatActivity;ㅜ
 //
 //import com.example.yourtrip.R;
 //import com.google.android.material.datepicker.MaterialDatePicker;
