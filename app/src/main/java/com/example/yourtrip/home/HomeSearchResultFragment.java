@@ -71,9 +71,6 @@ public class HomeSearchResultFragment extends Fragment {
 
         List<HomeCourseItem> dummy = new ArrayList<>();
 
-        dummy.add(new HomeCourseItem("성수 감성 데이트 코스", "서울 성동구", R.drawable.dummy1,
-                Arrays.asList("감성", "데이트", "하루")));
-
         dummy.add(new HomeCourseItem("홍대 카페 투어", "서울 마포구", R.drawable.dummy2,
                 Arrays.asList("맛집탐방", "친구", "주말")));
 
