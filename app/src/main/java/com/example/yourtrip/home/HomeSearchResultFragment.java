@@ -22,21 +22,21 @@ public class HomeSearchResultFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home_search_result, container, false);
 
-        setupSearchBarClick(view);
-
-        return view;
-    }
-
-    private void setupSearchBarClick(View view) {
         EditText etSearch = view.findViewById(R.id.tvSearch);
 
-        // 🔹 HomeFragment와 동일하게 클릭 전용으로 설정
+        // 🔹 전달받은 검색어 세팅
+        Bundle args = getArguments();
+        if (args != null) {
+            String keyword = args.getString("keyword", "");
+            etSearch.setText(keyword);   // ⭐ 검색어 유지
+        }
+
+        // 🔹 HomeFragment처럼 클릭 전용 설정
         etSearch.setFocusable(false);
         etSearch.setClickable(true);
 
         etSearch.setOnClickListener(v -> {
             Fragment fragment = new HomeSearchFragment();
-
             requireActivity()
                     .getSupportFragmentManager()
                     .beginTransaction()
@@ -44,5 +44,7 @@ public class HomeSearchResultFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+
+        return view;
     }
 }
