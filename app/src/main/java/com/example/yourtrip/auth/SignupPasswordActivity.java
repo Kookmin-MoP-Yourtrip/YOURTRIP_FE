@@ -15,7 +15,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.R;
-import com.example.yourtrip.model.PasswordRequest;
+import com.example.yourtrip.auth.model.PasswordRequest;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 

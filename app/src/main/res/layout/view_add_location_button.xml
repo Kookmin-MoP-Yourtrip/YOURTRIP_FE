@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_add_location_box"
+    android:paddingHorizontal="16dp">
+
+    <!-- 숫자 동그라미 -->
+    <TextView
+        android:id="@+id/tvNumber"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/bg_circle_blue"
+        android:textSize="16sp" />
+
+    <!-- 텍스트 -->
+    <TextView
+        android:id="@+id/tvAddLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="+ 장소 추가하기"
+        android:textSize="16sp"
+        android:textColor="#1A73E8"/>
+</LinearLayout>

@@ -1,42 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- 일차를 가로로 스크롤할 수 있는 RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewTripDays"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp" />
-
-    <!-- 선택된 일차에 대한 세부 정보 입력 칸 -->
     <LinearLayout
-        android:id="@+id/detailInputContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="8dp">
+        android:orientation="vertical">
 
-        <!-- 예시로 일차 정보 입력 칸(추후 동적으로 추가될 내용) -->
-        <EditText
-            android:id="@+id/etPlace"
+        <!-- 일차를 가로로 스크롤할 수 있는 RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewTripDays"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="장소 입력"
-            android:padding="12dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="16dp"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_trip_day" />
 
-        <EditText
-            android:id="@+id/etDetails"
+        <!-- 선택된 일차에 대한 세부 정보 입력 칸 -->
+        <LinearLayout
+            android:id="@+id/detailInputContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="세부 정보 입력"
-            android:padding="12dp"/>
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <include
+                android:id="@+id/btnAddLocation"
+                layout="@layout/view_add_location_button" />
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

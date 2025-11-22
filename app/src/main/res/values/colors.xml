@@ -9,6 +9,7 @@
     <!-- 🩶 기본 회색 계열 -->
     <color name="gray_150">#F4F5F7</color>  <!-- 연회색 배경 -->
     <color name="gray_200">#E9EBED</color>
+    <color name="gray_300">#D8DBE0</color>
     <color name="gray_500">#9FA4A9</color>
     <color name="gray_550">#646B72</color>  <!-- 힌트용 회색 텍스트 -->
 

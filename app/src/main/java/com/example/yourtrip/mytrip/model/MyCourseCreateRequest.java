@@ -1,4 +1,4 @@
-package com.example.yourtrip.model;
+package com.example.yourtrip.mytrip.model;
 
 public class MyCourseCreateRequest {
     private String title;

@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical">
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<!-- 상단바 포함 -->
-<include
-    android:id="@+id/top_bar"
-    layout="@layout/view_common_top_bar" />
+    <!-- 상단바 -->
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/view_common_top_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-
-<!-- 나머지 콘텐츠 레이아웃 -->
+    <!-- trip_card  -->
     <LinearLayout
+        android:id="@+id/content_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/top_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- item_trip_card 레이아웃 -->
         <include
             android:id="@+id/item_trip_card"
             layout="@layout/item_trip_card"
@@ -26,15 +32,63 @@ android:orientation="vertical">
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <!-- 프래그먼트를 추가할 공간 (하단에 배치) -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="500dp"> <!-- 고정된 높이 설정 -->
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom" />  <!-- 화면 하단에 배치 -->
-    </LinearLayout>
+    <!-- 프래그먼트 영역 (초기 height = 530dp 고정 추후 스크롤 되도록) -->
+    <FrameLayout
+        android:id="@+id/trip_fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="500dp"
+        android:background="@drawable/bg_box_border"
+        app:layout_constraintTop_toBottomOf="@id/content_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="1"
 
-</LinearLayout>
+        tools:layout="@layout/fragment_trip_create_detail" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:orientation="vertical"-->
+<!--    xmlns:tools="http://schemas.android.com/tools">-->
+
+<!--&lt;!&ndash; 상단바 포함 &ndash;&gt;-->
+<!--<include-->
+<!--    android:id="@+id/top_bar"-->
+<!--    layout="@layout/view_common_top_bar" />-->
+
+
+<!--&lt;!&ndash; 나머지 콘텐츠 레이아웃 &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="16dp">-->
+
+<!--        &lt;!&ndash; item_trip_card 레이아웃 &ndash;&gt;-->
+<!--        <include-->
+<!--            android:id="@+id/item_trip_card"-->
+<!--            layout="@layout/item_trip_card"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; 프래그먼트를 추가할 공간 (하단에 배치) &ndash;&gt;-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="500dp"> &lt;!&ndash; 고정된 높이 설정 &ndash;&gt;-->
+<!--        <FrameLayout-->
+<!--            android:id="@+id/fragment_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@drawable/bg_box_border"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            tools:layout = "@layout/fragment_trip_create_detail"/>  &lt;!&ndash; 화면 하단에 배치 &ndash;&gt;-->
+<!--    </LinearLayout>-->
+
+<!--</LinearLayout>-->

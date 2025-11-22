@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
-import com.example.yourtrip.model.MyCourseListItemResponse;
+import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -185,7 +185,7 @@ public class MyTripListFragment extends Fragment {
 //import androidx.recyclerview.widget.RecyclerView;
 //
 //import com.example.yourtrip.R;
-//import com.example.yourtrip.model.MyCourseListItemResponse;
+//import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 //
 //import java.util.ArrayList;
 //import java.util.List;
