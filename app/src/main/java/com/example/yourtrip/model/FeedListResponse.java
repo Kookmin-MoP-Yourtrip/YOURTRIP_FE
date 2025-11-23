@@ -3,9 +3,9 @@ package com.example.yourtrip.model;
 import java.util.List;
 
 public class FeedListResponse {
-    private List<FeedDetailResponse> feeds;
+    private List<FeedSummaryResponse> feeds;
 
-    public List<FeedDetailResponse> getFeeds() {
+    public List<FeedSummaryResponse> getFeeds() {
         return feeds;
     }
 }

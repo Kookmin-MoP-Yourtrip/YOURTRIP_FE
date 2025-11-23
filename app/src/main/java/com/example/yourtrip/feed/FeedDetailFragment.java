@@ -10,10 +10,19 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.example.yourtrip.R;
+import com.example.yourtrip.model.FeedDetailResponse;
+import com.example.yourtrip.model.FeedMediaDetialResponse;
+import com.example.yourtrip.network.ApiService;
+import com.example.yourtrip.network.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FeedDetailFragment extends Fragment {
 
@@ -73,27 +82,64 @@ public class FeedDetailFragment extends Fragment {
     }
 
     private void loadFeedDetail() {
-        tvNickname.setText("혜원");
-        tvCaption.setText("여기는 피드 상세 캡션입니다!");
 
-        String place = "성수동";
-        if (place == null || place.isEmpty()) {
-            tagLocation.setVisibility(View.GONE);
-        } else {
-            tagLocation.setVisibility(View.VISIBLE);
-            tvLocation.setText(place);
-        }
+        ApiService api = RetrofitClient.getAuthService();
 
-        // 사진 더미
-        List<String> photos = new ArrayList<>();
-        photos.add("https://picsum.photos/300/500");
-        photos.add("https://picsum.photos/800/300");
-        photos.add("https://picsum.photos/600/600");
-        photos.add("https://picsum.photos/500/800");
+        api.getFeedDetail(feedId).enqueue(new Callback<FeedDetailResponse>() {
+            @Override
+            public void onResponse(Call<FeedDetailResponse> call, Response<FeedDetailResponse> response) {
 
-        FeedPhotoAdapter adapter = new FeedPhotoAdapter(photos);
-        vpPhotos.setAdapter(adapter);
+                if (!response.isSuccessful() || response.body() == null) return;
+
+                FeedDetailResponse data = response.body();
+
+                // 닉네임
+                tvNickname.setText(data.getNickname());
+
+                // 프로필 이미지
+                Glide.with(requireContext())
+                        .load(data.getProfileImageUrl())
+                        .placeholder(R.drawable.ic_default_profile)
+                        .into(imgProfile);
+
+                // 캡션
+                if (data.getContent() == null || data.getContent().isEmpty()) {
+                    tvCaption.setVisibility(View.GONE);
+                } else {
+                    tvCaption.setVisibility(View.VISIBLE);
+                    tvCaption.setText(data.getContent());
+                }
+
+                // 장소
+                if (data.getLocation() == null || data.getLocation().isEmpty()) {
+                    tagLocation.setVisibility(View.GONE);
+                } else {
+                    tagLocation.setVisibility(View.VISIBLE);
+                    tvLocation.setText(data.getLocation());
+                }
+
+                // 사진 리스트
+                List<String> photos = new ArrayList<>();
+                if (data.getMediaList() != null) {
+                    for (FeedMediaDetialResponse media : data.getMediaList()) {
+                        if (media.getMediaUrl() != null) {
+                            photos.add(media.getMediaUrl());
+                        }
+                    }
+                }
+
+                // ViewPager2 적용
+                FeedPhotoAdapter adapter = new FeedPhotoAdapter(photos);
+                vpPhotos.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<FeedDetailResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
+
 }
 
 

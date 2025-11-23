@@ -1,6 +1,7 @@
 package com.example.yourtrip.network;
 
 import com.example.yourtrip.model.EmailRequest;
+import com.example.yourtrip.model.FeedDetailResponse;
 import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.LoginRequest;
 import com.example.yourtrip.model.MyCourseCreateRequest;
@@ -19,6 +20,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -61,6 +63,11 @@ public interface ApiService {
             @Part("request") RequestBody request
     );
 
+    // 피드 상세 조회 API
+    @GET("/api/feeds/{feedId}")
+    Call<FeedDetailResponse> getFeedDetail(
+            @Path("feedId") int feedId
+    );
 
 
 }
