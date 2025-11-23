@@ -11,6 +11,7 @@ import com.example.yourtrip.model.FeedCommentWriteRequest;
 import com.example.yourtrip.model.FeedCommentWriteResponse;
 import com.example.yourtrip.model.FeedDetailResponse;
 import com.example.yourtrip.model.FeedListResponse;
+import com.example.yourtrip.model.UploadCourseListResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
 
 import java.util.List;
@@ -51,6 +52,14 @@ public interface ApiService {
 
     @POST("/api/my-courses")
     Call<ResponseBody> createMyCourse(@Body MyCourseCreateRequest request);
+
+    // 홈 다중 필터링(태그 & 텍스트) 검색
+    @GET("/api/upload-courses")
+    Call<UploadCourseListResponse> getUploadCourses(
+            @Query("keyword") String keyword,        // 검색어 (없으면 null)
+            @Query("tag") List<String> tags,         // 태그 여러 개
+            @Query("sort") String sort               // "POPULAR" 또는 "NEW"
+    );
 
     // 피드 리스트 조회 API
     @GET("/api/feeds")

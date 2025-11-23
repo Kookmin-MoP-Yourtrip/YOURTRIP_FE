@@ -10,9 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.yourtrip.R;
 import com.example.yourtrip.commonUtil.TagColorManager;
-import com.example.yourtrip.model.HomeCourseItem;
+import com.example.yourtrip.model.UploadCourseItem;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
@@ -20,12 +21,12 @@ import java.util.List;
 
 public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapter.ViewHolder> {
 
-    private List<HomeCourseItem> itemList = new ArrayList<>();
+    private List<UploadCourseItem> itemList = new ArrayList<>();
     private Context context;
 
-    // 클릭 이벤트 인터페이스
+    // 클릭 이벤트
     public interface OnItemClickListener {
-        void onClick(HomeCourseItem item);
+        void onClick(UploadCourseItem item);
     }
 
     private OnItemClickListener listener;
@@ -34,18 +35,15 @@ public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapte
         this.listener = listener;
     }
 
-    // 생성자
-    public UploadCourseAdapter(List<HomeCourseItem> list) {
+    public UploadCourseAdapter(List<UploadCourseItem> list) {
         this.itemList = list;
     }
 
-    // 리스트 갱신
-    public void updateList(List<HomeCourseItem> newList) {
+    public void setItems(List<UploadCourseItem> newList) {
         this.itemList = newList;
         notifyDataSetChanged();
     }
 
-    // 1. viewHolder: item XML 안의 view를 꺼내와서 java에서 사용가능하도록 함
     @NonNull
     @Override
     public UploadCourseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,62 +52,49 @@ public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapte
         return new ViewHolder(view);
     }
 
-    // 2. onBindViewHolder: 실제 1개 데이터(item)를 XML에 연동
     @Override
     public void onBindViewHolder(@NonNull UploadCourseAdapter.ViewHolder holder, int position) {
-        HomeCourseItem item = itemList.get(position);
+        UploadCourseItem item = itemList.get(position);
 
-        // 이미지 (리소스)
-        holder.imgThumbnail.setImageResource(item.imageRes);
+        // ✔ 썸네일 이미지 URL 로드
+        Glide.with(context)
+                .load(item.thumbnailImageUrl)
+                .placeholder(R.drawable.ic_loading)  // 기본 이미지
+                .into(holder.imgThumbnail);
 
-        // 지역
         holder.tvLocation.setText(item.location);
-
-        // 제목
         holder.tvTitle.setText(item.title);
+        holder.tvLikeCount.setText(String.valueOf(item.forkCount));
 
-        // 좋아요 수
-        holder.tvLikeCount.setText(String.valueOf(item.likeCount));
-
-        // 태그 표시 (FlexboxLayout)
+        // 태그 목록
         holder.tagContainer.removeAllViews();
-        for (String tag : item.tags) {
+        if (item.keywords != null) {
+            for (String tag : item.keywords) {
+                View tagView = LayoutInflater.from(context)
+                        .inflate(R.layout.item_tag_for_list, holder.tagContainer, false);
 
-            View tagView = LayoutInflater.from(context)
-                    .inflate(R.layout.item_tag_for_list, holder.tagContainer, false);
+                TextView tv = tagView.findViewById(R.id.tv_theme_tag);
+                tv.setText(tag);
 
-            TextView tv = tagView.findViewById(R.id.tv_theme_tag);
-            tv.setText(tag);
+                TagColorManager.TagStyle style = TagColorManager.get(tag);
+                tv.setTextColor(context.getColor(style.textColor));
+                tv.setBackgroundTintList(context.getColorStateList(style.tintColor));
 
-            // ⭐ 여기서 TagColorManager로 스타일 가져오기
-            TagColorManager.TagStyle style = TagColorManager.get(tag);
-
-            // 텍스트 색상 적용
-            tv.setTextColor(context.getColor(style.textColor));
-
-            // 배경 tint 적용
-            tv.setBackgroundTintList(
-                    context.getColorStateList(style.tintColor)
-            );
-
-            holder.tagContainer.addView(tagView);
+                holder.tagContainer.addView(tagView);
+            }
         }
 
-        // 클릭 이벤트
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onClick(item);
         });
     }
 
-    // 3. getItemCount: 몇개를 렌더링 할지
     @Override
     public int getItemCount() {
         return itemList != null ? itemList.size() : 0;
     }
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         ImageView imgThumbnail;
         TextView tvLocation;
         TextView tvTitle;
@@ -119,9 +104,9 @@ public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            imgThumbnail = itemView.findViewById(R.id.imgThumbnail);
+            imgThumbnail = itemView.findViewById(R.id.imgUploadCourseThumbnail);
             tvLocation = itemView.findViewById(R.id.tv_location);
-            tvTitle = itemView.findViewById(R.id.tv_date); // XML id 유지
+            tvTitle = itemView.findViewById(R.id.tv_date);
             tvLikeCount = itemView.findViewById(R.id.tv_forkCount);
             tagContainer = itemView.findViewById(R.id.tagContainer);
         }

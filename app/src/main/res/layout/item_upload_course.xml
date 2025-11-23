@@ -20,7 +20,7 @@
             android:layout_marginEnd="12dp">
 
             <ImageView
-                android:id="@+id/imgThumbnail"
+                android:id="@+id/imgUploadCourseThumbnail"
                 android:layout_width="88dp"
                 android:layout_height="88dp"
                 android:scaleType="centerCrop"
