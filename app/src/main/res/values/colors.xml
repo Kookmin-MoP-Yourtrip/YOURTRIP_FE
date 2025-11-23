@@ -7,6 +7,7 @@
     <color name="blue">#0000FF</color>
 
     <!-- 🩶 기본 회색 계열 -->
+    <color name="gray_100">#F8F8F9</color>
     <color name="gray_150">#F4F5F7</color>  <!-- 연회색 배경 -->
     <color name="gray_200">#E9EBED</color>
     <color name="gray_300">#D8DBE0</color>

@@ -1,37 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <!-- 🔵 스크롤될 헤더 영역 -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@android:color/white"
+        app:liftOnScroll="true">
 
-        <!-- 일차를 가로로 스크롤할 수 있는 RecyclerView -->
+        <!-- 🔹일차 스크롤 탭 (RecyclerView) -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewTripDays"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_trip_day" />
+            android:layout_height="56dp"
+            android:paddingHorizontal="16dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            />
 
-        <!-- 선택된 일차에 대한 세부 정보 입력 칸 -->
-        <LinearLayout
-            android:id="@+id/detailInputContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="15dp">
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <include
-                android:id="@+id/btnAddLocation"
-                layout="@layout/view_add_location_button" />
-        </LinearLayout>
 
-    </LinearLayout>
+    <!-- 🔵 아래 전체 스크롤 리스트 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerLocationList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_box_border"
+        android:padding="15dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_trip_location_card" />
 
-</androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content">-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical">-->
+
+<!--        &lt;!&ndash; 일차를 가로로 스크롤할 수 있는 RecyclerView &ndash;&gt;-->
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recyclerViewTripDays"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            tools:itemCount="3"-->
+<!--            tools:listitem="@layout/item_trip_day" />-->
+
+<!--        &lt;!&ndash; 선택된 일차에 대한 세부 정보 입력 칸 &ndash;&gt;-->
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recyclerLocationList"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@drawable/bg_box_border"-->
+<!--            android:nestedScrollingEnabled="false"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="15dp"-->
+
+<!--            tools:itemCount="1"-->
+<!--            tools:listitem="@layout/item_trip_location_card">-->
+
+<!--            &lt;!&ndash;            <include&ndash;&gt;-->
+<!--            &lt;!&ndash;                android:id="@+id/btnAddLocation"&ndash;&gt;-->
+<!--            &lt;!&ndash;                layout="@layout/view_add_location_button" />&ndash;&gt;-->
+<!--        </androidx.recyclerview.widget.RecyclerView>-->
+
+<!--    </LinearLayout>-->
+
+<!--</androidx.core.widget.NestedScrollView>-->
