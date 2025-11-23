@@ -71,7 +71,7 @@ public class UploadFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             View view = inflater.inflate(R.layout.item_add_image_button, parent, false);
             return new AddButtonViewHolder(view);
         } else {
-            View view = inflater.inflate(R.layout.item_feed_image, parent, false);
+            View view = inflater.inflate(R.layout.item_feed_upload_image, parent, false);
             return new ImageViewHolder(view);
         }
     }

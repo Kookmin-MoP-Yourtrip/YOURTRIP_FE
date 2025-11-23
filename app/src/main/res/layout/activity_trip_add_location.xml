@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 상단바 -->
+    <include
+        android:id="@+id/topBar"
+        layout="@layout/view_common_top_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 전체 콘텐츠 영역 -->
+    <LinearLayout
+        android:id="@+id/contentArea"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/btnNext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+    >
+
+        <TextView
+            android:id="@+id/tvInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가하고 싶은 장소를 검색해 주세요."
+            android:textSize="16sp"
+            android:textColor="@color/gray_700"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="12dp" />
+
+
+        <EditText
+            android:id="@+id/etPlaceName"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            style="@style/RoundedEditText.Default"
+            android:hint="정확한 주소나 장소명을 입력해 주세요."
+            android:padding="12dp"
+            android:textSize="14sp"
+            android:layout_marginBottom="14dp"/>
+
+<!--        <EditText-->
+<!--            android:id="@+id/etAddress"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="주소 입력"-->
+<!--            android:padding="12dp"-->
+<!--            android:background="#EEEEEE"-->
+<!--            android:layout_marginBottom="12dp"/>-->
+
+        <!-- 지도는 나중에 Kakao Static Map 넣기 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="370dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_box_round"
+            android:backgroundTint="@color/gray_200"/>
+
+
+    </LinearLayout>
+
+
+    <!-- 다음 버튼 (하단 고정) -->
+    <android.widget.Button
+        android:id="@+id/btnNext"
+        android:layout_width="0dp"
+        style="@style/ChangeButtonStyle"
+        android:layout_margin="30dp"
+        android:text="이 장소 추가하기"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

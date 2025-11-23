@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_location_box"
+    android:padding="16dp">
+
+    <!-- 상단 영역 (번호, 제목, 삭제 버튼) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- 번호 동그라미 -->
+        <TextView
+            android:id="@+id/tvNumber"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_circle_blue"
+            android:textSize="14sp" />
+
+        <!-- 시간 입력 버튼 -->
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:text="눌러서 시간 입력"
+            android:textSize="12sp"
+            android:textColor="#8A8A8A" />
+
+        <!-- 삭제 버튼 -->
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_close_btn" />
+    </LinearLayout>
+
+    <!-- 장소 정보 전체를 감싸는 묶음 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="40dp"
+        android:layout_marginTop="8dp">
+
+        <!-- 장소 이름 -->
+        <TextView
+            android:id="@+id/tvPlaceName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="성심당 본점"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- 주소 -->
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="대전광역시 중구 은행동 145-1"
+            android:textSize="14sp"
+            android:textColor="#555555"
+            android:layout_marginTop="4dp"/>
+
+        <!-- 지도 + 사진 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp">
+
+            <ImageView
+                android:id="@+id/ivMap"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:background="#EEEEEE"
+                android:radius = "12dp"/>
+
+            <LinearLayout
+                android:id="@+id/btnAddPhoto"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:background="@color/gray_150"
+                android:radius = "12dp">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_feed_camera"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="장소 사진 추가"
+                    android:layout_marginTop="6dp"
+                    android:textSize="14sp"
+                    android:textColor="#555555"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 메모 입력 -->
+        <EditText
+            android:id="@+id/etMemo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="간단한 메모 입력"
+            android:textSize="14sp"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
+
+
+</LinearLayout>

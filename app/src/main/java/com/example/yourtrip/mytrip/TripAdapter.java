@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
-import com.example.yourtrip.model.MyCourseListItemResponse;
+import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

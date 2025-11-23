@@ -16,8 +16,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.R;
-import com.example.yourtrip.model.EmailRequest;
-import com.example.yourtrip.model.VerificationRequest;
+import com.example.yourtrip.auth.model.EmailRequest;
+import com.example.yourtrip.auth.model.VerificationRequest;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 

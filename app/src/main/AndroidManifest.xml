@@ -52,6 +52,7 @@
         <activity android:name=".mytrip.CreateCourseBasicActivity"
             android:exported="false"/>
         <activity android:name=".mytrip.CreateCourseDetailActivity"/>
+        <activity android:name=".mytrip.AddLocationActivity"/>
 
 
     </application>
