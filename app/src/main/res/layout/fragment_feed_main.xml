@@ -59,7 +59,7 @@
             android:layout_marginBottom="8dp">
 
             <EditText
-                android:id="@+id/tvSearch"
+                android:id="@+id/tvFeedSearch"
                 style="@style/RoundedEditText.Default"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -67,6 +67,7 @@
                 android:textColorHint="@color/gray_550" />
 
             <ImageView
+                android:id="@+id/btnFeedSearch"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
 

@@ -3,15 +3,15 @@ package com.example.yourtrip.model;
 import java.util.List;
 
 public class FeedSummaryResponse {
-    private Long feedId; // 피드 ID
+    private int feedId;
+    private String nickname;
+    private String title;
+    private String location;
+    private String content;
     private List<FeedMediaItem> mediaList;
 
-    public Long getFeedId() {
-        return feedId;
-    }
-
-    public List<FeedMediaItem> getMediaList() { // 첫번째 이미지 URL
-        return mediaList;
-    }
+    public int getFeedId() { return feedId; }
+    public List<FeedMediaItem> getMediaList() { return mediaList; }
 }
+
 

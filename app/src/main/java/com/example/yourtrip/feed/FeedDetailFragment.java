@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.example.yourtrip.R;
 import com.example.yourtrip.model.FeedDetailResponse;
-import com.example.yourtrip.model.FeedMediaDetialResponse;
+import com.example.yourtrip.model.FeedMediaDetailResponse;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 
@@ -50,6 +50,7 @@ public class FeedDetailFragment extends Fragment {
 
         btnChat.setOnClickListener(v -> {
             Fragment chat = new FeedChatFragment();
+
             Bundle bundle = new Bundle();
             bundle.putInt("feedId", feedId);
             chat.setArguments(bundle);
@@ -121,7 +122,7 @@ public class FeedDetailFragment extends Fragment {
                 // 사진 리스트
                 List<String> photos = new ArrayList<>();
                 if (data.getMediaList() != null) {
-                    for (FeedMediaDetialResponse media : data.getMediaList()) {
+                    for (FeedMediaDetailResponse media : data.getMediaList()) {
                         if (media.getMediaUrl() != null) {
                             photos.add(media.getMediaUrl());
                         }
