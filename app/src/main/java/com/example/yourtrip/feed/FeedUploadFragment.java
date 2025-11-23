@@ -39,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UploadFeedFragment extends Fragment {
+public class FeedUploadFragment extends Fragment {
 
     private RecyclerView rvPhotos;
     private Button btnNext;

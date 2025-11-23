@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,8 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.model.FeedDetailResponse;
 import com.example.yourtrip.model.FeedListResponse;
-import com.example.yourtrip.model.FeedSummaryResponse;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 import com.google.gson.Gson;
@@ -31,6 +33,8 @@ public class FeedFragment extends Fragment {
     private RecyclerView rvFeed;
     private FeedAdapter adapter;
     private List<FeedItem> feedItems = new ArrayList<>();
+    private EditText etSearch;
+    private ImageView btnSearch;
 
     @Nullable
     @Override
@@ -62,128 +66,142 @@ public class FeedFragment extends Fragment {
 
         rvFeed.setAdapter(adapter);
 
-//        // ---------- 더미 1개만 넣기 ----------
-//        feedItems.clear();
-//        feedItems.add(new FeedItem(1, "https://pichsum.photos/300"));
-//        adapter.notifyDataSetChanged();
-//        // -----------------------------------
-
         loadFeedList();
+
+        etSearch = view.findViewById(R.id.tvFeedSearch);
+        btnSearch = view.findViewById(R.id.btnFeedSearch);
+
+        // ⭐ 검색 버튼 클릭 시
+        btnSearch.setOnClickListener(v -> {
+            String keyword = etSearch.getText().toString().trim();
+
+            if (keyword.isEmpty()) {
+                // 검색어 없으면 전체 리스트
+                loadFeedList();
+            } else {
+                // 검색 실행
+                searchFeedList(keyword);
+            }
+        });
+
+        ImageView btnAddFeed = view.findViewById(R.id.btn_add_feed);
+
+        btnAddFeed.setOnClickListener(v -> {
+            // TODO: 피드 업로드 화면으로 이동
+            FeedUploadFragment fragment = new FeedUploadFragment();
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
 
         return view;
     }
-//
-//    private void loadFeedList() {
-//
-//        ApiService api = RetrofitClient.getAuthService();
-//
-//        api.getFeedList("NEW", 0, 20)
-//                .enqueue(new Callback<FeedListResponse>() {
-//                    @Override
-//                    public void onResponse(Call<FeedListResponse> call,
-//                                           Response<FeedListResponse> response) {
-//
-//                        if (!response.isSuccessful() || response.body() == null) {
-//                            return;
-//                        }
-//
-//                        List<FeedSummaryResponse> serverList = response.body().getFeeds();
-//                        if (serverList == null) return;
-//
-//                        feedItems.clear();
-//
-//                        for (FeedSummaryResponse feed : serverList) {
-//
-//                            // 썸네일(첫 이미지) 추출
-//                            String thumbnail = null;
-//                            if (feed.getMediaList() != null && !feed.getMediaList().isEmpty()) {
-//                                thumbnail = feed.getMediaList().get(0).getUrl();
-//                            }
-//
-//                            feedItems.add(new FeedItem(
-//                                    feed.getFeedId(),
-//                                    thumbnail
-//                            ));
-//                        }
-//
-//                        adapter.notifyDataSetChanged();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<FeedListResponse> call, Throwable t) {
-//                        t.printStackTrace();
-//                    }
-//                });
-//    }
-private void loadFeedList() {
 
-    ApiService api = RetrofitClient.getAuthService();
+    private void searchFeedList(String keyword) {
 
-    api.getFeedList("NEW", 0, 20)
-            .enqueue(new Callback<FeedListResponse>() {
-                @Override
-                public void onResponse(Call<FeedListResponse> call, Response<FeedListResponse> response) {
+        ApiService api = RetrofitClient.getAuthService();
 
-                    // ★ 응답 코드 확인
-                    Log.d("FEED_API", "Response code: " + response.code());
+        api.searchFeeds(keyword, 0, 20)
+                .enqueue(new Callback<FeedListResponse>() {
+                    @Override
+                    public void onResponse(Call<FeedListResponse> call, Response<FeedListResponse> response) {
 
-                    if (response.isSuccessful()) {
-                        Log.d("FEED_API", "SUCCESS");
+                        Log.d("SEARCH_API", "code = " + response.code());
 
-                        // ★ body null 체크
-                        if (response.body() == null) {
-                            Log.e("FEED_API", "body is NULL");
+                        if (!response.isSuccessful() || response.body() == null) {
+                            Log.e("SEARCH_API", "errorBody=" + response.errorBody());
                             return;
                         }
 
-                        // ★ body 전체 로그 출력
+                        List<FeedDetailResponse> result = response.body().getFeeds();
+
+                        if (result == null) {
+                            Log.e("SEARCH_API", "result list is NULL");
+                            return;
+                        }
+
+                        feedItems.clear();
+
+                        for (FeedDetailResponse feed : result) {
+
+                            // 이미지 URL 추출
+                            String thumbnail = null;
+                            if (feed.getMediaList() != null && !feed.getMediaList().isEmpty()) {
+                                String url = feed.getMediaList().get(0).getMediaUrl();
+                                if (url != null) thumbnail = url;
+                            }
+
+                            feedItems.add(new FeedItem(
+                                    feed.getFeedId(),   // int OK
+                                    thumbnail
+                            ));
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<FeedListResponse> call, Throwable t) {
+                        Log.e("SEARCH_API", "fail : " + t.getMessage());
+                    }
+                });
+    }
+
+
+    private void loadFeedList() {
+
+        ApiService api = RetrofitClient.getAuthService();
+
+        api.getFeedList("NEW", 0, 20)
+                .enqueue(new Callback<FeedListResponse>() {
+                    @Override
+                    public void onResponse(Call<FeedListResponse> call, Response<FeedListResponse> response) {
+
+                        Log.d("FEED_API", "Response code: " + response.code());
+
+                        if (!response.isSuccessful() || response.body() == null) {
+                            Log.e("FEED_API", "ERROR: " + response.code());
+                            return;
+                        }
+
                         Log.d("FEED_API", "body: " + new Gson().toJson(response.body()));
 
-                        List<FeedSummaryResponse> serverList = response.body().getFeeds();
+                        // 🔥 타입 수정 (가장 중요한 부분)
+                        List<FeedDetailResponse> serverList = response.body().getFeeds();
 
                         if (serverList == null) {
                             Log.e("FEED_API", "serverList is NULL");
                             return;
                         }
 
-                        Log.d("FEED_API", "feed count = " + serverList.size());
-
                         feedItems.clear();
 
-                        for (FeedSummaryResponse feed : serverList) {
+                        for (FeedDetailResponse feed : serverList) {
 
                             String thumbnail = null;
+
                             if (feed.getMediaList() != null && !feed.getMediaList().isEmpty()) {
-                                thumbnail = feed.getMediaList().get(0).getUrl();
+                                thumbnail = feed.getMediaList().get(0).getMediaUrl();
                             }
 
                             feedItems.add(new FeedItem(
-                                    feed.getFeedId(),
+                                    feed.getFeedId(),   // int OK
                                     thumbnail
                             ));
                         }
 
                         adapter.notifyDataSetChanged();
-
-                    } else {
-                        // ★ errorBody 확인
-                        try {
-                            String err = response.errorBody() != null
-                                    ? response.errorBody().string()
-                                    : "errorBody is NULL";
-                            Log.e("FEED_API", "ERROR response = " + err);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<FeedListResponse> call, Throwable t) {
-                    Log.e("FEED_API", "FAILURE: " + t.getMessage());
-                }
-            });
-}
+                    @Override
+                    public void onFailure(Call<FeedListResponse> call, Throwable t) {
+                        Log.e("FEED_API", "FAILURE: " + t.getMessage());
+                    }
+                });
+    }
 
 }

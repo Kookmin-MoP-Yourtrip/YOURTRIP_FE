@@ -4,30 +4,27 @@ import java.util.List;
 
 public class FeedDetailResponse {
 
-    private Long feedId;
-    private Long userId;
+    private int feedId;
+    private int userId;
     private String nickname;
     private String profileImageUrl;
-
     private String title;
     private String location;
     private String content;
-
     private List<String> hashtags;
 
     private int commentCount;
     private int heartCount;
     private int viewCount;
+    private int uploadCourseId;
 
-    private Long uploadCourseId;
+    private List<FeedMediaDetailResponse> mediaList;
 
-    private List<FeedMediaDetialResponse> mediaList;
-
-    public Long getFeedId() {
+    public int getFeedId() {
         return feedId;
     }
 
-    public Long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -67,11 +64,11 @@ public class FeedDetailResponse {
         return viewCount;
     }
 
-    public Long getUploadCourseId() {
+    public int getUploadCourseId() {
         return uploadCourseId;
     }
 
-    public List<FeedMediaDetialResponse> getMediaList() {
+    public List<FeedMediaDetailResponse> getMediaList() {
         return mediaList;
     }
 }

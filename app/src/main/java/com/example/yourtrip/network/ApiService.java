@@ -89,5 +89,13 @@ public interface ApiService {
             @Body FeedCommentWriteRequest request
     );
 
+    // 키워드별 피드 조회 API
+    @GET("/api/feeds/search")
+    Call<FeedListResponse> searchFeeds(
+            @Query("keyword") String keyword,
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
 }
 

@@ -1,6 +1,6 @@
 package com.example.yourtrip.model;
 
-public class FeedMediaDetialResponse {
+public class FeedMediaDetailResponse {
     private Long mediaId;
     private String mediaUrl;
     private String mediaType;
