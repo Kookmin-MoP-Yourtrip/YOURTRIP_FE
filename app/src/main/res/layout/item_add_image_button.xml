@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="224dp"
+    android:layout_height="224dp"
+    android:layout_margin="8dp"
+    android:background="@drawable/bg_box_round"
+    android:backgroundTint="@color/gray_100"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/btn_add_more"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_plus"
+        android:backgroundTint="@android:color/transparent" />
+</FrameLayout>

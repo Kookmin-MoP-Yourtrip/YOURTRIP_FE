@@ -27,6 +27,7 @@ public class AuthInterceptor implements Interceptor {
 
         String token = prefs.getString("accessToken", null);
         Log.d("AUTH_INTERCEPTOR", "보내는 토큰 값: " + token);
+        Log.e("TOKEN_CHECK", "token = " + token);
 
         Request request = chain.request().newBuilder()
                 .addHeader("Authorization", token != null ? "Bearer " + token : "")
