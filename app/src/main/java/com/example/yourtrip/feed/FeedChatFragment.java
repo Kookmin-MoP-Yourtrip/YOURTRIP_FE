@@ -1,6 +1,7 @@
 package com.example.yourtrip.feed;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
 import com.example.yourtrip.model.FeedChat;
+import com.example.yourtrip.model.FeedCommentDetailResponse;
+import com.example.yourtrip.model.FeedCommentListResponse;
+import com.example.yourtrip.model.FeedCommentWriteRequest;
+import com.example.yourtrip.model.FeedCommentWriteResponse;
+import com.example.yourtrip.network.ApiService;
+import com.example.yourtrip.network.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FeedChatFragment extends Fragment {
 
@@ -42,6 +53,13 @@ public class FeedChatFragment extends Fragment {
         initRecyclerView();
         setListeners();
 
+
+        int feedId = getArguments().getInt("feedId", -1);
+        if (feedId != -1) {
+            loadComments(feedId);
+        }
+
+
         return view;
     }
 
@@ -65,18 +83,78 @@ public class FeedChatFragment extends Fragment {
             String newComment = editFeedChat.getText().toString().trim();
             if (newComment.isEmpty()) return;
 
-            // 새 댓글 추가
-            chatList.add(new FeedChat(
-                    null,             // 추후 서버에서 프로필 URL 넣기
-                    "나",             // 추후 로그인 사용자 닉네임
-                    newComment
-            ));
+            int feedId = getArguments().getInt("feedId", -1);
+            if (feedId == -1) return;
 
-            adapter.notifyItemInserted(chatList.size() - 1);
-            rvChatList.scrollToPosition(chatList.size() - 1);
+            ApiService api = RetrofitClient.getAuthService(); // 인증있어야함
 
-            editFeedChat.setText("");
+            FeedCommentWriteRequest request = new FeedCommentWriteRequest(newComment);
+
+            api.writeComment(feedId, request)
+                    .enqueue(new Callback<FeedCommentWriteResponse>() {
+                        @Override
+                        public void onResponse(Call<FeedCommentWriteResponse> call,
+                                               Response<FeedCommentWriteResponse> response) {
+
+                            if (response.isSuccessful()) {
+
+                                // UI도 업데이트
+                                chatList.add(new FeedChat(
+                                        null,
+                                        "나",
+                                        newComment
+                                ));
+
+                                adapter.notifyItemInserted(chatList.size() - 1);
+                                rvChatList.scrollToPosition(chatList.size() - 1);
+
+                                editFeedChat.setText("");
+
+                                // 다시 조회해도 사라지지 않음
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<FeedCommentWriteResponse> call, Throwable t) {
+                            Log.e("FEED_CHAT", "댓글 등록 실패: " + t.getMessage());
+                        }
+                    });
         });
+
     }
+
+    private void loadComments(int feedId) {
+        ApiService api = RetrofitClient.getInstance().create(ApiService.class);
+
+        api.getFeedComments(feedId, 0, 20)
+                .enqueue(new Callback<FeedCommentListResponse>() {
+                    @Override
+                    public void onResponse(Call<FeedCommentListResponse> call,
+                                           Response<FeedCommentListResponse> response) {
+
+                        if (response.isSuccessful() && response.body() != null) {
+                            List<FeedCommentDetailResponse> serverComments = response.body().getComments();
+
+                            chatList.clear();
+
+                            for (FeedCommentDetailResponse c : serverComments) {
+                                chatList.add(new FeedChat(
+                                        c.getProfileImageUrl(),
+                                        c.getNickname(),
+                                        c.getSentence()
+                                ));
+                            }
+
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<FeedCommentListResponse> call, Throwable t) {
+                        Log.e("FEED_CHAT", "댓글 조회 실패: " + t.getMessage());
+                    }
+                });
+    }
+
 }
 

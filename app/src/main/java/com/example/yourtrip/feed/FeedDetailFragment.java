@@ -50,6 +50,7 @@ public class FeedDetailFragment extends Fragment {
 
         btnChat.setOnClickListener(v -> {
             Fragment chat = new FeedChatFragment();
+
             Bundle bundle = new Bundle();
             bundle.putInt("feedId", feedId);
             chat.setArguments(bundle);

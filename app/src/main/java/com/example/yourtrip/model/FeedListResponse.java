@@ -6,6 +6,7 @@ public class FeedListResponse {
     private List<FeedSummaryResponse> feeds;
 
     public List<FeedSummaryResponse> getFeeds() {
+
         return feeds;
     }
 }

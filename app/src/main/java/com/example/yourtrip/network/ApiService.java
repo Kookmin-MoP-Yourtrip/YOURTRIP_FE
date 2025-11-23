@@ -1,16 +1,17 @@
 package com.example.yourtrip.network;
 
 
-import com.example.yourtrip.model.FeedDetailResponse;
-import com.example.yourtrip.model.FeedListResponse;
-
 import com.example.yourtrip.auth.model.EmailRequest;
 import com.example.yourtrip.auth.model.LoginRequest;
 import com.example.yourtrip.auth.model.PasswordRequest;
 import com.example.yourtrip.auth.model.ProfileRequest;
 import com.example.yourtrip.auth.model.VerificationRequest;
+import com.example.yourtrip.model.FeedCommentListResponse;
+import com.example.yourtrip.model.FeedCommentWriteRequest;
+import com.example.yourtrip.model.FeedCommentWriteResponse;
+import com.example.yourtrip.model.FeedDetailResponse;
+import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
-
 
 import java.util.List;
 
@@ -54,6 +55,7 @@ public interface ApiService {
     // 피드 리스트 조회 API
     @GET("/api/feeds")
     Call<FeedListResponse> getFeedList(
+            @Query("sortType") String sortType,   // NEW or POPULAR
             @Query("page") int page,
             @Query("size") int size
     );
@@ -72,6 +74,20 @@ public interface ApiService {
             @Path("feedId") int feedId
     );
 
+    // 피드별 댓글 조회 API
+    @GET("/api/feeds/{feedId}/comments")
+    Call<FeedCommentListResponse> getFeedComments(
+            @Path("feedId") int feedId,
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    // 피드에 댓글 작성 API
+    @POST("/api/feeds/{feedId}/comments")
+    Call<FeedCommentWriteResponse> writeComment(
+            @Path("feedId") int feedId,
+            @Body FeedCommentWriteRequest request
+    );
 
 }
 

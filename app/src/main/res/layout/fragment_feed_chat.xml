@@ -45,7 +45,6 @@
         android:id="@+id/rvChatList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="16dp"
         app:layout_constraintTop_toBottomOf="@+id/topBar"
         app:layout_constraintBottom_toTopOf="@+id/inputContainer"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +57,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:gravity="center_vertical"
+        android:gravity="top"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- 댓글 입력창 -->
@@ -100,18 +99,6 @@
 
     </LinearLayout>
 
-    <!-- ✅ 미리보기 전용 하단 네비 바 크기 확보 (실행 시 무시됨) -->
-    <View
-        android:id="@+id/systemBarDummy"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:visibility="gone"
-        tools:layout_height="62dp"
-        tools:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
