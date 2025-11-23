@@ -8,16 +8,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.yourtrip.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FeedDetailFragment extends Fragment {
 
     private ImageView btnBack, btnLike, btnChat, imgProfile;
     private TextView tvNickname, tvCaption, tvLocation;
-    private RecyclerView rvPhotos;
     private View tagLocation;
+
+    private ViewPager2 vpPhotos;
 
     private int feedId;
 
@@ -29,18 +33,14 @@ public class FeedDetailFragment extends Fragment {
 
         initViews(view);
 
-        // feedId 받기
         if (getArguments() != null) {
             feedId = getArguments().getInt("feedId", -1);
         }
 
-        // 뒤로가기
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
 
-        // 댓글 페이지 이동
         btnChat.setOnClickListener(v -> {
             Fragment chat = new FeedChatFragment();
-
             Bundle bundle = new Bundle();
             bundle.putInt("feedId", feedId);
             chat.setArguments(bundle);
@@ -67,8 +67,9 @@ public class FeedDetailFragment extends Fragment {
         tvLocation = view.findViewById(R.id.tv_location);
 
         imgProfile = view.findViewById(R.id.img_profile);
-        rvPhotos = view.findViewById(R.id.rv_photos);
         tagLocation = view.findViewById(R.id.tag_location);
+
+        vpPhotos = view.findViewById(R.id.vp_photos);
     }
 
     private void loadFeedDetail() {
@@ -82,5 +83,17 @@ public class FeedDetailFragment extends Fragment {
             tagLocation.setVisibility(View.VISIBLE);
             tvLocation.setText(place);
         }
+
+        // 사진 더미
+        List<String> photos = new ArrayList<>();
+        photos.add("https://picsum.photos/300/500");
+        photos.add("https://picsum.photos/800/300");
+        photos.add("https://picsum.photos/600/600");
+        photos.add("https://picsum.photos/500/800");
+
+        FeedPhotoAdapter adapter = new FeedPhotoAdapter(photos);
+        vpPhotos.setAdapter(adapter);
     }
 }
+
+

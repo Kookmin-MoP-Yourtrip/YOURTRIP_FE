@@ -15,10 +15,16 @@ import java.util.List;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder> {
 
-    private List<FeedItem> feedList;
+    public interface OnFeedClickListener {
+        void onFeedClick(FeedItem item);
+    }
 
-    public FeedAdapter(List<FeedItem> feedList) {
+    private List<FeedItem> feedList;
+    private OnFeedClickListener listener;
+
+    public FeedAdapter(List<FeedItem> feedList, OnFeedClickListener listener) {
         this.feedList = feedList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -33,13 +39,15 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
         FeedItem item = feedList.get(position);
 
-        // 🔹 URL 이미지 로딩 (Glide)
+        // 이미지 로딩
         Glide.with(holder.itemView.getContext())
                 .load(item.getImageUrl())
-                .centerCrop()
                 .into(holder.imgFeed);
-    }
 
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onFeedClick(item);
+        });
+    }
 
     @Override
     public int getItemCount() {

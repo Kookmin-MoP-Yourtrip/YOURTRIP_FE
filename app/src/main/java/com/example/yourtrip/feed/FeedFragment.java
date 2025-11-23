@@ -12,30 +12,21 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
-import com.example.yourtrip.model.FeedDetailResponse;
-import com.example.yourtrip.model.FeedListResponse;
-import com.example.yourtrip.network.ApiService;
-import com.example.yourtrip.network.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-
 public class FeedFragment extends Fragment {
 
     private RecyclerView rvFeed;
-
-    // 🔹 전역 변수로 변경
     private FeedAdapter adapter;
     private List<FeedItem> feedItems = new ArrayList<>();
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_feed_main, container, false);
 
@@ -44,61 +35,29 @@ public class FeedFragment extends Fragment {
         // 2열 그리드
         rvFeed.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        // 🔹 Adapter 생성 (초기에는 빈 리스트)
-        adapter = new FeedAdapter(feedItems);
-        rvFeed.setAdapter(adapter);
+        // adapter 생성 (클릭 시 상세로 이동)
+        adapter = new FeedAdapter(feedItems, item -> {
 
-        // 🔹 서버에서 피드 불러오기
-        loadFeeds();
+            FeedDetailFragment fragment = new FeedDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("feedId", item.getId());
+            fragment.setArguments(bundle);
 
-
-        // 피드 업로드 버튼
-        view.findViewById(R.id.btn_add_feed).setOnClickListener(v -> {
-            requireActivity()
-                    .getSupportFragmentManager()
+            requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainer, new UploadFeedFragment())
+                    .replace(R.id.fragmentContainer, fragment)
                     .addToBackStack(null)
                     .commit();
         });
 
+        rvFeed.setAdapter(adapter);
+
+        // ---------- 더미 1개만 넣기 ----------
+        feedItems.clear();
+        feedItems.add(new FeedItem(1, "https://picsum.photos/300"));
+        adapter.notifyDataSetChanged();
+        // -----------------------------------
+
         return view;
-    }
-
-    private void loadFeeds() {
-        ApiService api = RetrofitClient.getAuthService();
-
-        api.getFeedList(0, 20).enqueue(new Callback<FeedListResponse>() {
-            @Override
-            public void onResponse(Call<FeedListResponse> call, Response<FeedListResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-
-                    for (FeedDetailResponse feed : response.body().getFeeds()) {
-
-                        // 🔹 mediaList가 비었거나 null이면 무시
-                        if (feed.getMediaList() == null ||
-                                feed.getMediaList().isEmpty() ||
-                                feed.getMediaList().get(0).getUrl() == null ||
-                                feed.getMediaList().get(0).getUrl().isEmpty()) {
-
-                            continue; // skip
-                        }
-
-                        // 🔹 이미지 있는 피드만 추가
-                        String url = feed.getMediaList().get(0).getUrl();
-                        feedItems.add(new FeedItem(url));
-                    }
-
-
-                    // RecyclerView 갱신
-                    adapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<FeedListResponse> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
     }
 }

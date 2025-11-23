@@ -51,13 +51,12 @@
             android:orientation="vertical">
 
             <!-- ▣ 사진들 -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginHorizontal="8dp"
-                android:id="@+id/rv_photos"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_photos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                android:nestedScrollingEnabled="false"/>
+                android:layout_height="350dp"
+                android:layout_marginHorizontal="8dp"
+                android:overScrollMode="never"/>
 
 
             <!-- ▣ 프로필 -->
@@ -111,14 +110,19 @@
 
             <!-- 캡션 -->
             <TextView
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="10dp"
                 android:id="@+id/tv_caption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_box_round"
+                android:backgroundTint="@color/gray_100"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                android:padding="12dp"
+
                 android:text="여기에 피드 내용이 들어옵니다"
                 android:textColor="@color/gray_700"
-                android:layout_weight="1"/>
+                android:textSize="14sp" />
+
 
             <!-- ▣ 장소 -->
             <LinearLayout
