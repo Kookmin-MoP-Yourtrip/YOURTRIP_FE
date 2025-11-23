@@ -1,0 +1,27 @@
+<!--<androidx.cardview.widget.CardView-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="170dp"-->
+<!--    android:layout_height="162dp"-->
+<!--    android:layout_margin="6dp"-->
+<!--    android:background="@drawable/bg_box_round_12dp">-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/img_feed"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:scaleType="centerCrop" />-->
+<!--</androidx.cardview.widget.CardView>-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="170dp"
+    android:layout_height="162dp"
+    android:layout_margin="6dp"
+    android:background="@drawable/bg_box_round_12dp"
+    android:clipToOutline="true">
+
+    <ImageView
+        android:id="@+id/img_feed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+</FrameLayout>

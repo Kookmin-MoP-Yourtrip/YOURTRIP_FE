@@ -1,16 +1,19 @@
 package com.example.yourtrip.network;
 
 import com.example.yourtrip.model.EmailRequest;
+import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.LoginRequest;
+import com.example.yourtrip.model.MyCourseCreateRequest;
 import com.example.yourtrip.model.PasswordRequest;
 import com.example.yourtrip.model.ProfileRequest;
 import com.example.yourtrip.model.VerificationRequest;
-import com.example.yourtrip.model.MyCourseCreateRequest;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -36,6 +39,13 @@ public interface ApiService {
 
     @POST("/api/my-courses")
     Call<ResponseBody> createMyCourse(@Body MyCourseCreateRequest request);
+
+    // 피드 리스트 API
+    @GET("/api/feeds")
+    Call<FeedListResponse> getFeedList(
+            @Query("page") int page,
+            @Query("size") int size
+    );
 
 
 }

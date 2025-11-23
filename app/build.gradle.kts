@@ -69,5 +69,6 @@ dependencies {
     // 태그리스트
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 
-
+    // 피드 이미지
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }
