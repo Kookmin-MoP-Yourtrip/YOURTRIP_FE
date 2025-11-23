@@ -51,6 +51,17 @@ public class FeedFragment extends Fragment {
         // 🔹 서버에서 피드 불러오기
         loadFeeds();
 
+
+        // 피드 업로드 버튼
+        view.findViewById(R.id.btn_add_feed).setOnClickListener(v -> {
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, new UploadFeedFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         return view;
     }
 

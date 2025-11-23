@@ -8,11 +8,17 @@ import com.example.yourtrip.model.PasswordRequest;
 import com.example.yourtrip.model.ProfileRequest;
 import com.example.yourtrip.model.VerificationRequest;
 
+import java.util.List;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -40,12 +46,21 @@ public interface ApiService {
     @POST("/api/my-courses")
     Call<ResponseBody> createMyCourse(@Body MyCourseCreateRequest request);
 
-    // 피드 리스트 API
+    // 피드 리스트 조회 API
     @GET("/api/feeds")
     Call<FeedListResponse> getFeedList(
             @Query("page") int page,
             @Query("size") int size
     );
+
+    // 피드 생성 API
+    @Multipart
+    @POST("/api/feeds")
+    Call<Void> uploadFeed(
+            @Part List<MultipartBody.Part> mediaFiles,
+            @Part("request") RequestBody requestJson
+    );
+
 
 
 }

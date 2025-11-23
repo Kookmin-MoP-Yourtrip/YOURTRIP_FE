@@ -93,7 +93,7 @@
     <!-- 플로팅 버튼 (+) -->
 
     <ImageView
-        android:id="@+id/btn_add_trip"
+        android:id="@+id/btn_add_feed"
         android:layout_width="82dp"
         android:layout_height="82dp"
         android:src="@drawable/fab_add_course"
