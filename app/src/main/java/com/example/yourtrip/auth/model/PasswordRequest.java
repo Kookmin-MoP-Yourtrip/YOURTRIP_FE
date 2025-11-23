@@ -1,4 +1,4 @@
-package com.example.yourtrip.model;
+package com.example.yourtrip.auth.model;
 
 public class PasswordRequest {
     private String email;

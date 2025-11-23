@@ -1,11 +1,11 @@
 package com.example.yourtrip.network;
 
-import com.example.yourtrip.model.EmailRequest;
-import com.example.yourtrip.model.LoginRequest;
-import com.example.yourtrip.model.PasswordRequest;
-import com.example.yourtrip.model.ProfileRequest;
-import com.example.yourtrip.model.VerificationRequest;
-import com.example.yourtrip.model.MyCourseCreateRequest;
+import com.example.yourtrip.auth.model.EmailRequest;
+import com.example.yourtrip.auth.model.LoginRequest;
+import com.example.yourtrip.auth.model.PasswordRequest;
+import com.example.yourtrip.auth.model.ProfileRequest;
+import com.example.yourtrip.auth.model.VerificationRequest;
+import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

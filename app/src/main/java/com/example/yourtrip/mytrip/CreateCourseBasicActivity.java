@@ -15,7 +15,7 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.R;
-import com.example.yourtrip.model.MyCourseCreateRequest;
+import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -302,7 +302,7 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 //import androidx.appcompat.app.AppCompatActivity;
 //
 //import com.example.yourtrip.R;
-//import com.example.yourtrip.model.MyCourseListItemResponse;
+//import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 //import com.example.yourtrip.network.ApiService;
 //import com.example.yourtrip.network.RetrofitClient;
 //import com.google.android.material.datepicker.MaterialDatePicker;

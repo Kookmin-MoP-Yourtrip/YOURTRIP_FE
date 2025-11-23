@@ -20,7 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.R;
-import com.example.yourtrip.model.ProfileRequest;
+import com.example.yourtrip.auth.model.ProfileRequest;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 

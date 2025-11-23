@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.MainActivity;
 import com.example.yourtrip.R;
-import com.example.yourtrip.model.LoginRequest;
+import com.example.yourtrip.auth.model.LoginRequest;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 
