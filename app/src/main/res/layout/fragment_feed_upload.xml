@@ -103,21 +103,6 @@
             </LinearLayout>
 
             <!-- ▣ 캡션 입력 -->
-<!--            <EditText-->
-<!--                android:id="@+id/editDynamic"-->
-<!--                style="@style/RoundedEditText.Default"-->
-<!--                android:backgroundTint="@color/gray_100"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:layout_marginHorizontal="16dp"-->
-
-<!--                android:hint="아이디"-->
-<!--                android:textColorHint="@color/gray_550"-->
-<!--                android:textColor="@color/gray_700"-->
-<!--                android:textSize="14sp"-->
-
-<!--                app:layout_constraintTop_toBottomOf="@id/tvFeed"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"/>-->
             <EditText
                 android:id="@+id/editDynamic"
                 style="@style/RoundedEditText.Default"
@@ -177,13 +162,13 @@
 
     <!-- ▣ 업로드 버튼 -->
     <android.widget.Button
-        android:id="@+id/btnNext"
+        android:id="@+id/btn_feed_upload"
         style="@style/ChangeButtonStyle"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="40dp"
         android:layout_marginTop="8dp"
 
-        android:text="다음"
+        android:text="업로드하기"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

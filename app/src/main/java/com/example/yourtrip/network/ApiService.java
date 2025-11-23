@@ -58,7 +58,7 @@ public interface ApiService {
     @POST("/api/feeds")
     Call<Void> uploadFeed(
             @Part List<MultipartBody.Part> mediaFiles,
-            @Part("request") RequestBody requestJson
+            @Part("request") RequestBody request
     );
 
 

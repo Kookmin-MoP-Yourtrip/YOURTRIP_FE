@@ -74,13 +74,21 @@ public class FeedFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
 
                     for (FeedDetailResponse feed : response.body().getFeeds()) {
-                        if (feed.getMediaList() != null && !feed.getMediaList().isEmpty()) {
-                            String url = feed.getMediaList().get(0).getUrl();
 
-                            // 🔹 URL 기반 FeedItem 추가
-                            feedItems.add(new FeedItem(url));
+                        // 🔹 mediaList가 비었거나 null이면 무시
+                        if (feed.getMediaList() == null ||
+                                feed.getMediaList().isEmpty() ||
+                                feed.getMediaList().get(0).getUrl() == null ||
+                                feed.getMediaList().get(0).getUrl().isEmpty()) {
+
+                            continue; // skip
                         }
+
+                        // 🔹 이미지 있는 피드만 추가
+                        String url = feed.getMediaList().get(0).getUrl();
+                        feedItems.add(new FeedItem(url));
                     }
+
 
                     // RecyclerView 갱신
                     adapter.notifyDataSetChanged();
