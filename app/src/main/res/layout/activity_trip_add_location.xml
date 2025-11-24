@@ -50,22 +50,30 @@
             android:textSize="14sp"
             android:layout_marginBottom="14dp"/>
 
-<!--        <EditText-->
-<!--            android:id="@+id/etAddress"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="주소 입력"-->
-<!--            android:padding="12dp"-->
-<!--            android:background="#EEEEEE"-->
-<!--            android:layout_marginBottom="12dp"/>-->
 
         <!-- 지도는 나중에 Kakao Static Map 넣기 -->
-        <View
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="370dp"-->
+<!--            android:layout_marginBottom="16dp"-->
+<!--            android:background="@drawable/bg_box_round"-->
+<!--            android:backgroundTint="@color/gray_200"/>-->
+
+        <com.naver.maps.map.MapView
+            android:id="@+id/map_view"
             android:layout_width="match_parent"
             android:layout_height="370dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_box_round"
-            android:backgroundTint="@color/gray_200"/>
+            android:layout_marginBottom="16dp">
+        </com.naver.maps.map.MapView>
+
+
+<!--        <androidx.fragment.app.FragmentContainerView-->
+<!--            android:id="@+id/map_fragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:name="com.naver.maps.map.MapFragment" />-->
+
+
 
 
     </LinearLayout>

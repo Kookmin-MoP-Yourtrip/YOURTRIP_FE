@@ -58,6 +58,15 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    // naverMap
+    implementation("com.naver.maps:map-sdk:3.23.0")
+//    implementation("com.naver.maps:map-sdk:3.19.1")
+
+    //구글 맵
+//    implementation("com.google.android.gms:play-services-maps:18.2.0")
+//    implementation("com.google.android.libraries.places:places:3.4.0") // 검색 API용
+
+
     // Retrofit 추가
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")

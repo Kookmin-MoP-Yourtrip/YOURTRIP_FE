@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
         android:name=".YourTripApplication"
@@ -13,6 +17,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.MyAppTest">
+
+<!--        네이버 map api 발급-->
+        <meta-data
+            android:name="com.naver.maps.map.NCP_KEY_ID"
+            android:value="lm7f1yckad"/>
 
 
 
