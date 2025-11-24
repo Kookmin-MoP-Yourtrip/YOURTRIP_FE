@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:text="+  장소 추가하기"
         android:textColor="#1A73E8"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

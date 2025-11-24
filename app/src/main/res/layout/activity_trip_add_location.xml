@@ -59,19 +59,19 @@
 <!--            android:background="@drawable/bg_box_round"-->
 <!--            android:backgroundTint="@color/gray_200"/>-->
 
-        <com.naver.maps.map.MapView
-            android:id="@+id/map_view"
+<!--        <com.naver.maps.map.MapView-->
+<!--            android:id="@+id/map_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="370dp"-->
+<!--            android:layout_marginBottom="16dp">-->
+<!--        </com.naver.maps.map.MapView>-->
+
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="370dp"
-            android:layout_marginBottom="16dp">
-        </com.naver.maps.map.MapView>
-
-
-<!--        <androidx.fragment.app.FragmentContainerView-->
-<!--            android:id="@+id/map_fragment"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:name="com.naver.maps.map.MapFragment" />-->
+            android:layout_marginBottom="16dp" />
 
 
 
