@@ -4,6 +4,7 @@ import java.util.List;
 
 public class HomeCourseItem {
     public String title;
+
     public String location;
     public int imageRes;
     public int likeCount;
