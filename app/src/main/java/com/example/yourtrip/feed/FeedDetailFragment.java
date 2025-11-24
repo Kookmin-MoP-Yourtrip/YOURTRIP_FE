@@ -33,6 +33,9 @@ public class FeedDetailFragment extends Fragment {
     private ViewPager2 vpPhotos;
 
     private int feedId;
+    private View layoutLoading;
+    private View layoutContent;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,9 +83,16 @@ public class FeedDetailFragment extends Fragment {
         tagLocation = view.findViewById(R.id.tag_location);
 
         vpPhotos = view.findViewById(R.id.vp_photos);
+
+        layoutLoading = view.findViewById(R.id.loadingLayout);
+        layoutContent = view.findViewById(R.id.contentLayout);
+
     }
 
     private void loadFeedDetail() {
+
+        layoutLoading.setVisibility(View.VISIBLE);
+        layoutContent.setVisibility(View.GONE);
 
         ApiService api = RetrofitClient.getAuthService();
 
@@ -90,9 +100,13 @@ public class FeedDetailFragment extends Fragment {
             @Override
             public void onResponse(Call<FeedDetailResponse> call, Response<FeedDetailResponse> response) {
 
-                if (!response.isSuccessful() || response.body() == null) return;
+                if (!response.isSuccessful() || response.body() == null) {
+                    layoutLoading.setVisibility(View.GONE);
+                    return;
+                }
 
                 FeedDetailResponse data = response.body();
+
 
                 // 닉네임
                 tvNickname.setText(data.getNickname());
@@ -132,11 +146,15 @@ public class FeedDetailFragment extends Fragment {
                 // ViewPager2 적용
                 FeedPhotoAdapter adapter = new FeedPhotoAdapter(photos);
                 vpPhotos.setAdapter(adapter);
+
+                layoutLoading.setVisibility(View.GONE);
+                layoutContent.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFailure(Call<FeedDetailResponse> call, Throwable t) {
                 t.printStackTrace();
+                layoutLoading.setVisibility(View.GONE);
             }
         });
     }

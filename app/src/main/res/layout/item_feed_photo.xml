@@ -1,38 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.facebook.shimmer.ShimmerFrameLayout
+<ImageView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/shimmerLayout"
+    android:id="@+id/img_photo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:shimmer_auto_start="true"
-    android:layout_margin="0dp">
+    android:adjustViewBounds="true"
+    android:scaleType="centerCrop"
 
-    <ImageView
-        android:id="@+id/img_photo"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-
-        android:background="@drawable/bg_box_round"
-        android:backgroundTint="@color/gray_150"
-        android:clipToOutline="true"
-        android:outlineProvider="background"/>
-
-</com.facebook.shimmer.ShimmerFrameLayout>
-
-
-    <!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<ImageView-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    android:id="@+id/img_photo"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:adjustViewBounds="true"-->
-<!--    android:scaleType="centerCrop"-->
-
-<!--    android:background="@drawable/bg_box_round"-->
-<!--    android:backgroundTint="@color/gray_150"-->
-<!--    android:clipToOutline="true"-->
-<!--    android:outlineProvider="background"/>-->
+    android:background="@drawable/bg_box_round"
+    android:backgroundTint="@color/gray_150"
+    android:clipToOutline="true"
+    android:outlineProvider="background"/>

@@ -5,163 +5,353 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- ▣ 상단바 -->
+
+    <!-- ▣ (1) 스켈레톤 로딩 화면 -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:shimmer_auto_start="true"
+        android:visibility="visible">
+
+        <include layout="@layout/layout_feed_detail_loading"/>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+    <!-- ▣ (2) 실제 콘텐츠 -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/topBar"
+        android:id="@+id/contentLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/white"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/ic_arrow_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="피드 자세히 보기"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/gray_700"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- 기존 내용 전체를 통째로 여기에 넣기 -->
+        <!-- 🔽🔽🔽 너가 보낸 전체 내용이 여기로 들어간다 🔽🔽🔽 -->
 
 
-    <!-- ▣ 전체스크롤 -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/topBar"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <LinearLayout
+        <!-- ▣ 상단바 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <!-- ▣ 사진들 -->
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vp_photos"
-                android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:layout_marginHorizontal="8dp"
-                android:overScrollMode="never"/>
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-
-            <!-- ▣ 프로필 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:layout_marginTop="12dp"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:id="@+id/img_profile"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:src="@drawable/ic_default_profile"
-                    android:background="@drawable/bg_circle"
-                    android:clipToOutline="true"/>
-
-                <TextView
-                    android:id="@+id/tv_nickname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:text="사용자닉네임"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray_700"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:padding="2dp">
-
-                    <ImageView
-                        android:id="@+id/btn_like"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_heart_default"
-                        android:layout_marginEnd="8dp"/>
-
-                    <ImageView
-                        android:id="@+id/btn_chat"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_chat" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 캡션 -->
             <TextView
-                android:id="@+id/tv_caption"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_box_round"
-                android:backgroundTint="@color/gray_100"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="10dp"
-                android:padding="12dp"
-
-                android:text="여기에 피드 내용이 들어옵니다"
-                android:textColor="@color/gray_700"
-                android:textSize="14sp" />
-
-
-            <!-- ▣ 장소 -->
-            <LinearLayout
-                android:layout_margin="16dp"
-                android:id="@+id/tag_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
+                android:text="피드 자세히 보기"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/gray_700"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"
+        <!-- ▣ 전체스크롤 -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@id/topBar"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-                android:background="@drawable/bg_tag"
-                android:backgroundTint="@color/tag_skyblue"
-                android:clipToPadding="false">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="17dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="1dp"
-                    android:src="@drawable/ic_location"
-                    android:background="@android:color/transparent" />
+                <!-- ▣ 사진들 -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vp_photos"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:overScrollMode="never"/>
 
+                <!-- ▣ 프로필 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/img_profile"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:src="@drawable/ic_default_profile"
+                        android:background="@drawable/bg_circle"
+                        android:clipToOutline="true"/>
+
+                    <TextView
+                        android:id="@+id/tv_nickname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:text="사용자닉네임"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/gray_700"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:padding="2dp">
+
+                        <ImageView
+                            android:id="@+id/btn_like"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_heart_default"
+                            android:layout_marginEnd="8dp"/>
+
+                        <ImageView
+                            android:id="@+id/btn_chat"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_chat" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 캡션 -->
                 <TextView
-                    android:id="@+id/tv_location"
+                    android:id="@+id/tv_caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_box_round"
+                    android:backgroundTint="@color/gray_100"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="12dp"
+
+                    android:text="여기에 피드 내용이 들어옵니다"
+                    android:textColor="@color/gray_700"
+                    android:textSize="14sp" />
+
+                <!-- ▣ 장소 -->
+                <LinearLayout
+                    android:layout_margin="16dp"
+                    android:id="@+id/tag_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:background="@drawable/bg_tag"
+                    android:backgroundTint="@color/tag_skyblue"
+                    android:clipToPadding="false">
 
-                    android:text="지역명"
-                    android:textSize="12sp"
-                    android:textColor="@color/gray_600"
-                    android:maxLines="1"
-                    android:ellipsize="end" />
+                    <ImageView
+                        android:layout_width="17dp"
+                        android:layout_height="16dp"
+                        android:layout_marginEnd="1dp"
+                        android:src="@drawable/ic_location"
+                        android:background="@android:color/transparent" />
+
+                    <TextView
+                        android:id="@+id/tv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:text="지역명"
+                        android:textSize="12sp"
+                        android:textColor="@color/gray_600"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+                </LinearLayout>
+
             </LinearLayout>
+        </ScrollView>
 
-        </LinearLayout>
-    </ScrollView>
+        <!-- 🔼🔼🔼 여기까지 기존 내용 그대로 옮겨옴 🔼🔼🔼 -->
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent">-->
+
+<!--    &lt;!&ndash; ▣ 상단바 &ndash;&gt;-->
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/topBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        android:background="@android:color/white"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/btn_back"-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:src="@drawable/ic_arrow_back"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="피드 자세히 보기"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textColor="@color/gray_700"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+<!--    &lt;!&ndash; ▣ 전체스크롤 &ndash;&gt;-->
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:fillViewport="true"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/topBar"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            &lt;!&ndash; ▣ 사진들 &ndash;&gt;-->
+<!--            <androidx.viewpager2.widget.ViewPager2-->
+<!--                android:id="@+id/vp_photos"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="350dp"-->
+<!--                android:layout_marginHorizontal="8dp"-->
+<!--                android:overScrollMode="never"/>-->
+
+
+<!--            &lt;!&ndash; ▣ 프로필 &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:gravity="center_vertical">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_profile"-->
+<!--                    android:layout_width="42dp"-->
+<!--                    android:layout_height="42dp"-->
+<!--                    android:src="@drawable/ic_default_profile"-->
+<!--                    android:background="@drawable/bg_circle"-->
+<!--                    android:clipToOutline="true"/>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_nickname"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="8dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="사용자닉네임"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textColor="@color/gray_700"/>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:padding="2dp">-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/btn_like"-->
+<!--                        android:layout_width="32dp"-->
+<!--                        android:layout_height="32dp"-->
+<!--                        android:src="@drawable/ic_heart_default"-->
+<!--                        android:layout_marginEnd="8dp"/>-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/btn_chat"-->
+<!--                        android:layout_width="32dp"-->
+<!--                        android:layout_height="32dp"-->
+<!--                        android:src="@drawable/ic_chat" />-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+
+<!--            &lt;!&ndash; 캡션 &ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/tv_caption"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/bg_box_round"-->
+<!--                android:backgroundTint="@color/gray_100"-->
+<!--                android:layout_marginHorizontal="16dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:padding="12dp"-->
+
+<!--                android:text="여기에 피드 내용이 들어옵니다"-->
+<!--                android:textColor="@color/gray_700"-->
+<!--                android:textSize="14sp" />-->
+
+
+<!--            &lt;!&ndash; ▣ 장소 &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_margin="16dp"-->
+<!--                android:id="@+id/tag_location"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="center_vertical"-->
+
+<!--                android:paddingHorizontal="12dp"-->
+<!--                android:paddingVertical="6dp"-->
+
+<!--                android:background="@drawable/bg_tag"-->
+<!--                android:backgroundTint="@color/tag_skyblue"-->
+<!--                android:clipToPadding="false">-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="17dp"-->
+<!--                    android:layout_height="16dp"-->
+<!--                    android:layout_marginEnd="1dp"-->
+<!--                    android:src="@drawable/ic_location"-->
+<!--                    android:background="@android:color/transparent" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_location"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@android:color/transparent"-->
+
+<!--                    android:text="지역명"-->
+<!--                    android:textSize="12sp"-->
+<!--                    android:textColor="@color/gray_600"-->
+<!--                    android:maxLines="1"-->
+<!--                    android:ellipsize="end" />-->
+<!--            </LinearLayout>-->
+
+<!--        </LinearLayout>-->
+<!--    </ScrollView>-->
+
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
