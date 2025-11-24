@@ -19,7 +19,6 @@ import com.example.yourtrip.model.FeedDetailResponse;
 import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +34,8 @@ public class FeedFragment extends Fragment {
     private List<FeedItem> feedItems = new ArrayList<>();
     private EditText etSearch;
     private ImageView btnSearch;
+    private View layoutLoading;
+    private View layoutContent;
 
     @Nullable
     @Override
@@ -43,6 +44,9 @@ public class FeedFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_feed_main, container, false);
+
+        layoutLoading = view.findViewById(R.id.loadingLayout_feed_main);
+        layoutContent = view.findViewById(R.id.contentLayout_feed_main);
 
         rvFeed = view.findViewById(R.id.rv_feed);
 
@@ -101,105 +105,99 @@ public class FeedFragment extends Fragment {
         return view;
     }
 
-    private void searchFeedList(String keyword) {
+    private void showLoading() {
+        layoutLoading.setVisibility(View.VISIBLE);
+        layoutContent.setVisibility(View.GONE);
+    }
+
+    private void showContent() {
+        layoutLoading.setVisibility(View.GONE);
+        layoutContent.setVisibility(View.VISIBLE);
+    } private void searchFeedList(String keyword) {
+
+        showLoading();
 
         ApiService api = RetrofitClient.getAuthService();
-
         api.searchFeeds(keyword, 0, 20)
                 .enqueue(new Callback<FeedListResponse>() {
                     @Override
                     public void onResponse(Call<FeedListResponse> call, Response<FeedListResponse> response) {
 
-                        Log.d("SEARCH_API", "code = " + response.code());
-
                         if (!response.isSuccessful() || response.body() == null) {
                             Log.e("SEARCH_API", "errorBody=" + response.errorBody());
+                            showContent();
                             return;
                         }
 
                         List<FeedDetailResponse> result = response.body().getFeeds();
-
                         if (result == null) {
-                            Log.e("SEARCH_API", "result list is NULL");
+                            showContent();
                             return;
                         }
 
                         feedItems.clear();
 
                         for (FeedDetailResponse feed : result) {
-
-                            // 이미지 URL 추출
                             String thumbnail = null;
                             if (feed.getMediaList() != null && !feed.getMediaList().isEmpty()) {
-                                String url = feed.getMediaList().get(0).getMediaUrl();
-                                if (url != null) thumbnail = url;
+                                thumbnail = feed.getMediaList().get(0).getMediaUrl();
                             }
 
-                            feedItems.add(new FeedItem(
-                                    feed.getFeedId(),   // int OK
-                                    thumbnail
-                            ));
+                            feedItems.add(new FeedItem(feed.getFeedId(), thumbnail));
                         }
 
                         adapter.notifyDataSetChanged();
+                        showContent();
                     }
 
                     @Override
                     public void onFailure(Call<FeedListResponse> call, Throwable t) {
                         Log.e("SEARCH_API", "fail : " + t.getMessage());
+                        showContent();
                     }
                 });
     }
 
-
     private void loadFeedList() {
 
-        ApiService api = RetrofitClient.getAuthService();
+        showLoading();
 
+        ApiService api = RetrofitClient.getAuthService();
         api.getFeedList("NEW", 0, 20)
                 .enqueue(new Callback<FeedListResponse>() {
                     @Override
                     public void onResponse(Call<FeedListResponse> call, Response<FeedListResponse> response) {
 
-                        Log.d("FEED_API", "Response code: " + response.code());
-
                         if (!response.isSuccessful() || response.body() == null) {
-                            Log.e("FEED_API", "ERROR: " + response.code());
+                            showContent();
                             return;
                         }
 
-                        Log.d("FEED_API", "body: " + new Gson().toJson(response.body()));
-
-                        // 🔥 타입 수정 (가장 중요한 부분)
                         List<FeedDetailResponse> serverList = response.body().getFeeds();
-
                         if (serverList == null) {
-                            Log.e("FEED_API", "serverList is NULL");
+                            showContent();
                             return;
                         }
 
                         feedItems.clear();
 
                         for (FeedDetailResponse feed : serverList) {
-
                             String thumbnail = null;
-
                             if (feed.getMediaList() != null && !feed.getMediaList().isEmpty()) {
                                 thumbnail = feed.getMediaList().get(0).getMediaUrl();
                             }
 
-                            feedItems.add(new FeedItem(
-                                    feed.getFeedId(),   // int OK
-                                    thumbnail
-                            ));
+                            feedItems.add(new FeedItem(feed.getFeedId(), thumbnail));
                         }
 
                         adapter.notifyDataSetChanged();
+                        showContent();
                     }
 
                     @Override
                     public void onFailure(Call<FeedListResponse> call, Throwable t) {
                         Log.e("FEED_API", "FAILURE: " + t.getMessage());
+                        showContent();
                     }
                 });
     }

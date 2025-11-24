@@ -1,9 +1,12 @@
 package com.example.yourtrip.feed;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +31,7 @@ import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 import com.google.gson.Gson;
 
-import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,22 +137,13 @@ public class FeedUploadFragment extends Fragment {
         // ▣ 이미지 → byte[] → MultipartBody
         for (Uri uri : selectedImages) {
             try {
-                // MIME 타입 읽기
-                String mimeType = requireContext().getContentResolver().getType(uri);
-                if (mimeType == null) mimeType = "image/jpeg"; // fallback
-
-                // 파일명
                 String fileName = FileUtils.getFileName(requireContext(), uri);
 
-                // InputStream -> byte[] 변환
-                InputStream is = requireContext().getContentResolver().openInputStream(uri);
-                byte[] bytes = FileUtils.readBytes(is);
+                // 🔥 압축된 이미지로 교체
+                byte[] compressedBytes = compressImage(requireContext(), uri);
 
-                // 정확한 MIME 타입으로 RequestBody 생성
-                RequestBody fileBody = RequestBody.create(
-                        MediaType.parse(mimeType),
-                        bytes
-                );
+                RequestBody fileBody =
+                        RequestBody.create(MediaType.parse("image/jpeg"), compressedBytes);
 
                 MultipartBody.Part part = MultipartBody.Part.createFormData(
                         "mediaFiles",
@@ -165,6 +159,40 @@ public class FeedUploadFragment extends Fragment {
                 return;
             }
         }
+
+//        for (Uri uri : selectedImages) {
+//            try {
+//                // MIME 타입 읽기
+//                String mimeType = requireContext().getContentResolver().getType(uri);
+//                if (mimeType == null) mimeType = "image/jpeg"; // fallback
+//
+//                // 파일명
+//                String fileName = FileUtils.getFileName(requireContext(), uri);
+//
+//                // InputStream -> byte[] 변환
+//                InputStream is = requireContext().getContentResolver().openInputStream(uri);
+//                byte[] bytes = FileUtils.readBytes(is);
+//
+//                // 정확한 MIME 타입으로 RequestBody 생성
+//                RequestBody fileBody = RequestBody.create(
+//                        MediaType.parse(mimeType),
+//                        bytes
+//                );
+//
+//                MultipartBody.Part part = MultipartBody.Part.createFormData(
+//                        "mediaFiles",
+//                        fileName,
+//                        fileBody
+//                );
+//
+//                fileParts.add(part);
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                Toast.makeText(getContext(), "이미지 처리 오류", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//        }
 
 
         // ▣ JSON 부분 (title, location, content 모두 선택)
@@ -239,4 +267,20 @@ public class FeedUploadFragment extends Fragment {
         btnUpload.setEnabled(!selectedImages.isEmpty());
         btnUpload.setAlpha(selectedImages.isEmpty() ? 0.4f : 1f);
     }
+
+    // 사진 앞축
+    private byte[] compressImage(Context context, Uri uri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream); // 🔥 품질 70%로 압축
+            return stream.toByteArray();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

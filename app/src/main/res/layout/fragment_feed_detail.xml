@@ -8,7 +8,7 @@
 
     <!-- ▣ (1) 스켈레톤 로딩 화면 -->
     <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/loadingLayout"
+        android:id="@+id/loadingLayout_feed_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:shimmer_auto_start="true"
@@ -21,7 +21,7 @@
 
     <!-- ▣ (2) 실제 콘텐츠 -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contentLayout"
+        android:id="@+id/contentLayout_feed_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">

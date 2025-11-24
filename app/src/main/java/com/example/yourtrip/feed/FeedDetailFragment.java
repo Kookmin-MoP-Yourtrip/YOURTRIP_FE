@@ -84,8 +84,8 @@ public class FeedDetailFragment extends Fragment {
 
         vpPhotos = view.findViewById(R.id.vp_photos);
 
-        layoutLoading = view.findViewById(R.id.loadingLayout);
-        layoutContent = view.findViewById(R.id.contentLayout);
+        layoutLoading = view.findViewById(R.id.loadingLayout_feed_detail);
+        layoutContent = view.findViewById(R.id.contentLayout_feed_detail);
 
     }
 
