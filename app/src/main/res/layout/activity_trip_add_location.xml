@@ -39,42 +39,47 @@
             android:layout_marginBottom="24dp"
             android:layout_marginTop="12dp" />
 
-
-        <EditText
-            android:id="@+id/etPlaceName"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            style="@style/RoundedEditText.Default"
-            android:hint="정확한 주소나 장소명을 입력해 주세요."
-            android:padding="12dp"
-            android:textSize="14sp"
-            android:layout_marginBottom="14dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp"
+            style="@style/RoundedEditText.Default">
 
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etPlaceName"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                style="@style/RoundedEditText.Default"
+                android:hint="정확한 주소나 장소명을 입력해 주세요."
+                android:paddingStart="12dp"
+                android:paddingEnd="40dp"
+                android:textSize="14sp"
+                android:layout_marginEnd="10dp"
+                android:drawablePadding="8dp" />
 
-        <!-- 지도는 나중에 Kakao Static Map 넣기 -->
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="370dp"-->
-<!--            android:layout_marginBottom="16dp"-->
-<!--            android:background="@drawable/bg_box_round"-->
-<!--            android:backgroundTint="@color/gray_200"/>-->
+            <!-- 검색 아이콘 버튼 -->
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/btnSearch"
+                android:src="@drawable/ic_search"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:tint="@color/gray_550"
+                android:background="@color/gray_150"/>
 
-<!--        <com.naver.maps.map.MapView-->
-<!--            android:id="@+id/map_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="370dp"-->
-<!--            android:layout_marginBottom="16dp">-->
-<!--        </com.naver.maps.map.MapView>-->
+        </LinearLayout>
 
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/map_fragment_container"
+        <!-- 네이버 map -->
+        <com.naver.maps.map.MapView
+            android:id="@+id/map_view"
             android:layout_width="match_parent"
-            android:layout_height="370dp"
-            android:layout_marginBottom="16dp" />
-
-
-
+            android:layout_height="390dp">
+        </com.naver.maps.map.MapView>
 
     </LinearLayout>
 
