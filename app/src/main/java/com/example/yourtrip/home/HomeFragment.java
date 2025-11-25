@@ -201,9 +201,18 @@ public class HomeFragment extends Fragment {
                         }
                         // ==================================
 
-                        // 기존 코드 그대로 유지
-                        popularAdapter.setItems(list);
-                        themeAdapter.setItems(list);
+                        // ⭐ 상위 5개만 추출
+                        List<UploadCourseItem> topFive =
+                                list.size() > 5 ? list.subList(0, 5) : list;
+
+                        // 인기 코스 = 5개
+                        popularAdapter.setItems(topFive);
+
+                        // 테마 코스도 동일한 5개 기준
+                        themeAdapter.setItems(topFive);
+
+                        // 디버그 출력
+                        Log.d("API_TEST", "topFive.size = " + topFive.size());
                     }
 
                     @Override
