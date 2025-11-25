@@ -103,7 +103,7 @@ public class FeedFragment extends Fragment {
 
     private void searchFeedList(String keyword) {
 
-        ApiService api = RetrofitClient.getAuthService();
+        ApiService api = RetrofitClient.getAuthService(getContext());
 
         api.searchFeeds(keyword, 0, 20)
                 .enqueue(new Callback<FeedListResponse>() {
@@ -154,7 +154,7 @@ public class FeedFragment extends Fragment {
 
     private void loadFeedList() {
 
-        ApiService api = RetrofitClient.getAuthService();
+        ApiService api = RetrofitClient.getAuthService(getContext());
 
         api.getFeedList("NEW", 0, 20)
                 .enqueue(new Callback<FeedListResponse>() {

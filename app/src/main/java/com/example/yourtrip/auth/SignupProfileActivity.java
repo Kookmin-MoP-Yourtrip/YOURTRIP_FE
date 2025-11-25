@@ -149,7 +149,7 @@ public class SignupProfileActivity extends AppCompatActivity {
 
     // 프로필 등록 API 호출
     private void submitProfile(String email, String nickname, String profileUrl) {
-        ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getInstance(this).create(ApiService.class);
         ProfileRequest request = new ProfileRequest(email, nickname, profileUrl);
 
         apiService.setProfile(request).enqueue(new Callback<ResponseBody>() {

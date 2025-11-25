@@ -145,7 +145,7 @@ public class SignupPasswordActivity extends AppCompatActivity {
         // 이메일은 Intent로 전달받은 이메일을 사용
         String email = getIntent().getStringExtra("email");
 
-        ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getInstance(this).create(ApiService.class);
         PasswordRequest request = new PasswordRequest(email, password);  // 이메일과 비밀번호
         apiService.setPassword(request).enqueue(new Callback<ResponseBody>() {
             @Override

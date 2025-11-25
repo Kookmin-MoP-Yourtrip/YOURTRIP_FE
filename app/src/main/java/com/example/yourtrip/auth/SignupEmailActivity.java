@@ -80,7 +80,7 @@ public class SignupEmailActivity extends AppCompatActivity {
             }
 
             // 이메일 중복 체크 API 호출
-            ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
+            ApiService apiService = RetrofitClient.getInstance(this).create(ApiService.class);
             apiService.checkEmail(new EmailRequest(email)).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

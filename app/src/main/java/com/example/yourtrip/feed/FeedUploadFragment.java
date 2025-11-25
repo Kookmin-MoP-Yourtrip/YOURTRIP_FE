@@ -125,7 +125,7 @@ public class FeedUploadFragment extends Fragment {
 
     private void uploadFeedToServer() {
 
-        ApiService api = RetrofitClient.getAuthService();
+        ApiService api = RetrofitClient.getAuthService(getContext());
 
         List<MultipartBody.Part> fileParts = new ArrayList<>();
 

@@ -84,7 +84,7 @@ public class FeedDetailFragment extends Fragment {
 
     private void loadFeedDetail() {
 
-        ApiService api = RetrofitClient.getAuthService();
+        ApiService api = RetrofitClient.getAuthService(getContext());
 
         api.getFeedDetail(feedId).enqueue(new Callback<FeedDetailResponse>() {
             @Override

@@ -84,7 +84,7 @@ public class HomeSearchResultFragment extends Fragment {
     // ================================
     private void loadSearchResults() {
 
-        ApiService api = RetrofitClient.getInstance().create(ApiService.class);
+        ApiService api = RetrofitClient.getInstance(getContext()).create(ApiService.class);
 
         String sendKeyword = (keyword == null || keyword.isEmpty()) ? null : keyword;
         List<String> sendTags = TagConverter.toServerCodes(selectedTags);

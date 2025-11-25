@@ -174,7 +174,7 @@ public class HomeFragment extends Fragment {
 
     // API → 인기 코스 가져오기
     private void loadPopularCourses() {
-        ApiService api = RetrofitClient.getInstance().create(ApiService.class);
+        ApiService api = RetrofitClient.getInstance(getContext()).create(ApiService.class);
 
         api.getUploadCourses(null, null, "POPULAR")
                 .enqueue(new Callback<UploadCourseListResponse>() {
