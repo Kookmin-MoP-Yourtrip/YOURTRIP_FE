@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -34,6 +35,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
 
@@ -54,9 +56,19 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // naverMap
+    implementation("com.naver.maps:map-sdk:3.23.0")
+//    implementation("com.naver.maps:map-sdk:3.19.1")
+
+    //구글 맵
+//    implementation("com.google.android.gms:play-services-maps:18.2.0")
+//    implementation("com.google.android.libraries.places:places:3.4.0") // 검색 API용
+
 
     // Retrofit 추가
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
