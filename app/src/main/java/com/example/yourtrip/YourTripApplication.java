@@ -13,6 +13,9 @@ package com.example.yourtrip;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
+
+import com.naver.maps.map.NaverMapSdk;
 
 public class YourTripApplication extends Application {
 
@@ -21,7 +24,18 @@ public class YourTripApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d("Naver0_YourTripApplication", "onCreate() called");
         instance = this;
+
+        // 네이버맵 SDK 전역 초기화
+        try {
+            NaverMapSdk.getInstance(this).setClient(
+                    new NaverMapSdk.NcpKeyClient("lm7f1yckad")
+            );
+            Log.d("Naver0_NAVER_SDK", "NaverMap SDK initialization success.");
+        } catch (Exception e) {
+            Log.e("Naver0_NAVER_SDK", "NaverMap SDK initialization failed: " + e.getMessage());
+        }
     }
 
     public static Context getAppContext() {

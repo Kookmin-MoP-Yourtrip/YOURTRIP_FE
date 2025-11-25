@@ -43,34 +43,38 @@ public class AddLocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_add_location);
 
-        // 네이버 맵 SDK 초기화 (여기서 클라이언트 ID 설정)
-        NaverMapSdk.getInstance(this).setClient(
-                new NaverMapSdk.NcpKeyClient("lm7f1yckad")
-        );
-
         initViews();
         setTopBar();
         setTextWatcherForPlaceName();
 
-        // MapView 초기화는 setContentView() 이후에만 가능
+        // 네이버 맵 SDK 초기화 코드 -> YourTripApplication으로 옮겼음
+        // MapView 초기화
         mapView = findViewById(R.id.map_view);
-        mapView.onCreate(savedInstanceState);
+        mapView.onCreate(savedInstanceState); //mapView 초기화
 
-        // 지도 객체를 비동기로 받아오고, 기본 카메라 위치 설정
-        mapView.getMapAsync(naverMap -> {
-            this.naverMap = naverMap;
+        // 로그로 SDK 초기화가 정상적으로 되었는지 확인
+        Log.d("Naver1_NAVER_SDK_TEST", String.valueOf(NaverMapSdk.getInstance(this).getClient()));
 
-            // 줌 컨트롤을 설정하기 위해 NaverMapOptions를 사용
-            NaverMapOptions options = new NaverMapOptions();
-            options.zoomControlEnabled(true); // 줌 컨트롤 활성화
+        // mapView가 정상적으로 초기화되었는지 확인하고 getMapAsync 호출
+        if (mapView != null) {
+            mapView.getMapAsync(naverMap -> {
+                this.naverMap = naverMap;
 
-            Log.d("getMapAsync 호출", "getMapAsync 호출 완료");
+                Log.d("Naver2_getMapAsync 호출", "getMapAsync 호출 완료");
 
-            // 지도 기본 위치 설정 (예: 서울 시청)
-            LatLng defaultLocation = new LatLng(37.5665, 126.9780);
-            CameraUpdate cameraUpdate = CameraUpdate.scrollTo(defaultLocation);
-            naverMap.moveCamera(cameraUpdate);
-        });
+                // 줌 컨트롤 설정
+                NaverMapOptions options = new NaverMapOptions();
+                options.zoomControlEnabled(true);  // 줌 컨트롤 활성화
+
+                // 지도 기본 위치 설정 (예: 서울 시청)
+                LatLng defaultLocation = new LatLng(37.5665, 126.9780);
+                CameraUpdate cameraUpdate = CameraUpdate.scrollTo(defaultLocation);
+                naverMap.moveCamera(cameraUpdate);
+            });
+        } else {
+            Log.e("Naver2_getMapAsync Error", "NaverMap 객체가 null");
+        }
+
 
         // 검색 버튼 클릭 이벤트 처리
         btnSearch.setOnClickListener(v -> {
@@ -284,8 +288,8 @@ public class AddLocationActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mapView.onDestroy(); // super 전에 호출
+        super.onDestroy();
     }
 
     @Override
