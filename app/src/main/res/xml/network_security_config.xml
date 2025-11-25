@@ -4,4 +4,7 @@
 <!--    <domain-config cleartextTrafficPermitted="true">-->
 <!--        <domain includeSubdomains="true">3.89.62.194</domain> &lt;!&ndash; IP 주소 또는 도메인 이름 설정 &ndash;&gt;-->
 <!--    </domain-config>-->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">naveropenapi.apigw.ntruss.com</domain>
+    </domain-config>
 </network-security-config>

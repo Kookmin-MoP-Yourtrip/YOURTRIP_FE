@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit retrofit;
-    private static final String BASE_URL = "https://naveropenapi.apis.naver.com/"; // Geocoding API 주소
+    private static final String BASE_URL = "https://yourtrip.site/";
 
     // 기존 getInstance() 메서드는 유지
     public static Retrofit getInstance() {
