@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +42,11 @@ public class HomeFragment extends Fragment {
     // 장소 버튼들
     private View location0, location1, location2, location3, location4;
 
+    // ⭐ 태그 관련
+    private TextView tagHealing, tagActivity, tagFood, tagSensibility, tagCulture, tagNature, tagShopping;
+    private List<TextView> allTags = new ArrayList<>();
+    private List<UploadCourseItem> allCourseList = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(
@@ -56,10 +62,9 @@ public class HomeFragment extends Fragment {
         btnPopularMore = view.findViewById(R.id.btn_popular_course_more);
         btnThemeMore = view.findViewById(R.id.btn_theme_course_more);
 
-        // 검색창 클릭 → 검색 화면
+        // 검색창 → 검색 화면 이동
         EditText tvSearch = view.findViewById(R.id.tvSearch);
         tvSearch.setFocusable(false);
-        tvSearch.setClickable(true);
         tvSearch.setOnClickListener(v -> {
             Fragment fragment = new HomeSearchFragment();
             requireActivity().getSupportFragmentManager()
@@ -72,6 +77,10 @@ public class HomeFragment extends Fragment {
         setupPopularRecycler();
         setupThemeRecycler();
         setupLocationClickEvents();
+        setupTagClickListeners();
+
+        // Default 태그 = 힐링
+        tagHealing.post(() -> tagHealing.performClick());
 
         // 인기 코스 더보기
         btnPopularMore.setOnClickListener(v -> {
@@ -90,12 +99,21 @@ public class HomeFragment extends Fragment {
                     .commit();
         });
 
-        // 테마 코스 더보기 (현재는 전체 리스트 이동)
+        // 테마 코스 더보기
         btnThemeMore.setOnClickListener(v -> {
+            String selectedTag = null;
+            for (TextView tv : allTags) {
+                if (tv.isSelected()) {
+                    selectedTag = tv.getText().toString();
+                    break;
+                }
+            }
+            if (selectedTag == null) return;
+
             Bundle bundle = new Bundle();
             bundle.putString("mode", "theme");
             bundle.putString("keyword", "");
-            bundle.putStringArrayList("tags", null);
+            bundle.putStringArrayList("tags", new ArrayList<>(List.of(selectedTag)));
 
             HomeSearchResultFragment fragment = new HomeSearchResultFragment();
             fragment.setArguments(bundle);
@@ -107,7 +125,7 @@ public class HomeFragment extends Fragment {
                     .commit();
         });
 
-        // API 로 인기 코스 로드
+        // API 호출 → 인기 코스 로드 (전체 리스트 저장)
         loadPopularCourses();
 
         return view;
@@ -122,9 +140,76 @@ public class HomeFragment extends Fragment {
         location2 = view.findViewById(R.id.location2);
         location3 = view.findViewById(R.id.location3);
         location4 = view.findViewById(R.id.location4);
+
+        // 태그 바인딩
+        tagHealing = view.findViewById(R.id.tag_healing);
+        tagActivity = view.findViewById(R.id.tag_activity);
+        tagFood = view.findViewById(R.id.tag_food);
+        tagSensibility = view.findViewById(R.id.tag_sensibility);
+        tagCulture = view.findViewById(R.id.tag_culture);
+        tagNature = view.findViewById(R.id.tag_nature);
+        tagShopping = view.findViewById(R.id.tag_shopping);
+
+        allTags = List.of(
+                tagHealing, tagActivity, tagFood, tagSensibility,
+                tagCulture, tagNature, tagShopping
+        );
     }
 
-    // 장소 클릭 → 해당 장소 검색
+    // ⭐ 태그 클릭 리스너 등록
+    private void setupTagClickListeners() {
+        for (TextView tag : allTags) {
+            tag.setOnClickListener(v -> {
+                String selectedTag = tag.getText().toString();
+                applyTagSelection(tag);
+                filterCourseByTag(selectedTag);
+            });
+        }
+    }
+
+    // ⭐ 태그 단일 선택 UI
+    private void applyTagSelection(TextView selectedTag) {
+        for (TextView tag : allTags) {
+            boolean isSelected = (tag == selectedTag);
+            tag.setSelected(isSelected);
+
+            tag.setTextColor(isSelected ?
+                    getResources().getColor(android.R.color.white) :
+                    getResources().getColor(R.color.gray_600)
+            );
+        }
+    }
+
+    // ⭐ 태그 필터링
+    private void filterCourseByTag(String tag) {
+        List<UploadCourseItem> matched = new ArrayList<>();
+
+        for (UploadCourseItem item : allCourseList) {
+            if (item.keywords != null && item.keywords.contains(tag)) {
+                matched.add(item);
+            }
+        }
+
+        List<UploadCourseItem> topFive =
+                matched.size() > 5 ? matched.subList(0, 5) : matched;
+
+        themeAdapter.setItems(topFive);
+    }
+
+    // RecyclerView 기본 설정
+    private void setupPopularRecycler() {
+        rvPopular.setLayoutManager(new LinearLayoutManager(getContext()));
+        popularAdapter = new UploadCourseAdapter(new ArrayList<>());
+        rvPopular.setAdapter(popularAdapter);
+    }
+
+    private void setupThemeRecycler() {
+        rvThemeCourse.setLayoutManager(new LinearLayoutManager(getContext()));
+        themeAdapter = new UploadCourseAdapter(new ArrayList<>());
+        rvThemeCourse.setAdapter(themeAdapter);
+    }
+
+    // ⭐ 장소별 클릭
     private void setupLocationClickEvents() {
         View.OnClickListener listener = v -> {
             String keyword = "";
@@ -158,21 +243,7 @@ public class HomeFragment extends Fragment {
         location4.setOnClickListener(listener);
     }
 
-    // 인기 코스 RecyclerView
-    private void setupPopularRecycler() {
-        rvPopular.setLayoutManager(new LinearLayoutManager(getContext()));
-        popularAdapter = new UploadCourseAdapter(new ArrayList<>());
-        rvPopular.setAdapter(popularAdapter);
-    }
-
-    // 테마별 RecyclerView
-    private void setupThemeRecycler() {
-        rvThemeCourse.setLayoutManager(new LinearLayoutManager(getContext()));
-        themeAdapter = new UploadCourseAdapter(new ArrayList<>());
-        rvThemeCourse.setAdapter(themeAdapter);
-    }
-
-    // API → 인기 코스 가져오기
+    // ⭐ API 호출
     private void loadPopularCourses() {
         ApiService api = RetrofitClient.getInstance().create(ApiService.class);
 
@@ -182,45 +253,30 @@ public class HomeFragment extends Fragment {
                     public void onResponse(Call<UploadCourseListResponse> call,
                                            Response<UploadCourseListResponse> response) {
 
-                        if (!response.isSuccessful()) {
-                            Log.e("API_TEST", "❌ 서버 응답 실패 (코드: " + response.code() + ")");
-                            return;
-                        }
-
-                        if (response.body() == null) {
-                            Log.e("API_TEST", "❌ response.body() == null");
+                        if (!response.isSuccessful() || response.body() == null) {
+                            Log.e("API", "❌ 서버 응답 오류");
                             return;
                         }
 
                         List<UploadCourseItem> list = response.body().uploadCourses;
 
-                        // ====== ⭐ API 응답 확인 로그 ======
-                        Log.d("API_TEST", "✅ 응답 성공! 리스트 개수 = " + list.size());
-                        for (UploadCourseItem item : list) {
-                            Log.d("API_TEST", "• " + item.title + " | " + item.location);
-                        }
-                        // ==================================
+                        // ⭐ 전체 저장 (태그 필터링용)
+                        allCourseList = list;
 
-                        // ⭐ 상위 5개만 추출
+                        // 상위 5개만 추림
                         List<UploadCourseItem> topFive =
                                 list.size() > 5 ? list.subList(0, 5) : list;
 
-                        // 인기 코스 = 5개
                         popularAdapter.setItems(topFive);
 
-                        // 테마 코스도 동일한 5개 기준
+                        // 디폴트: theme 도 인기 top5
                         themeAdapter.setItems(topFive);
-
-                        // 디버그 출력
-                        Log.d("API_TEST", "topFive.size = " + topFive.size());
                     }
 
                     @Override
                     public void onFailure(Call<UploadCourseListResponse> call, Throwable t) {
-                        Log.e("API_TEST", "❌ onFailure: " + t.getMessage());
+                        Log.e("API", "❌ 통신 실패: " + t.getMessage());
                     }
                 });
-
-
     }
 }
