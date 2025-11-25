@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.EditText;
 import android.text.Editable;
@@ -56,30 +57,72 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
 
         // 로그로 SDK 초기화가 정상적으로 되었는지 확인
         Log.d("Naver1_NAVER_SDK_TEST", String.valueOf(NaverMapSdk.getInstance(this).getClient()));
+        // getMapAsync는 여기서 한 번만 호출
+//        mapView.getMapAsync(this);
+//        Log.d("Naver2_getMapAsync", "onCreate: getMapAsync() 호출 시작.");
+
+        // ★★★ 최종 병기: 모든 뷰가 다 그려진 후에 getMapAsync를 호출 ★★★
+        // 액티비티의 최상위 뷰(decorView)에 리스너를 붙여서,
+        // 레이아웃 그리기가 완전히 끝나는 시점을 포착합니다.
+        View decorView = getWindow().getDecorView();
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // 리스너가 여러 번 호출되는 것을 막기 위해, 한 번 실행된 후에는 바로 제거합니다.
+                decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                // 이제 모든 뷰의 크기와 위치 계산이 끝났음이 보장됩니다.
+                // 이 시점에서 getMapAsync를 호출합니다.
+                if (mapView != null) {
+                    Log.d("Naver2_getMapAsync", "GlobalLayoutListener: 모든 뷰가 그려진 후 getMapAsync 호출!");
+                    mapView.getMapAsync(AddLocationActivity.this);
+                }
+            }
+        });
+
+        Log.d("NaverMap", "onCreate: GlobalLayoutListener 등록 완료.");
 
         // 검색 버튼 클릭 이벤트 처리
         btnSearch.setOnClickListener(v -> searchPlace());
-
         // btnNext 클릭 이벤트 처리
         btnNext.setOnClickListener(v -> nextButtonAction());
     }
 
+//    @Override
+//    public void onMapReady(@NonNull NaverMap naverMap) {
+//        this.naverMap = naverMap;
+//        this.isMapReady = true; // 맵이 준비되었음을 표시
+//        Log.d("Naver3_onMapReady", "onMapReady 호출 완료. 지도가 준비되었습니다.");
+//
+//        // 줌 컨트롤 설정
+//        naverMap.getUiSettings().setZoomControlEnabled(true);
+//
+//        // 지도 기본 위치 설정 (예: 서울 시청)
+//        LatLng defaultLocation = new LatLng(37.5665, 126.9780);
+//        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(defaultLocation);
+//        naverMap.moveCamera(cameraUpdate);
+//
+//        // 뷰를 강제로 다시 그리도록 요청
+//        mapView.invalidate();
+//    }
+
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
+        // onMapReady가 호출되었다는 것은 지도 객체가 성공적으로 생성되었다는 의미
         this.naverMap = naverMap;
-        this.isMapReady = true; // 맵이 준비되었음을 표시
-        Log.d("Naver3_onMapReady", "onMapReady 호출 완료. 지도가 준비되었습니다.");
+        this.isMapReady = true; 
+        Log.d("NaverMap3_onMapReady", "onMapReady: 지도가 준비되었습니다.");
 
-        // 줌 컨트롤 설정
+        // 지도 UI 초기 설정
         naverMap.getUiSettings().setZoomControlEnabled(true);
+        // 기본 위치로 카메라 이동
+        LatLng defaultLocation = new LatLng(37.5665, 126.9780); //기본 위치 : 서울 시청으로 설정
+        naverMap.moveCamera(CameraUpdate.scrollTo(defaultLocation));
 
-        // 지도 기본 위치 설정 (예: 서울 시청)
-        LatLng defaultLocation = new LatLng(37.5665, 126.9780);
-        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(defaultLocation);
-        naverMap.moveCamera(cameraUpdate);
-
-        // 뷰를 강제로 다시 그리도록 요청
-        mapView.invalidate();
+        // onResume에서도 mapView.invalidate()를 호출할 것이므로 여기서도 호출해 렌더링을 보장
+        if (mapView != null) {
+            mapView.invalidate();
+        }
     }
 
 
@@ -264,20 +307,36 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mapView != null) {
-            mapView.onResume();
-            // 맵이 아직 준비되지 않았다면 getMapAsync 호출
-            if (!isMapReady) {
-                mapView.post(() -> {
-                    mapView.getMapAsync(this);
-                    Log.d("Naver1_onResume_post", "MapView.post() 내부에서 getMapAsync() 호출");
-                });
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (mapView != null) {
+//            mapView.onResume();
+//            // 맵이 아직 준비되지 않았다면 getMapAsync 호출
+//            if (!isMapReady) {
+//                mapView.post(() -> {
+//                    mapView.getMapAsync(this);
+//                    Log.d("Naver2_onResume_post", "MapView.post() 내부에서 getMapAsync() 호출");
+//                });
+//            }
+//        }
+//    }
+        @Override
+        protected void onResume() {
+            super.onResume();
+            if (mapView != null) {
+                mapView.onResume(); // MapView의 생명주기 메서드는 항상 호출
+
+//                if (!isMapReady) {
+//                    mapView.getMapAsync(this);
+//                    Log.d("Naver2_onResume_post", "onResume: getMapAsync() 호출");
+//                }
+                // ★ ㅁ 화면에 다시 나타날 때마다 MapView를 강제로 다시 그리게
+                mapView.invalidate();
+                Log.d("Naver2_onResume_post", "onResume: mapView.invalidate() 호출됨");
             }
         }
-    }
+
 
     @Override
     protected void onPause() {
