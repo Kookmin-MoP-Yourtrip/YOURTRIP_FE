@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Window;
 import android.widget.EditText;
 import android.text.Editable;
@@ -63,6 +64,8 @@ public class AddLocationActivity extends AppCompatActivity {
             NaverMapOptions options = new NaverMapOptions();
             options.zoomControlEnabled(true); // 줌 컨트롤 활성화
 
+            Log.d("getMapAsync 호출", "getMapAsync 호출 완료");
+
             // 지도 기본 위치 설정 (예: 서울 시청)
             LatLng defaultLocation = new LatLng(37.5665, 126.9780);
             CameraUpdate cameraUpdate = CameraUpdate.scrollTo(defaultLocation);
@@ -98,7 +101,7 @@ public class AddLocationActivity extends AppCompatActivity {
         etPlaceName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-                // 아무 것도 하지 않음
+                // 아무 기능 없음
             }
 
             @Override
