@@ -69,13 +69,13 @@ public interface ApiService {
             @Query("size") int size
     );
 
-    // 피드 생성 API
     @Multipart
-    @POST("/api/feeds")
+    @POST("api/feeds")
     Call<Void> uploadFeed(
             @Part List<MultipartBody.Part> mediaFiles,
             @Part("request") RequestBody request
     );
+
 
     // 피드 상세 조회 API
     @GET("/api/feeds/{feedId}")
