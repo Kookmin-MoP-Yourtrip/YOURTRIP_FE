@@ -288,8 +288,8 @@ public class AddLocationActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        mapView.onDestroy(); // super 전에 호출
         super.onDestroy();
+        mapView.onDestroy();
     }
 
     @Override
