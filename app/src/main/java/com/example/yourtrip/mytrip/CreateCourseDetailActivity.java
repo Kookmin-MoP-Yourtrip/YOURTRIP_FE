@@ -1,54 +1,62 @@
 package com.example.yourtrip.mytrip;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
-import android.util.Log;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.yourtrip.R;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.ArrayList;
+import com.example.yourtrip.mytrip.model.MyCourseDetailResponse;
+import com.example.yourtrip.network.ApiService;
+import com.example.yourtrip.network.RetrofitClient;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CreateCourseDetailActivity extends AppCompatActivity {
-
+    private static final String TAG = "CourseDetailActivity";
+    private ApiService apiService; // 변수명 apiService로 변경
     private ImageView btnBack;
     private TextView tvTitle;
+    private long courseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_course_detail);
 
-        // UI 초기화
+        // UI 및 서비스 초기화
         initializeUI();
+        setupRetrofit();
 
-        // Intent에서 전달된 데이터 받기
-        String courseTitle = getIntent().getStringExtra("courseTitle");
-        String location = getIntent().getStringExtra("location");
-        String startDate = getIntent().getStringExtra("startDate");
-        String endDate = getIntent().getStringExtra("endDate");
+        // Intent에서 myCourseId 받기 (long 타입이라고 가정)
+        courseId = getIntent().getLongExtra("myCourseId", -1L);
 
-        // 1) 날짜 계산 → periodText & dayCount 생성
-        StringBuilder periodText = new StringBuilder(); // 🔵 추가됨
-        int dayCount = calculatePeriod(startDate, endDate, periodText); // 🔵 추가됨
-
-        // 2) TripCard UI 업데이트
-        updateTripCard(courseTitle, location, startDate, endDate, periodText.toString()); // 🔵 변경됨
-
-        // 3) dayList 생성
-        ArrayList<String> dayList = generateDayList(dayCount); // 🔵 추가됨
-        Log.d("CreateCourseDetail", "dayList = " + dayList);
-
-        // 4) Fragment로 dayList 전달
-        if (savedInstanceState == null) {
-            addFragment(dayList); // 🔵 변경됨
+        // courseId 유효성 검사 및 로그 추가
+        if (courseId == -1L) {
+            Toast.makeText(this, "코스 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+            Log.e("CourseDetailActivity_intent 전달", "Intent에서 유효한 myCourseId를 받지 못했습니다.");
+            finish(); // 유효한 ID가 없으면 Activity 종료
+            return;
         }
+
+        // 🔵 요청하신 로그: 받아온 courseId 확인
+        Log.d("CourseDetailActivity_intent 전달", "Intent로부터 전달받은 courseId: " + courseId);
+
+        // courseId로 코스 상세 정보 조회 API 호출
+        fetchCourseDetails(courseId);
     }
 
     // UI 초기화 (상단바, 버튼 설정 등)
@@ -64,166 +72,99 @@ public class CreateCourseDetailActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
     }
 
-    // TripCard UI 업데이트만 담당
-    private void updateTripCard(String courseTitle, String location, String startDate, String endDate, String periodText) {
+    // Retrofit 서비스 설정
+    private void setupRetrofit() {
+        apiService = RetrofitClient.getAuthService(this);
+    }
+
+    // API를 호출하여 코스 상세 정보를 가져오는 메소드
+    private void fetchCourseDetails(long courseId) {
+        apiService.getMyCourseDetail(courseId).enqueue(new Callback<MyCourseDetailResponse>() {
+            @Override
+            public void onResponse(Call<MyCourseDetailResponse> call, Response<MyCourseDetailResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    MyCourseDetailResponse courseDetail = response.body();
+                    Log.d("CourseDetailActivity_api 응답", "API 응답 성공: " + courseDetail.toString());
+
+                    // 1. 상단 카드 UI 업데이트
+                    updateTripCard(courseDetail);
+
+                    // 2. Fragment로 daySchedules 데이터 전달
+                    if (courseDetail.getDaySchedules() != null && !courseDetail.getDaySchedules().isEmpty()) {
+                        // 프래그먼트가 아직 추가되지 않았을 때만 추가
+                        if (getSupportFragmentManager().findFragmentById(R.id.trip_fragment_container) == null) {
+                            addDayDetailFragment(courseDetail.getDaySchedules());
+                        }
+                    } else {
+                        Log.e(TAG, "DaySchedules 리스트가 비어있거나 null입니다.");
+                        Toast.makeText(CreateCourseDetailActivity.this, "일차 정보를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Log.e(TAG, "API 응답 실패: " + response.code() + " " + response.message());
+                    Toast.makeText(CreateCourseDetailActivity.this, "코스 정보를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyCourseDetailResponse> call, Throwable t) {
+                Log.e(TAG, "API 호출 실패", t);
+                Toast.makeText(CreateCourseDetailActivity.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // API 응답 데이터로 TripCard UI 업데이트
+    private void updateTripCard(MyCourseDetailResponse data) {
         View tripCard = findViewById(R.id.item_trip_card);
         TextView titleTextViewCard = tripCard.findViewById(R.id.tv_title);
         TextView locationTextViewCard = tripCard.findViewById(R.id.tv_location);
         TextView dateTextView = tripCard.findViewById(R.id.tv_date);
         TextView partyTextView = tripCard.findViewById(R.id.tv_party);
 
-        titleTextViewCard.setText(courseTitle);
-        locationTextViewCard.setText(location);
-        dateTextView.setText(startDate + " ~ " + endDate + " (" + periodText + ")"); // 🔵 변경됨
-        partyTextView.setText("1명 참여 중");
+        titleTextViewCard.setText(data.getTitle());
+        locationTextViewCard.setText(data.getLocation());
+        partyTextView.setText(data.getMemberCount() + "명 참여 중");
+
+        // 날짜 형식 및 "N박 M일" 계산하여 표시
+        String periodText = calculatePeriod(data.getStartDate(), data.getEndDate());
+        dateTextView.setText(data.getStartDate() + " ~ " + data.getEndDate() + " (" + periodText + ")");
     }
 
-    // 🔵 날짜 차이 계산 + "N박 M일" 문자열 생성 + 총 며칠인지 반환
-    private int calculatePeriod(String startDate, String endDate, StringBuilder periodTextOut) {
+    // "N박 M일" 문자열 생성 (Java 8 time API 사용)
+    private String calculatePeriod(String startDate, String endDate) {
+        if (startDate == null || endDate == null) return "";
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            Date start = sdf.parse(startDate);
-            Date end = sdf.parse(endDate);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate start = LocalDate.parse(startDate, formatter);
+            LocalDate end = LocalDate.parse(endDate, formatter);
 
-            long diffMillis = end.getTime() - start.getTime();
-            long diffDays = diffMillis / (24 * 60 * 60 * 1000);
-
+            long diffDays = ChronoUnit.DAYS.between(start, end);
             long nights = diffDays;
             long days = diffDays + 1;
 
-            periodTextOut.append(nights + "박 " + days + "일");
-
-            return (int) days;   // 총 며칠인지(dayCount)
-
+            return nights + "박 " + days + "일";
         } catch (Exception e) {
-            periodTextOut.append("");
-            return 1;
+            Log.e(TAG, "날짜 계산 중 오류 발생", e);
+            return ""; // 오류 발생 시 빈 문자열 반환
         }
     }
 
-    // 🔵 dayList 생성 함수
-    private ArrayList<String> generateDayList(int dayCount) {
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 1; i <= dayCount; i++) {
-            list.add(i + "일차");
-        }
-        return list;
-    }
+    // 프래그먼트 추가 및 데이터 전달
+    private void addDayDetailFragment(List<MyCourseDetailResponse.DaySchedule> daySchedules) {
+//        CreateCourseDayDetailFragment fragment = new CreateCourseDayDetailFragment();
+//
+//        Bundle bundle = new Bundle();
+//        // courseID와 daySchedules 리스트를 Bundle에 넣기 위해 Serializable로 캐스팅
+//        bundle.putLong("courseId", courseId);
+//        bundle.putSerializable("daySchedules", (Serializable) daySchedules);
+//        fragment.setArguments(bundle);
 
-    // 프래그먼트 동적으로 추가
-    private void addFragment(ArrayList<String> dayList) {  // 🔵 변경됨
-        CreateCourseDayDetailFragment fragment = new CreateCourseDayDetailFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putStringArrayList("dayList", dayList); // 🔵 추가됨
-        fragment.setArguments(bundle);
+        // 🔵 수정: newInstance() 메서드를 호출하여 프래그먼트 생성 및 데이터 전달을 한번에 처리
+        CreateCourseDayDetailFragment fragment = CreateCourseDayDetailFragment.newInstance(courseId, daySchedules);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.trip_fragment_container, fragment);
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 }
-
-
-
-
-//package com.example.yourtrip.mytrip;
-//
-//import android.os.Bundle;
-//import android.widget.ImageView;
-//import android.widget.TextView;
-//import android.widget.LinearLayout;
-//import androidx.appcompat.app.AppCompatActivity;
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.util.Log;
-//
-//import androidx.fragment.app.Fragment;
-//import androidx.fragment.app.FragmentTransaction;
-//
-//import com.example.yourtrip.R;
-//import java.text.SimpleDateFormat;
-//import java.util.Date;
-//import java.util.Locale;
-//
-//public class CreateCourseDetailActivity extends AppCompatActivity {
-//    private static final String TAG = "CreateCourseDetail";
-//    private ImageView btnBack;    // 상단바의 뒤로가기 버튼
-//    private TextView tvTitle;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_create_course_detail);
-//
-//        // 상단바의 버튼과 텍스트 뷰 초기화
-//        btnBack = findViewById(R.id.btnBack);
-//        tvTitle = findViewById(R.id.tv_title);
-//        // 상단바 설정
-//        setTopBar();
-//
-//        // Intent에서 전달된 데이터 받기
-//        String courseTitle = getIntent().getStringExtra("courseTitle");
-//        String location = getIntent().getStringExtra("location");
-//        String startDate = getIntent().getStringExtra("startDate");
-//        String endDate = getIntent().getStringExtra("endDate");
-//
-//
-//        // item_trip_card 레이아웃을 가져오고, 텍스트를 동적으로 수정
-//        View tripCard = findViewById(R.id.item_trip_card);  // 포함된 item_trip_card
-//        TextView titleTextViewCard = tripCard.findViewById(R.id.tv_title);
-//        TextView locationTextViewCard = tripCard.findViewById(R.id.tv_location);
-//        TextView dateTextView = tripCard.findViewById(R.id.tv_date);
-//        TextView partyTextView = tripCard.findViewById(R.id.tv_party);
-//
-//        // 텍스트 업데이트
-//        titleTextViewCard.setText(courseTitle);
-//        locationTextViewCard.setText(location);
-//
-//        // 날짜 차이 계산 및 "박" "일" 표시
-//        String periodText = calculateStayPeriod(startDate, endDate);
-//        dateTextView.setText(startDate + " ~ " + endDate + " (" + periodText + ")");
-//
-//        // 인원 수는 1명 참여 중
-//        partyTextView.setText("1명 참여 중");
-//
-//        // 프래그먼트 동적으로 추가
-//        if (savedInstanceState == null) {
-//            // 프래그먼트를 동적으로 추가
-//            CreateCourseDayDetailFragment fragment = new CreateCourseDayDetailFragment();
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.replace(R.id.fragment_container, fragment);  // 프래그먼트 컨테이너에 추가
-//            transaction.addToBackStack(null);  // 뒤로가기 스택에 추가
-//            transaction.commit();  // 트랜잭션 커밋
-//        }
-//    }
-//
-//    // 상단바 설정
-//    private void setTopBar() {
-//        tvTitle.setText("코스 만들기");
-//
-//        // 뒤로가기 버튼
-//        btnBack.setOnClickListener(v -> finish());
-//    }
-//
-//    // 날짜 차이 계산 (몇 박 며칠)
-//    private String calculateStayPeriod(String startDate, String endDate) {
-//        try {
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-//            Date start = sdf.parse(startDate);
-//            Date end = sdf.parse(endDate);
-//
-//            long diffMillis = end.getTime() - start.getTime();
-//            long diffDays = diffMillis / (24 * 60 * 60 * 1000);
-//
-//            // "박" "일" 형식으로 리턴
-//            long nights = diffDays;
-//            long days = diffDays + 1;
-//            return nights + "박 " + days + "일";
-//
-//        } catch (Exception e) {
-//            return "";
-//        }
-//    }
-//}

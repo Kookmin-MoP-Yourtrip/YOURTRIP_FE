@@ -1,5 +1,6 @@
 package com.example.yourtrip.mytrip;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -21,6 +22,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.mytrip.model.PlaceAddRequest;
+import com.example.yourtrip.mytrip.model.PlaceAddResponse;
+import com.example.yourtrip.network.ApiService;
+import com.example.yourtrip.network.RetrofitClient;
 import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
@@ -30,6 +35,10 @@ import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.overlay.Marker;
+
+ import retrofit2.Call;
+ import retrofit2.Callback;
+ import retrofit2.Response;
 
 public class AddLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -41,11 +50,21 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
     private Button btnNext;
     private ImageView btnSearch;
     private boolean isMapReady = false; // 지도가 준비되었는지 확인하는 플래그
+    private ApiService apiService;
+    private long courseId;
+    private long dayId;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_add_location);
+
+        //API 서비스 및 Intent 데이터 초기화 
+        apiService = RetrofitClient.getAuthService(this);
+        Intent intent = getIntent();
+        courseId = intent.getLongExtra("courseId", -1L);
+        dayId = intent.getLongExtra("dayId", -1L);
 
         initViews();
         setTopBar();
@@ -61,7 +80,7 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
 //        mapView.getMapAsync(this);
 //        Log.d("Naver2_getMapAsync", "onCreate: getMapAsync() 호출 시작.");
 
-        // ★★★ 최종 병기: 모든 뷰가 다 그려진 후에 getMapAsync를 호출 ★★★
+        // 모든 뷰가 다 그려진 후에 getMapAsync를 호출
         // 액티비티의 최상위 뷰(decorView)에 리스너를 붙여서,
         // 레이아웃 그리기가 완전히 끝나는 시점을 포착합니다.
         View decorView = getWindow().getDecorView();
@@ -87,25 +106,7 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         // btnNext 클릭 이벤트 처리
         btnNext.setOnClickListener(v -> nextButtonAction());
     }
-
-//    @Override
-//    public void onMapReady(@NonNull NaverMap naverMap) {
-//        this.naverMap = naverMap;
-//        this.isMapReady = true; // 맵이 준비되었음을 표시
-//        Log.d("Naver3_onMapReady", "onMapReady 호출 완료. 지도가 준비되었습니다.");
-//
-//        // 줌 컨트롤 설정
-//        naverMap.getUiSettings().setZoomControlEnabled(true);
-//
-//        // 지도 기본 위치 설정 (예: 서울 시청)
-//        LatLng defaultLocation = new LatLng(37.5665, 126.9780);
-//        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(defaultLocation);
-//        naverMap.moveCamera(cameraUpdate);
-//
-//        // 뷰를 강제로 다시 그리도록 요청
-//        mapView.invalidate();
-//    }
-
+    
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         // onMapReady가 호출되었다는 것은 지도 객체가 성공적으로 생성되었다는 의미
@@ -227,7 +228,7 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
 
     // Next 버튼 클릭 시
     private void nextButtonAction() {
-        String placeName = etPlaceName.getText().toString();
+        String placeName = etPlaceName.getText().toString().trim();
 
         if (!placeName.isEmpty()) {
             // 주소 검색
@@ -239,6 +240,9 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
 //                    startActivity(intent);
 //                    finish();  // 현재 액티비티 종료
                     Toast.makeText(AddLocationActivity.this, "장소가 추가되었습니다.", Toast.LENGTH_SHORT).show();
+                    // 검색 성공 시: API 호출 -> 추후에 구현 예정
+//                    PlaceAddRequest request = new PlaceAddRequest(placeName, latitude, longitude, "http://...url", "주소...");
+//                    addPlaceApiCall(request);
                 }
 
                 @Override
@@ -261,7 +265,7 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         View dialogView = getLayoutInflater().inflate(R.layout.popup_location_dialog, null);
         builder.setView(dialogView);
 
-        AlertDialog dialog = builder.create();
+        final AlertDialog dialog = builder.create();
         // 둥근 모서리 보이게
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -270,16 +274,19 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         TextView dialogMessage = dialogView.findViewById(R.id.dialogMessage);
         dialogMessage.setText("등록되지 않은 주소예요. \n 이대로 추가할까요?");
 
-
-        Button btnAdd = dialogView.findViewById(R.id.btnAdd); //이대로 추가하기
-        Button btnSearchAgain = dialogView.findViewById(R.id.btnSearchAgain); //다시 검색
-
+        //이대로 추가하기 버튼
+        Button btnAdd = dialogView.findViewById(R.id.btnAdd); 
         btnAdd.setOnClickListener(v -> {
+            String placeName = etPlaceName.getText().toString().trim();
             // 장소를 추가하는 로직 (예: 데이터베이스에 저장)
             Toast.makeText(this, "장소가 추가되었습니다.", Toast.LENGTH_SHORT).show();
+            PlaceAddRequest request = new PlaceAddRequest(placeName, null, null, null, null);
+            addPlaceApiCall(request);
             dialog.dismiss();
         });
 
+        //다시 검색 버튼
+        Button btnSearchAgain = dialogView.findViewById(R.id.btnSearchAgain); 
         btnSearchAgain.setOnClickListener(v -> {
             // 검색 입력 필드를 비웁니다
             clearSearchField();
@@ -290,6 +297,39 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         dialog.setCanceledOnTouchOutside(true);
 
         dialog.show();
+    }
+
+    // (추가) 실제 장소 추가 API를 호출하는 공통 메서드
+    private void addPlaceApiCall(PlaceAddRequest request) {
+        if (courseId == -1 || dayId == -1) {
+            Toast.makeText(this, "코스 또는 일차 정보가 없어 추가할 수 없습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        apiService.addPlaceToDay(courseId, dayId, request).enqueue(new Callback<PlaceAddResponse>() {
+            @Override
+            public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    PlaceAddResponse placeResponse = response.body();
+                    Log.d("AddLocationActivity", "장소 추가 성공: " + placeResponse.getPlaceName());
+
+                    // 성공 결과를 이전 화면으로 돌려줍니다.
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("newPlace", placeResponse); // Serializable 객체 전달
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish(); // 현재 액티비티 종료
+                } else {
+                    Log.e("AddLocationActivity", "장소 추가 API 실패: " + response.code());
+                    Toast.makeText(AddLocationActivity.this, "장소 추가에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PlaceAddResponse> call, Throwable t) {
+                Log.e("AddLocationActivity", "장소 추가 API 네트워크 오류: " + t.getMessage());
+                Toast.makeText(AddLocationActivity.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

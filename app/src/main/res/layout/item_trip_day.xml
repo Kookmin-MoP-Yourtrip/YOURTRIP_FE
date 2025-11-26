@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tvDayItem"
-    android:layout_width="wrap_content"
-    android:layout_height="40dp"
-    android:paddingHorizontal="20dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="126dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="center"
-    android:layout_marginRight="8dp"
-    android:background="@drawable/bg_trip_day_item"
-    android:textColor="#000000"
-    android:textSize="16sp"/>
+    tools:background="@drawable/bg_day_tab_normal">
+
+<androidx.appcompat.widget.AppCompatTextView
+    android:id="@+id/tv_day"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="13sp"
+    android:textStyle="bold"
+    android:background="@android:color/transparent"
+    tools:text="1일차" />
+
+    </LinearLayout>
 

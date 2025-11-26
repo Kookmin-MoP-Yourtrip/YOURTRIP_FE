@@ -14,8 +14,11 @@ import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.UploadCourseListResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
+import com.example.yourtrip.mytrip.model.MyCourseDetailResponse;
 import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 import com.example.yourtrip.mytrip.model.MyCourseListResponse;
+import com.example.yourtrip.mytrip.model.PlaceAddRequest;
+import com.example.yourtrip.mytrip.model.PlaceAddResponse;
 
 import java.util.List;
 
@@ -32,7 +35,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
-
+    //=============회원가입 & 로그인 api================//
     //  이메일 API
     @POST("/api/users/email/send")
     Call<ResponseBody> checkEmail(@Body EmailRequest emailRequest);
@@ -53,6 +56,7 @@ public interface ApiService {
     @POST("/api/users/login")
     Call<ResponseBody> login(@Body LoginRequest request);
 
+    //=============나의 코스 api================//
     // 나의 코스 기본 생성 api
     @POST("/api/my-courses")
     Call<MyCourseCreateBasicResponse> createMyCourse(@Body MyCourseCreateRequest request);
@@ -61,6 +65,20 @@ public interface ApiService {
     @GET("/api/my-courses")
     Call<MyCourseListResponse> getMyCourses();
 
+    // 나의 코스 장소 추가 api
+    @POST("/api/my-courses/{courseId}/days/{dayId}/places")
+    Call<PlaceAddResponse> addPlaceToDay(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Body PlaceAddRequest request
+    );
+
+    //나의 코스 단건 조회 api
+    @GET("/api/my-courses/{courseId}")
+    Call<MyCourseDetailResponse> getMyCourseDetail(@Path("courseId") long courseId);
+
+
+    //=============홈 api================//
     // 홈 다중 필터링(태그 & 텍스트) 검색
     @GET("/api/upload-courses")
     Call<UploadCourseListResponse> getUploadCourses(
@@ -69,6 +87,7 @@ public interface ApiService {
             @Query("sort") String sort               // "POPULAR" 또는 "NEW"
     );
 
+    //=============피드 api================//
     // 피드 리스트 조회 API
     @GET("/api/feeds")
     Call<FeedListResponse> getFeedList(
