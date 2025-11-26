@@ -86,7 +86,8 @@ public class FeedChatFragment extends Fragment {
             int feedId = getArguments().getInt("feedId", -1);
             if (feedId == -1) return;
 
-            ApiService api = RetrofitClient.getAuthService(); // 인증있어야함
+//            ApiService api = RetrofitClient.getAuthService();
+            ApiService api = RetrofitClient.getAuthService(getContext()); // 인증있어야함
 
             FeedCommentWriteRequest request = new FeedCommentWriteRequest(newComment);
 
@@ -124,7 +125,8 @@ public class FeedChatFragment extends Fragment {
     }
 
     private void loadComments(int feedId) {
-        ApiService api = RetrofitClient.getInstance().create(ApiService.class);
+//        ApiService api = RetrofitClient.getInstance().create(ApiService.class);
+        ApiService api = RetrofitClient.getInstance((getContext())).create(ApiService.class);
 
         api.getFeedComments(feedId, 0, 20)
                 .enqueue(new Callback<FeedCommentListResponse>() {

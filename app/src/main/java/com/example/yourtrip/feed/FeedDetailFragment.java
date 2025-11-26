@@ -94,7 +94,7 @@ public class FeedDetailFragment extends Fragment {
         layoutLoading.setVisibility(View.VISIBLE);
         layoutContent.setVisibility(View.GONE);
 
-        ApiService api = RetrofitClient.getAuthService();
+        ApiService api = RetrofitClient.getAuthService(getContext());
 
         api.getFeedDetail(feedId).enqueue(new Callback<FeedDetailResponse>() {
             @Override

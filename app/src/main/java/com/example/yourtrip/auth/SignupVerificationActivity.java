@@ -108,7 +108,7 @@ public class SignupVerificationActivity extends AppCompatActivity {
 
     // 인증번호 재발송 (API 호출)
     private void sendVerificationCode(String email) {
-        ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getInstance(this).create(ApiService.class);
         EmailRequest request = new EmailRequest(email);  // 이메일만 보내는 EmailRequest 사용
         apiService.checkEmail(request).enqueue(new Callback<ResponseBody>() {  // checkEmail API 사용
             @Override
@@ -131,7 +131,7 @@ public class SignupVerificationActivity extends AppCompatActivity {
 
     // 인증번호 검증 (API 호출)
     private void verifyCode(String email, String code) {
-        ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getInstance(this).create(ApiService.class);
         VerificationRequest request = new VerificationRequest(email, code);  // 이메일과 코드 모두 필요
         apiService.verifyCode(request).enqueue(new Callback<ResponseBody>() {
             @Override

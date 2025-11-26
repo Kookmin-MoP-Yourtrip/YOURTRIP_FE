@@ -131,7 +131,7 @@ public class FeedUploadFragment extends Fragment {
             return;
         }
 
-        ApiService api = RetrofitClient.getAuthService();
+        ApiService api = RetrofitClient.getAuthService(getContext());
         List<MultipartBody.Part> fileParts = new ArrayList<>();
 
         // ▣ 이미지 → byte[] → MultipartBody

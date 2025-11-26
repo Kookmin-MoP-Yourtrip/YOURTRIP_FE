@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
     // 로그인 API 요청 함수
     private void doLogin(String email, String password) {
         // Retrofit 인터페이스 생성
-        ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
+        ApiService apiService = RetrofitClient.getInstance(this).create(ApiService.class);
 
         // 요청 객체 - JSON Body에 들어갈 데이터
         LoginRequest request = new LoginRequest(email, password);

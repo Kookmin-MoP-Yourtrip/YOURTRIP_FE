@@ -20,14 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
         app:layout_constraintTop_toBottomOf="@id/top_bar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <include
             android:id="@+id/item_trip_card"
-            layout="@layout/item_trip_card"
+            layout="@layout/item_trip_card_no_shadow"
+            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
