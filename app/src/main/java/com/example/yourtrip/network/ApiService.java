@@ -14,6 +14,8 @@ import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.UploadCourseListResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
+import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
+import com.example.yourtrip.mytrip.model.MyCourseListResponse;
 
 import java.util.List;
 
@@ -51,8 +53,13 @@ public interface ApiService {
     @POST("/api/users/login")
     Call<ResponseBody> login(@Body LoginRequest request);
 
+    // 나의 코스 기본 생성 api
     @POST("/api/my-courses")
     Call<MyCourseCreateBasicResponse> createMyCourse(@Body MyCourseCreateRequest request);
+
+    // 나의 코스 리스트 조회 api
+    @GET("/api/my-courses")
+    Call<MyCourseListResponse> getMyCourses();
 
     // 홈 다중 필터링(태그 & 텍스트) 검색
     @GET("/api/upload-courses")

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.yourtrip.R;
 import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
@@ -211,6 +212,7 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
         btnNext.setEnabled(false);
         // Call 제네릭 타입을 MyCourseCreateBasicResponse로 수정함
         apiService.createMyCourse(request).enqueue(new Callback<MyCourseCreateBasicResponse>() {
+            @Override
             public void onResponse(Call<MyCourseCreateBasicResponse> call, Response<MyCourseCreateBasicResponse> response) {
                 btnNext.setEnabled(true);
 
@@ -222,29 +224,20 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
                     MyCourseCreateBasicResponse courseResponse = response.body();
                     Log.d(TAG, "MyCourseCreateBasic_API 응답 데이터: " + courseResponse.toString());
 
-                    // 응답 데이터를 MyTripListFragment가 사용할 MyCourseListItemResponse 형태로 변환
-//                    MyCourseListItemResponse newCourse = new MyCourseListItemResponse(
-//                            courseResponse.getTitle(),
-//                            courseResponse.getLocation(),
-//                            courseResponse.getStartDate(),
-//                            courseResponse.getEndDate(),
-//                            courseResponse.getMemberCount()
-//                    );
+                    // DetailActivity로 화면을 전환
+                    Intent detailIntent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
+                    detailIntent.putExtra("myCourseId", courseResponse.getMyCourseId());
+                    detailIntent.putExtra("courseTitle", courseResponse.getTitle());
+                    detailIntent.putExtra("location", courseResponse.getLocation());
+                    detailIntent.putExtra("startDate", courseResponse.getStartDate());
+                    detailIntent.putExtra("endDate", courseResponse.getEndDate());
 
-                    // Intent로 데이터를 넘기기 (CreateCourseDetailActivity로)
-                    Intent intent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
+                    startActivity(detailIntent);
 
-                    // [수정] 서버에서 받은 '진짜' 데이터 전달
-                    intent.putExtra("myCourseId", courseResponse.getMyCourseId());
-                    intent.putExtra("courseTitle", courseResponse.getTitle());
-                    intent.putExtra("location", courseResponse.getLocation());
-                    intent.putExtra("startDate", courseResponse.getStartDate());
-                    intent.putExtra("endDate", courseResponse.getEndDate());
+                    // DetailActivity에서 뒤로가기 시 MyTripListFragment로 돌아가게 함
+                    finish();
 
-//                    Log.d(TAG, "API 응답 성공. myCourseId: " + courseResponse.getMyCourseId());
 
-                    // 다음 화면으로 이동
-                    startActivity(intent);
 
                 } else {
                     // ... (기존의 400 에러 및 기타 에러 처리 로직은 그대로)
