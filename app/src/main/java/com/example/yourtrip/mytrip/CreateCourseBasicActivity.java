@@ -15,7 +15,9 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
+import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -184,71 +186,72 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
             // API 요청 보내기
             submitCourse(request);
 
-            // Intent로 데이터를 넘기기 (CreateCourseDetailActivity로)
-            Intent intent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
-            intent.putExtra("courseTitle", title);
-            intent.putExtra("location", location);
-            intent.putExtra("startDate", startDate);
-            intent.putExtra("endDate", endDate);
-
-            // 로그로 Intent 데이터를 확인
-            Log.d(TAG, "Intent data - courseTitle: " + title);
-            Log.d(TAG, "Intent data - location: " + location);
-            Log.d(TAG, "Intent data - startDate: " + startDate);
-            Log.d(TAG, "Intent data - endDate: " + endDate);
-
-
-            // 다음 화면으로 이동
-            startActivity(intent);
+//            // Intent로 데이터를 넘기기 (CreateCourseDetailActivity로)
+//            Intent intent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
+//            intent.putExtra("courseTitle", title);
+//            intent.putExtra("location", location);
+//            intent.putExtra("startDate", startDate);
+//            intent.putExtra("endDate", endDate);
+//
+//            // 로그로 Intent 데이터를 확인
+//            Log.d(TAG, "Intent data - courseTitle: " + title);
+//            Log.d(TAG, "Intent data - location: " + location);
+//            Log.d(TAG, "Intent data - startDate: " + startDate);
+//            Log.d(TAG, "Intent data - endDate: " + endDate);
+//
+//
+//            // 다음 화면으로 이동
+//            startActivity(intent);
         });
     }
 
 
     // API 요청
     private void submitCourse(MyCourseCreateRequest request) {
-
         btnNext.setEnabled(false);
+        // Call 제네릭 타입을 MyCourseCreateBasicResponse로 수정함
+        apiService.createMyCourse(request).enqueue(new Callback<MyCourseCreateBasicResponse>() {
+            public void onResponse(Call<MyCourseCreateBasicResponse> call, Response<MyCourseCreateBasicResponse> response) {
+                btnNext.setEnabled(true);
 
-        apiService.createMyCourse(request).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody>
-                call, Response<ResponseBody> response) {
-                    btnNext.setEnabled(true);
+                if (response.isSuccessful() && response.body() != null) {
+                    // [수정] API 성공 시, 여기서 다음 화면으로 이동
+                    Toast.makeText(CreateCourseBasicActivity.this, "코스 생성 완료!", Toast.LENGTH_SHORT).show();
 
-                if (response.isSuccessful()) {
+                    // 서버로부터 받은 응답 데이터
+                    MyCourseCreateBasicResponse courseResponse = response.body();
+                    Log.d(TAG, "MyCourseCreateBasic_API 응답 데이터: " + courseResponse.toString());
 
-                    try {
-                        String body = response.body() != null ? response.body().string() : "null";
-                        Log.d("MyCourseCreate", "성공(201): " + body);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    // 응답 데이터를 MyTripListFragment가 사용할 MyCourseListItemResponse 형태로 변환
+//                    MyCourseListItemResponse newCourse = new MyCourseListItemResponse(
+//                            courseResponse.getTitle(),
+//                            courseResponse.getLocation(),
+//                            courseResponse.getStartDate(),
+//                            courseResponse.getEndDate(),
+//                            courseResponse.getMemberCount()
+//                    );
 
-                    Toast.makeText(CreateCourseBasicActivity.this,
-                            "코스 생성 완료!", Toast.LENGTH_SHORT).show();
+                    // Intent로 데이터를 넘기기 (CreateCourseDetailActivity로)
+                    Intent intent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
 
+                    // [수정] 서버에서 받은 '진짜' 데이터 전달
+                    intent.putExtra("myCourseId", courseResponse.getMyCourseId());
+                    intent.putExtra("courseTitle", courseResponse.getTitle());
+                    intent.putExtra("location", courseResponse.getLocation());
+                    intent.putExtra("startDate", courseResponse.getStartDate());
+                    intent.putExtra("endDate", courseResponse.getEndDate());
 
-                } else if (response.code() == 400) {
-                    // 서버에서 준 에러 메시지 파싱
-                    try {
-                        String errorMsg = response.errorBody() != null
-                                ? response.errorBody().string()
-                                : "잘못된 요청입니다.";
-                        Log.e("MyCourseCreate", "400 오류: " + errorMsg);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    Log.d(TAG, "API 응답 성공. myCourseId: " + courseResponse.getMyCourseId());
 
-                    Toast.makeText(CreateCourseBasicActivity.this,
-                            "입력값 오류", Toast.LENGTH_SHORT).show();
+                    // 다음 화면으로 이동
+                    startActivity(intent);
 
                 } else {
+                    // ... (기존의 400 에러 및 기타 에러 처리 로직은 그대로)
                     try {
-                        String errorBody = response.errorBody() != null
-                                ? response.errorBody().string()
-                                : "null";
-                        Log.e("MyCourseCreate", "기타 에러 코드: " + response.code()
-                                + ", errorBody = " + errorBody);
+                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "null";
+                        Log.e("MyCourseCreate", "에러 코드: " + response.code() + ", errorBody = " + errorBody);
+                        Toast.makeText(CreateCourseBasicActivity.this, "코스 생성에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -256,7 +259,7 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<MyCourseCreateBasicResponse> call, Throwable t) {
                 btnNext.setEnabled(true);
                 Log.e("MyCourseCreate", "API 실패: " + t.getMessage());
                 Toast.makeText(CreateCourseBasicActivity.this,
@@ -264,6 +267,65 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
             }
         });
     }
+
+//    private void submitCourse(MyCourseCreateRequest request) {
+//        btnNext.setEnabled(false);
+//        // Call 제네릭 타입을 MyCourseCreateBasicResponse로 수정함
+//        apiService.createMyCourse(request).enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody>
+//                                           call, Response<ResponseBody> response) {
+//                btnNext.setEnabled(true);
+//
+//                if (response.isSuccessful()) {
+//
+//                    try {
+//                        String body = response.body() != null ? response.body().string() : "null";
+//                        Log.d("MyCourseCreate", "성공(201): " + body);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    Toast.makeText(CreateCourseBasicActivity.this,
+//                            "코스 생성 완료!", Toast.LENGTH_SHORT).show();
+//
+//
+//                } else if (response.code() == 400) {
+//                    // 서버에서 준 에러 메시지 파싱
+//                    try {
+//                        String errorMsg = response.errorBody() != null
+//                                ? response.errorBody().string()
+//                                : "잘못된 요청입니다.";
+//                        Log.e("MyCourseCreate", "400 오류: " + errorMsg);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    Toast.makeText(CreateCourseBasicActivity.this,
+//                            "입력값 오류", Toast.LENGTH_SHORT).show();
+//
+//                } else {
+//                    try {
+//                        String errorBody = response.errorBody() != null
+//                                ? response.errorBody().string()
+//                                : "null";
+//                        Log.e("MyCourseCreate", "기타 에러 코드: " + response.code()
+//                                + ", errorBody = " + errorBody);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                btnNext.setEnabled(true);
+//                Log.e("MyCourseCreate", "API 실패: " + t.getMessage());
+//                Toast.makeText(CreateCourseBasicActivity.this,
+//                        "네트워크 오류", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
 
     // 날짜 범위 비교

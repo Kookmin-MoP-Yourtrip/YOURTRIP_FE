@@ -12,6 +12,7 @@ import com.example.yourtrip.model.FeedCommentWriteResponse;
 import com.example.yourtrip.model.FeedDetailResponse;
 import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.UploadCourseListResponse;
+import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public interface ApiService {
     Call<ResponseBody> login(@Body LoginRequest request);
 
     @POST("/api/my-courses")
-    Call<ResponseBody> createMyCourse(@Body MyCourseCreateRequest request);
+    Call<MyCourseCreateBasicResponse> createMyCourse(@Body MyCourseCreateRequest request);
 
     // 홈 다중 필터링(태그 & 텍스트) 검색
     @GET("/api/upload-courses")
