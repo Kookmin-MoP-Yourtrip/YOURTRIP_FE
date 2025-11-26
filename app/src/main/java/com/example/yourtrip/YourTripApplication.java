@@ -38,6 +38,7 @@ public class YourTripApplication extends Application {
 
 
 
+//기존에 전역 context로 관리하던 코드
 /**
  * Retrofit Interceptor가 SharedPreferences에 저장된 JWT 토큰을 읽기 위해
  * 앱 전체에서 공용으로 사용할 수 있는 전역 Context
@@ -46,8 +47,6 @@ public class YourTripApplication extends Application {
  */
 
 // Context = 안드로이드에서 모든 것의 환경 정보를 들고 있는 객체
-
-//기존에 전역 context로 관리하던 코드
 
 //package com.example.yourtrip;
 //import android.app.Application;

@@ -15,7 +15,7 @@ import okhttp3.Response;
 // OkHttp의 Interceptor 기능을 구현하는 클래스
 // API 요청을 가로채서 수정하는 클래스
 
-//Retrofit 클라이언트를 만들 때, new AuthInterceptor(this)와 같이 Context를 건내줄거임
+//Retrofit 클라이언트를 만들 때, 전역 Context가 아닌 각 클래스에서 따로 Context를 건내주는거로 수정
 
 public class AuthInterceptor implements Interceptor {
 
@@ -23,7 +23,7 @@ public class AuthInterceptor implements Interceptor {
     private final Context context;
 
     public AuthInterceptor(Context context) {
-        // 외부에서 건네받은 context를 내 보관함에 안전하게 저장
+        // 외부에서 건네받은 context를 내 보관함에 저장
         this.context = context.getApplicationContext();
     }
 
