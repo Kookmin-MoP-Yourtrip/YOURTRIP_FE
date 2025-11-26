@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <!-- ▣ 사진 영역 스켈레톤 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginHorizontal="8dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200"
+        android:clipToOutline="true" />
+
+    <!-- 프로필 영역 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical">
+
+        <!-- 프로필 원 -->
+        <View
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_circle"
+            android:backgroundTint="@color/gray_200" />
+
+        <!-- 닉네임 바 -->
+        <View
+            android:layout_width="120dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_box_round"
+            android:backgroundTint="@color/gray_200" />
+
+    </LinearLayout>
+
+    <!-- 캡션 박스 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+    <!-- 장소 태그 -->
+    <View
+        android:layout_width="100dp"
+        android:layout_height="28dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+</LinearLayout>

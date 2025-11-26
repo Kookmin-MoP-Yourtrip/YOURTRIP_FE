@@ -21,9 +21,10 @@
         android:layout_gravity="top|end"
         android:layout_margin="8dp"
         android:padding="6dp"
-        android:src="@drawable/ic_edit"
+        android:src="@drawable/ic_delete"
         android:background="@drawable/bg_circle"
-        android:backgroundTint="@color/gray_150"
+        android:alpha="0.5"
+        android:backgroundTint="@color/gray_500"
         android:elevation="4dp"
         android:clickable="true"
         android:focusable="true"/>
