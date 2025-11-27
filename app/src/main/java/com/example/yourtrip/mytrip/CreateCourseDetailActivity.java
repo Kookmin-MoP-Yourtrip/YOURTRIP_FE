@@ -86,6 +86,14 @@ public class CreateCourseDetailActivity extends AppCompatActivity {
                     MyCourseDetailResponse courseDetail = response.body();
                     Log.d("CourseDetailActivity_api 응답", "API 응답 성공: " + courseDetail.toString());
 
+                    if (courseDetail.getDaySchedules() != null) {
+                        Log.d("CourseDetailActivity", "--- API 응답: daySchedules 목록 ---");
+                        for (MyCourseDetailResponse.DaySchedule schedule : courseDetail.getDaySchedules()) {
+                            Log.d("CourseDetailActivity", "Day: " + schedule.getDay() + ", Day ID: " + schedule.getDayId());
+                        }
+                        Log.d("CourseDetailActivity", "------------------------------------");
+                    }
+
                     // 1. 상단 카드 UI 업데이트
                     updateTripCard(courseDetail);
 

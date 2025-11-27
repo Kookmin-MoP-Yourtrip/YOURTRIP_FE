@@ -2,6 +2,7 @@ package com.example.yourtrip.mytrip;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +32,12 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final List<Object> items;
     private long courseId;
     private long dayId; // final 제거
+    private final CreateCourseDayDetailFragment fragment; //Fragment 참조 변수
 
-    // 🟡 1. Fragment 참조를 위한 변수 추가
-    private final CreateCourseDayDetailFragment fragment;
+    public long getCurrentDayId() {
+        return this.dayId;
+    }
+
 
     // 🟡 2. 생성자를 하나로 통일: 모든 필요한 정보를 받도록 함
     public LocationAdapter(List<Object> items, long courseId, long dayId, CreateCourseDayDetailFragment fragment) {
@@ -46,15 +50,15 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     // 프래그먼트에서 새로운 dayId를 전달받아, 어댑터의 dayId 값을 업데이트
     public void updateDayId(long newDayId) {
+        // 🟡 디버깅 로그 4: Adapter의 dayId가 업데이트될 때
+        Log.d("DEBUG_DAY_ID", "[LocationAdapter update] dayId가 " + this.dayId + "에서 " + newDayId + " (으)로 업데이트됨.");
+        this.dayId = newDayId;
         this.dayId = newDayId;
     }
 
 
-    /**
-     * 🟡 이 메서드를 추가해주세요.
-     * 새로운 장소 아이템을 리스트에 추가하고, RecyclerView를 갱신합니다.
-     * @param newItem AddLocationActivity에서 받아온 새로운 장소 정보
-     */
+
+    // 새로운 장소 아이템을 리스트에 추가, RecyclerView 갱신
     public void addItem(LocationItem newItem) {
         // 리스트의 맨 마지막에는 항상 '추가 버튼'이 있으므로,
         // 그 바로 앞 위치에 새로운 장소 아이템을 추가합니다.
@@ -69,10 +73,26 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    /**
-     * 1. getItemViewType: 리스트의 각 아이템이 어떤 종류인지 판단하여 뷰 타입을 반환합니다.
-     * 이 메서드의 반환값이 onCreateViewHolder의 두 번째 파라미터(viewType)로 전달됩니다.
-     */
+    //새로운 장소 목록으로 전체 데이터 교체 및 화면 갱신
+    public void updateItems(List<LocationItem> newPlaces) {
+        // 1. 기존 아이템 리스트를 완전히 비웁니다.
+        items.clear();
+
+        // 2. 서버에서 받아온 새로운 장소 목록이 null이 아닐 경우, 모두 추가합니다.
+        if (newPlaces != null) {
+            items.addAll(newPlaces);
+        }
+
+        // 3. 리스트의 맨 마지막에 '+ 장소 추가하기' 버튼을 위한 데이터를 추가합니다.
+        items.add("ADD_BUTTON");
+
+        // 4. 데이터셋 전체가 변경되었음을 알려 화면을 완전히 새로고침합니다.
+        notifyDataSetChanged();
+    }
+
+
+
+    // 리스트 아이템 타입 판단 -> 뷰 타입 반환
     @Override
     public int getItemViewType(int position) {
         // 현재 위치의 아이템이 LocationItem 클래스의 인스턴스(객체)이면
@@ -83,10 +103,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    /**
-     * 2. onCreateViewHolder: getItemViewType이 반환한 뷰 타입에 따라 각각 다른 XML 레이아웃을 inflate하여
-     * 그에 맞는 ViewHolder를 생성합니다.
-     */
+    // 뷰 타입에 따라 xml 레이아웃 inflate해서 ViewHolder 생성
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -100,15 +117,15 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         else { // viewType == VIEW_TYPE_ADD_BUTTON
             View view = inflater.inflate(R.layout.view_add_location_button, parent, false);
             // ViewHolder 생성 시 courseId와 dayId를 직접 전달
-//            return new AddButtonViewHolder(view, courseId, dayId);
+
             // 🟡 수정: ViewHolder 생성 시 모든 필요한 정보 전달
-            return new AddButtonViewHolder(view, courseId, dayId, fragment);
+//            return new AddButtonViewHolder(view, courseId, dayId, fragment);
+            return new AddButtonViewHolder(view, this);
         }
     }
 
-    /**
-     * 3. onBindViewHolder: 생성된 ViewHolder에 실제 데이터를 바인딩(연결)합니다.
-     */
+    
+    // ViewHolder에 데이터 바인딩
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         // 순번은 0부터 시작하는 position에 1을 더해서 만듭니다.
@@ -131,9 +148,8 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    /**
-     * 전체 아이템 개수를 반환합니다.
-     */
+    
+    //전체 아이템 개수 반환
     @Override
     public int getItemCount() {
         return items.size();
@@ -142,9 +158,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     // --- ViewHolder 클래스들 ---
 
-    /**
-     * '장소 카드' (item_trip_location.xml)의 뷰들을 관리하는 ViewHolder
-     */
+    // 장소 카드 (item_trip_location.xml)의 뷰들을 관리하는 ViewHolder
     public static class LocationViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvNumber;
         private final TextView tvTime;
@@ -189,38 +203,54 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    /**
-     * '+ 장소 추가하기' 버튼 (view_add_location_button.xml)의 뷰들을 관리하는 ViewHolder
-     */
-    public static class AddButtonViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvNumber;
-        // 🟡 추가: Context 변수 추가
-        private final Context context;
-//        public AddButtonViewHolder(@NonNull View itemView, long courseId, long dayId) {
+
+    // 장소 추가하기 버튼 (view_add_location_button.xml)의 뷰들을 관리하는 ViewHolder
+//    public static class AddButtonViewHolder extends RecyclerView.ViewHolder {
+//        private final TextView tvNumber;
+//        // 🟡 추가: Context 변수 추가
+//        private final Context context;
+//
+//        // 🟡 4. 생성자에서 Fragment 참조를 받도록 수정
+//        public AddButtonViewHolder(@NonNull View itemView, long courseId, long dayId, CreateCourseDayDetailFragment fragment) {
 //            super(itemView);
-//            // 🟡 추가: itemView로부터 Context를 얻어와서 변수에 저장
 //            this.context = itemView.getContext();
 //            tvNumber = itemView.findViewById(R.id.tvNumber);
 //
-//            // "장소 추가하기" 버튼 전체에 클릭 리스너 설정
 //            itemView.setOnClickListener(v -> {
-//                // 🟡 수정: AddLocationActivity로 이동하는 Intent 로직 구현
-//                Intent intent = new Intent(context, AddLocationActivity.class);
-//                // TODO: AddLocationActivity에 courseId와 dayId를 전달해야 합니다.
-//                 intent.putExtra("courseId", courseId);
-//                 intent.putExtra("dayId", dayId);
-//                context.startActivity(intent);
+//                // 🟡 5. Fragment의 메서드를 호출하여 Activity 실행 요청
+//                fragment.launchAddLocationActivity(courseId, dayId);
 //            });
 //        }
-        // 🟡 4. 생성자에서 Fragment 참조를 받도록 수정
-        public AddButtonViewHolder(@NonNull View itemView, long courseId, long dayId, CreateCourseDayDetailFragment fragment) {
+//
+//        public void bind(String number) {
+//            tvNumber.setText(number);
+//        }
+//    }
+    public static class AddButtonViewHolder extends RecyclerView.ViewHolder {
+        private final TextView tvNumber;
+        private final Context context;
+
+        /**
+         * 🟡 수정: 생성자에서 courseId, dayId, fragment 대신 Adapter 전체를 받습니다.
+         * 이렇게 하면 Adapter의 최신 상태를 언제든지 참조할 수 있습니다.
+         */
+        public AddButtonViewHolder(@NonNull View itemView, LocationAdapter adapter) {
             super(itemView);
             this.context = itemView.getContext();
             tvNumber = itemView.findViewById(R.id.tvNumber);
 
+            // "장소 추가하기" 버튼 전체에 클릭 리스너 설정
             itemView.setOnClickListener(v -> {
-                // 🟡 5. Fragment의 메서드를 호출하여 Activity 실행 요청
-                fragment.launchAddLocationActivity(courseId, dayId);
+                // 🟡 수정: 클릭되는 바로 그 순간에 Adapter로부터 최신 courseId와 dayId를 가져옵니다.
+                // 이렇게 하면 항상 현재 선택된 탭의 올바른 ID를 사용할 수 있습니다.
+                long currentCourseId = adapter.courseId;
+                long currentDayId = adapter.getCurrentDayId(); // getCurrentDayId() 메서드 사용
+
+                // 🟡 디버깅 로그 5: '+ 장소 추가' 버튼이 클릭되었을 때
+                Log.d("DEBUG_DAY_ID", "[AddButton Click] '+ 장소 추가' 버튼 클릭. 현재 Adapter가 가진 dayId: " + currentDayId);
+
+                // Adapter가 가지고 있는 fragment 참조를 사용하여 Activity 실행을 요청합니다.
+                adapter.fragment.launchAddLocationActivity(currentCourseId, currentDayId);
             });
         }
 
@@ -229,173 +259,3 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 }
-
-
-//package com.example.yourtrip.mytrip;
-//
-//import android.text.TextUtils;
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//import android.widget.EditText;
-//import android.widget.ImageView;
-//import android.widget.TextView;
-//
-//import androidx.annotation.NonNull;
-//import androidx.recyclerview.widget.RecyclerView;
-//
-//import com.example.yourtrip.R;
-//import com.example.yourtrip.mytrip.model.LocationItem;
-//
-//import java.util.List;
-//
-///**
-// * 여행 코스 한 날(day)에 들어가는 장소 리스트 어댑터
-// * - 위쪽: 장소 카드들 (item_trip_location_card)
-// * - 맨 아래: "+ 장소 추가하기" 버튼 (view_add_location_button)
-// */
-//public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-//
-//    private static final int VIEW_TYPE_LOCATION = 0;   // 장소 카드
-//    private static final int VIEW_TYPE_ADD_BUTTON = 1; // + 장소 추가하기
-//
-//    private final List<LocationItem> locationList;
-//    private OnAddClickListener addClickListener;
-//    private OnDeleteClickListener deleteClickListener;
-//
-//    public LocationAdapter(List<LocationItem> locationList) {
-//        this.locationList = locationList;
-//    }
-//
-//    // ----------- 콜백 인터페이스 -----------
-//    public interface OnAddClickListener {
-//        void onAddClick();
-//    }
-//
-//    public interface OnDeleteClickListener {
-//        void onDeleteClick(int position);
-//    }
-//
-//    public void setOnAddClickListener(OnAddClickListener listener) {
-//        this.addClickListener = listener;
-//    }
-//
-//    public void setOnDeleteClickListener(OnDeleteClickListener listener) {
-//        this.deleteClickListener = listener;
-//    }
-//
-//    // ----------- RecyclerView 필수 구현 -----------
-//
-//    @Override
-//    public int getItemViewType(int position) {
-//        // 마지막 칸 = "+ 장소 추가하기"
-//        if (position == locationList.size()) {
-//            return VIEW_TYPE_ADD_BUTTON;
-//        }
-//        return VIEW_TYPE_LOCATION;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//
-//        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-//
-//        if (viewType == VIEW_TYPE_LOCATION) {
-//            View view = inflater.inflate(R.layout.item_trip_location_card, parent, false);
-//            return new LocationViewHolder(view);
-//        } else {
-//            View view = inflater.inflate(R.layout.view_add_location_button, parent, false);
-//            return new AddButtonViewHolder(view);
-//        }
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-//
-//        if (getItemViewType(position) == VIEW_TYPE_LOCATION) {
-//
-//            LocationViewHolder vh = (LocationViewHolder) holder;
-//            LocationItem item = locationList.get(position);
-//
-//            // 번호 (1부터 시작)
-//            vh.tvNumber.setText(String.valueOf(position + 1));
-//
-//            // 시간 입력
-//            vh.tvTime.setText(
-//                    TextUtils.isEmpty(item.getTime())
-//                            ? "눌러서 시간 입력"
-//                            : item.getTime()
-//            );
-//
-//            // 장소명 / 주소 / 메모
-//            vh.tvPlaceName.setText(item.getPlaceName());
-//            vh.tvAddress.setText(item.getAddress());
-//            vh.etMemo.setText(item.getMemo());
-//
-//            // TODO : 지도 이미지 로딩 (카카오 Static Map 추가 예정)
-//
-//            // 삭제 버튼 클릭
-//            vh.btnDelete.setOnClickListener(v -> {
-//                if (deleteClickListener != null) {
-//                    deleteClickListener.onDeleteClick(holder.getAdapterPosition());
-//                }
-//            });
-//
-//        } else {
-//            // "+ 장소 추가하기"
-//            AddButtonViewHolder vh = (AddButtonViewHolder) holder;
-//            vh.tvNumber.setText(String.valueOf(locationList.size() + 1));
-//            //  첫 번째 위치일 때만 테두리 배경 적용
-//            if (locationList.size() == 0) {
-//                vh.itemView.setBackgroundResource(R.drawable.bg_location_box);
-//            } else {
-//                vh.itemView.setBackground(null);
-//            }
-//
-//            vh.itemView.setOnClickListener(v -> {
-//                if (addClickListener != null) addClickListener.onAddClick();
-//            });
-//        }
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return locationList.size() + 1; // 장소 카드 + 마지막 추가 버튼
-//    }
-//
-//    // ----------- ViewHolder 구현 -----------
-//
-//    static class LocationViewHolder extends RecyclerView.ViewHolder {
-//
-//        TextView tvNumber, tvTime, tvPlaceName, tvAddress;
-//        ImageView ivMap, btnDelete;
-//        View btnAddPhoto;
-//        EditText etMemo;
-//
-//        LocationViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//
-//            tvNumber = itemView.findViewById(R.id.tvNumber);
-//            tvTime = itemView.findViewById(R.id.tvTime);
-//            tvPlaceName = itemView.findViewById(R.id.tvPlaceName);
-//            tvAddress = itemView.findViewById(R.id.tvAddress);
-//            ivMap = itemView.findViewById(R.id.ivMap);
-//            btnAddPhoto = itemView.findViewById(R.id.btnAddPhoto);
-//            etMemo = itemView.findViewById(R.id.etMemo);
-//            btnDelete = itemView.findViewById(R.id.btnDelete);
-//        }
-//    }
-//
-//    static class AddButtonViewHolder extends RecyclerView.ViewHolder {
-//
-//        TextView tvNumber, tvAddLocation;
-//
-//        AddButtonViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//
-//            tvNumber = itemView.findViewById(R.id.tvNumber);
-//            tvAddLocation = itemView.findViewById(R.id.tvAddLocation);
-//        }
-//    }
-//}

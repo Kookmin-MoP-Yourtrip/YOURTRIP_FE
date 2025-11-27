@@ -19,7 +19,8 @@ import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 import com.example.yourtrip.mytrip.model.MyCourseListResponse;
 import com.example.yourtrip.mytrip.model.PlaceAddRequest;
 import com.example.yourtrip.mytrip.model.PlaceAddResponse;
-
+import com.example.yourtrip.mytrip.model.DayPlacesResponse;
+import com.example.yourtrip.mytrip.model.LocationItem;
 
 import java.util.List;
 
@@ -79,6 +80,13 @@ public interface ApiService {
             @Path("courseId") long courseId,
             @Path("dayId") long dayId,
             @Body PlaceAddRequest request
+    );
+
+    //특정 일차에 모든 장소 목록 조회 API
+    @GET("/api/my-courses/{courseId}/days/{dayId}/places")
+    Call<DayPlacesResponse> getPlacesForDay(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId
     );
 
 
