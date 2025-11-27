@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/bg_location_box"
     android:padding="16dp">
 
     <!-- 상단 영역 (번호, 제목, 삭제 버튼) -->

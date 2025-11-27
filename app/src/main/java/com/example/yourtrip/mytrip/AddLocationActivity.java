@@ -36,6 +36,11 @@ import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.overlay.Marker;
 
+import com.example.yourtrip.network.ApiService;
+import com.example.yourtrip.network.RetrofitClient;
+import com.example.yourtrip.mytrip.model.PlaceAddRequest;
+import com.example.yourtrip.mytrip.model.PlaceAddResponse;
+
  import retrofit2.Call;
  import retrofit2.Callback;
  import retrofit2.Response;
@@ -51,8 +56,8 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
     private ImageView btnSearch;
     private boolean isMapReady = false; // 지도가 준비되었는지 확인하는 플래그
     private ApiService apiService;
-    private long courseId;
-    private long dayId;
+    private long courseId = -1L;
+    private long dayId = -1L;
     
 
     @Override
@@ -60,11 +65,12 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_add_location);
 
+        // 🟡 3. Intent에서 courseId와 dayId를 받옴
+        courseId = getIntent().getLongExtra("courseId", -1L);
+        dayId = getIntent().getLongExtra("dayId", -1L);
+
         //API 서비스 및 Intent 데이터 초기화 
         apiService = RetrofitClient.getAuthService(this);
-        Intent intent = getIntent();
-        courseId = intent.getLongExtra("courseId", -1L);
-        dayId = intent.getLongExtra("dayId", -1L);
 
         initViews();
         setTopBar();
@@ -235,18 +241,21 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
             searchPlace(placeName, new PlaceSearchListener() {
                 @Override
                 public void onSuccess(double latitude, double longitude) {
+                    Log.d("AddLocationActivity", "장소 검색 성공. 위도: " + latitude + ", 경도: " + longitude);
                     // 검색 성공 시: 다음 화면으로 전환
-//                    Intent intent = new Intent(AddLocationActivity.this);
-//                    startActivity(intent);
-//                    finish();  // 현재 액티비티 종료
                     Toast.makeText(AddLocationActivity.this, "장소가 추가되었습니다.", Toast.LENGTH_SHORT).show();
-                    // 검색 성공 시: API 호출 -> 추후에 구현 예정
-//                    PlaceAddRequest request = new PlaceAddRequest(placeName, latitude, longitude, "http://...url", "주소...");
+                    // 검색 성공 시: API 호출 
+                    // TODO: placeUrl, placeLocation은 실제 주소 검색 API 결과에서 가져와야 함
+//                    PlaceAddRequest request = new PlaceAddRequest(placeName, latitude, longitude, "http://...url", "검색된 주소");
 //                    addPlaceApiCall(request);
+
+                    // 🟡 임시로 finish()를 직접 호출하여 테스트. (API 호출이 성공했다고 가정)
+                    finish();
                 }
 
                 @Override
                 public void onFailure(String errorMessage) {
+                    Log.e("AddLocationActivity", "장소 검색 실패: " + errorMessage);
                     // 검색 실패 시: 팝업 띄우기
                     showAddLocationDialog();
                 }
@@ -278,8 +287,9 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         Button btnAdd = dialogView.findViewById(R.id.btnAdd); 
         btnAdd.setOnClickListener(v -> {
             String placeName = etPlaceName.getText().toString().trim();
-            // 장소를 추가하는 로직 (예: 데이터베이스에 저장)
             Toast.makeText(this, "장소가 추가되었습니다.", Toast.LENGTH_SHORT).show();
+            //api 호출 메서드 연결
+            // 수동 추가 시: 위도, 경도 등은 null로 전달
             PlaceAddRequest request = new PlaceAddRequest(placeName, null, null, null, null);
             addPlaceApiCall(request);
             dialog.dismiss();
@@ -303,9 +313,11 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
     private void addPlaceApiCall(PlaceAddRequest request) {
         if (courseId == -1 || dayId == -1) {
             Toast.makeText(this, "코스 또는 일차 정보가 없어 추가할 수 없습니다.", Toast.LENGTH_SHORT).show();
+            Log.e("AddLocationActivity", "API 호출 실패: courseId 또는 dayId가 유효하지 않음.");
             return;
         }
 
+        // ApiService를 사용하여 API 호출
         apiService.addPlaceToDay(courseId, dayId, request).enqueue(new Callback<PlaceAddResponse>() {
             @Override
             public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {

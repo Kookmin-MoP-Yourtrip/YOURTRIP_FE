@@ -25,15 +25,38 @@
 
 
     <!-- 🔵 아래 전체 스크롤 리스트 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerLocationList"
+    <!-- 바깥쪽 FrameLayout: 테두리가 있는 배경을 담당 -->
+    <!-- TODO: 현재 FrameLayout에 적용된 배경(bg_simple_border_blue)이 의도와 다르게 표시되는 문제 해결. 피그마 시안처럼 전체를 감싸야함  -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_simple_border_blue"
-        android:padding="15dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:itemCount="1"
-        tools:listitem="@layout/item_trip_location_card" />
+        android:paddingTop="22dp"
+        android:paddingBottom="22dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- 2. 안쪽 RecyclerView: 실제 아이템 목록과 스크롤을 담당 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerLocationList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_trip_location_card"
+            />
+
+    </FrameLayout>
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recyclerLocationList"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@drawable/bg_simple_border_blue"-->
+<!--        android:padding="15dp"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+<!--        tools:itemCount="1"-->
+<!--        tools:listitem="@layout/item_trip_location_card" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

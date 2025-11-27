@@ -2,6 +2,7 @@ package com.example.yourtrip.mytrip;
 
 import android.content.Context; // Context 추가
 import android.graphics.Color; // Color 추가
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,22 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayViewHolder> {
     private final List<MyCourseDetailResponse.DaySchedule> daySchedules;
     private int selectedPosition = 0; // 🔵 현재 선택된 아이템의 위치를 저장 (기본값: 0)
 
-    // 생성자에서 데이터 리스트를 받음
-    public DayAdapter(List<MyCourseDetailResponse.DaySchedule> daySchedules) {
-        this.daySchedules = daySchedules;
+    // 🟡 1. 클릭 이벤트를 전달할 인터페이스 정의
+    public interface OnDayTabClickListener {
+        void onDayTabClick(int position, long dayId);
     }
+    private final OnDayTabClickListener listener; // 🟡 2. 리스너 멤버 변수 추가
+
+    // 🟡 3. 생성자에서 리스너를 전달받도록 수정
+    public DayAdapter(List<MyCourseDetailResponse.DaySchedule> daySchedules, OnDayTabClickListener listener) {
+        this.daySchedules = daySchedules;
+        this.listener = listener;
+    }
+
+    // 생성자에서 데이터 리스트를 받음
+//    public DayAdapter(List<MyCourseDetailResponse.DaySchedule> daySchedules) {
+//        this.daySchedules = daySchedules;
+//    }
 
     @NonNull
     @Override
@@ -47,13 +60,16 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayViewHolder> {
             if (selectedPosition != position) {
                 int previousPosition = selectedPosition;
                 selectedPosition = position;
-
                 // 이전 선택된 아이템과 새로 선택된 아이템을 갱신
                 notifyItemChanged(previousPosition);
                 notifyItemChanged(selectedPosition);
 
-                // TODO: 프래그먼트에 클릭 이벤트를 알려주는 로직 추가
-                // (예: (position + 1) + "일차의 장소 목록을 불러오세요!")
+                // 🟡 4. 인터페이스를 통해 Fragment에 클릭 이벤트 전달
+                if (listener != null) {
+                    listener.onDayTabClick(position, daySchedule.getDayId());
+                }
+
+                Log.d("DayAdapter", (position + 1) + "일차 탭 클릭됨! dayId: " + daySchedules.get(position).getDayId());
             }
         });
 

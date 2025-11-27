@@ -7,7 +7,6 @@ public class PlaceAddRequest {
     private String placeUrl;
     private String placeLocation;
 
-    // 생성자
     public PlaceAddRequest(String placeName, Double latitude, Double longitude, String placeUrl, String placeLocation) {
         this.placeName = placeName;
         this.latitude = latitude;

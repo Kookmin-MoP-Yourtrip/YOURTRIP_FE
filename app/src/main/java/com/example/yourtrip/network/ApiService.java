@@ -20,6 +20,7 @@ import com.example.yourtrip.mytrip.model.MyCourseListResponse;
 import com.example.yourtrip.mytrip.model.PlaceAddRequest;
 import com.example.yourtrip.mytrip.model.PlaceAddResponse;
 
+
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -33,6 +34,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+
 
 public interface ApiService {
     //=============회원가입 & 로그인 api================//
@@ -65,17 +67,19 @@ public interface ApiService {
     @GET("/api/my-courses")
     Call<MyCourseListResponse> getMyCourses();
 
-    // 나의 코스 장소 추가 api
+
+    //나의 코스 단건 조회 api
+    @GET("/api/my-courses/{courseId}")
+    Call<MyCourseDetailResponse> getMyCourseDetail(@Path("courseId") long courseId);
+
+
+    //특정 일차에 새로운 장소 추가 API
     @POST("/api/my-courses/{courseId}/days/{dayId}/places")
     Call<PlaceAddResponse> addPlaceToDay(
             @Path("courseId") long courseId,
             @Path("dayId") long dayId,
             @Body PlaceAddRequest request
     );
-
-    //나의 코스 단건 조회 api
-    @GET("/api/my-courses/{courseId}")
-    Call<MyCourseDetailResponse> getMyCourseDetail(@Path("courseId") long courseId);
 
 
     //=============홈 api================//
