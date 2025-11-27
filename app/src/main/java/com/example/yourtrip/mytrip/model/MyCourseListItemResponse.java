@@ -24,6 +24,8 @@ public class MyCourseListItemResponse implements Serializable {
     @SerializedName("memberCount")
     private int memberCount;
 
+
+
     // 생성자: 필드를 초기화하는 올바른 코드로 수정합니다.
     public MyCourseListItemResponse(Long courseId, String title, String location, String startDate, String endDate, int memberCount) {
         this.courseId = courseId;

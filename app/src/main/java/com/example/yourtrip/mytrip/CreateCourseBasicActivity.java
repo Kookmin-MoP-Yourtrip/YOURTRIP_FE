@@ -224,20 +224,15 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
                     MyCourseCreateBasicResponse courseResponse = response.body();
                     Log.d(TAG, "MyCourseCreateBasic_API 응답 데이터: " + courseResponse.toString());
 
-                    // DetailActivity로 화면을 전환
-                    Intent detailIntent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
-                    detailIntent.putExtra("myCourseId", courseResponse.getMyCourseId());
-                    detailIntent.putExtra("courseTitle", courseResponse.getTitle());
-                    detailIntent.putExtra("location", courseResponse.getLocation());
-                    detailIntent.putExtra("startDate", courseResponse.getStartDate());
-                    detailIntent.putExtra("endDate", courseResponse.getEndDate());
 
-                    startActivity(detailIntent);
+                    Intent intent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
+                    // "course_detail" 이라는 키로, 서버에서 받은 응답 객체 전체를 담아서 전달
+//                    intent.putExtra("course_detail", courseResponse);
+                    intent.putExtra("course_basic", courseResponse.getMyCourseId());
+                    startActivity(intent);
 
                     // DetailActivity에서 뒤로가기 시 MyTripListFragment로 돌아가게 함
                     finish();
-
-
 
                 } else {
                     // ... (기존의 400 에러 및 기타 에러 처리 로직은 그대로)
@@ -260,65 +255,6 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void submitCourse(MyCourseCreateRequest request) {
-//        btnNext.setEnabled(false);
-//        // Call 제네릭 타입을 MyCourseCreateBasicResponse로 수정함
-//        apiService.createMyCourse(request).enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody>
-//                                           call, Response<ResponseBody> response) {
-//                btnNext.setEnabled(true);
-//
-//                if (response.isSuccessful()) {
-//
-//                    try {
-//                        String body = response.body() != null ? response.body().string() : "null";
-//                        Log.d("MyCourseCreate", "성공(201): " + body);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    Toast.makeText(CreateCourseBasicActivity.this,
-//                            "코스 생성 완료!", Toast.LENGTH_SHORT).show();
-//
-//
-//                } else if (response.code() == 400) {
-//                    // 서버에서 준 에러 메시지 파싱
-//                    try {
-//                        String errorMsg = response.errorBody() != null
-//                                ? response.errorBody().string()
-//                                : "잘못된 요청입니다.";
-//                        Log.e("MyCourseCreate", "400 오류: " + errorMsg);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    Toast.makeText(CreateCourseBasicActivity.this,
-//                            "입력값 오류", Toast.LENGTH_SHORT).show();
-//
-//                } else {
-//                    try {
-//                        String errorBody = response.errorBody() != null
-//                                ? response.errorBody().string()
-//                                : "null";
-//                        Log.e("MyCourseCreate", "기타 에러 코드: " + response.code()
-//                                + ", errorBody = " + errorBody);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                btnNext.setEnabled(true);
-//                Log.e("MyCourseCreate", "API 실패: " + t.getMessage());
-//                Toast.makeText(CreateCourseBasicActivity.this,
-//                        "네트워크 오류", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
 
 
     // 날짜 범위 비교

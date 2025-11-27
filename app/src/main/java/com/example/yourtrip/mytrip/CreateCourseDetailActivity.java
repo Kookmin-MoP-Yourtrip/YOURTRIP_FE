@@ -1,5 +1,6 @@
 package com.example.yourtrip.mytrip;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,22 +42,49 @@ public class CreateCourseDetailActivity extends AppCompatActivity {
         initializeUI();
         setupRetrofit();
 
-        // Intent에서 myCourseId 받기 (long 타입이라고 가정)
-        courseId = getIntent().getLongExtra("myCourseId", -1L);
+        Intent intent = getIntent();
+        long receivedCourseId = -1L; // courseId를 담을 임시 변수
 
-        // courseId 유효성 검사 및 로그 추가
-        if (courseId == -1L) {
-            Toast.makeText(this, "코스 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
-            Log.e("CourseDetailActivity_intent 전달", "Intent에서 유효한 myCourseId를 받지 못했습니다.");
-            finish(); // 유효한 ID가 없으면 Activity 종료
-            return;
+        // 두 가지 다른 경로로 들어오는 courseId 처리
+        // 시나리오 1: MyTripListFragment에서 '기존 코스 조회'로 들어온 경우 ("courseId" 키 사용)
+        if (intent.hasExtra("courseId")) {
+            receivedCourseId = intent.getLongExtra("courseId", -1L);
+            Log.d(TAG, "[기존 코스 조회] Intent로부터 'courseId' 키로 전달받음: " + receivedCourseId);
+        }
+        // 시나리오 2: CreateCourseBasicActivity에서 '새 코스 생성' 후 들어온 경우 ("course_basic" 키 사용)
+        else if (intent.hasExtra("course_basic")) {
+            receivedCourseId = intent.getLongExtra("course_basic", -1L);
+            Log.d(TAG, "[새 코스 생성] Intent로부터 'course_basic' 키로 전달받음: " + receivedCourseId);
         }
 
-        // 🔵 요청하신 로그: 받아온 courseId 확인
-        Log.d("CourseDetailActivity_intent 전달", "Intent로부터 전달받은 courseId: " + courseId);
+        // --- 공통 처리 로직 ---
+        // 두개의 경로 둘 다 courseId로 처리해서 api 호출
+        if (receivedCourseId != -1L) {
+            this.courseId = receivedCourseId; // 멤버 변수에 저장
+            fetchCourseDetails(this.courseId);
+        } else {
+            Toast.makeText(this, "코스 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Intent에서 유효한 courseId를 받지 못했습니다.");
+            finish(); // 유효한 ID가 없으면 Activity 종료
+        }
 
-        // courseId로 코스 상세 정보 조회 API 호출
-        fetchCourseDetails(courseId);
+//
+//        // Intent에서 myCourseId 받기 (long 타입이라고 가정)
+//        courseId = getIntent().getLongExtra("course_basic", -1L);
+//
+//        // courseId 유효성 검사 및 로그 추가
+//        if (courseId == -1L) {
+//            Toast.makeText(this, "코스 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+//            Log.e("CourseDetailActivity_intent 전달", "Intent에서 유효한 myCourseId를 받지 못했습니다.");
+//            finish(); // 유효한 ID가 없으면 Activity 종료
+//            return;
+//        }
+//
+//        // 🔵 요청하신 로그: 받아온 courseId 확인
+//        Log.d("CourseDetailActivity_intent 전달", "Intent로부터 전달받은 courseId: " + courseId);
+//
+//        // courseId로 코스 상세 정보 조회 API 호출
+//        fetchCourseDetails(courseId);
     }
 
     // UI 초기화 (상단바, 버튼 설정 등)

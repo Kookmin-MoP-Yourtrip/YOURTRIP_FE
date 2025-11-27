@@ -1,6 +1,6 @@
 package com.example.yourtrip.mytrip.model;
-
-public class MyCourseCreateBasicResponse {
+import java.io.Serializable;
+public class MyCourseCreateBasicResponse implements Serializable{
     private long myCourseId;
     private String title;
     private String location;
