@@ -30,7 +30,7 @@ public class CreateAICourseDateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_ai_course_basic); //레이아웃을 현재 activity 화면으로 사용
+        setContentView(R.layout.activity_create_ai_course_date); //레이아웃을 현재 activity 화면으로 사용
 
         initViews(); //findViewById로 xml의 뷰들을 멤버 변수에 연결
         setTopBar(); //상단바 타이틀과 뒤로가기 버튼 설정

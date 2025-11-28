@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 상단바 (제목은 코드에서 "AI 코스 만들기"로 세팅), progress indicator 필요 -->
+    <!-- 상단바 (제목은 코드에서 "AI 코스 만들기"로 세팅), progress bar 필요 -->
     <include
         android:id="@+id/topBar"
         layout="@layout/view_common_top_bar"
@@ -41,7 +41,7 @@
                 android:id="@+id/tvInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="여행 기간을 입력해 주세요."
+                android:text="여행 장소를 입력해 주세요."
                 android:textSize="20sp"
                 android:textColor="@color/gray_700"
                 android:textStyle="bold"
@@ -53,50 +53,30 @@
                 android:id="@+id/tvSubInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="조건을 바탕으로 AI가 여행 코스를 생성해요."
+                android:text="가고 싶은 지역을 자유롭게 알려 주세요."
                 android:textSize="13sp"
                 android:textColor="@color/gray_550"
                 android:layout_marginBottom="24dp" />
 
 
-            <!-- BLOCK 3: 여행 날짜 -->
+            <!-- BLOCK 2: 여행지 -->
             <LinearLayout
+                android:id="@+id/block_location"
+                style="@style/FormBlock"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="0dp">
 
                 <EditText
-                    android:id="@+id/btnStartDate"
-                    android:layout_width="0dp"
+                    android:id="@+id/etLocation"
+                    android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_weight="1"
                     style="@style/RoundedEditText.Default"
-                    android:hint="여행 출발 날짜"
-                    android:gravity="center"
-                    android:textSize="14sp"
-                    android:focusable="false"
-                    android:clickable="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="  ~  "
-                    android:textColor="@color/gray_600"
+                    android:hint="예시: 연남동, 제주도, 성북구"
                     android:textSize="14sp"/>
-
-                <EditText
-                    android:id="@+id/btnEndDate"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    style="@style/RoundedEditText.Default"
-                    android:hint="여행 종료 날짜"
-                    android:gravity="center"
-                    android:textSize="14sp"
-                    android:focusable="false"
-                    android:clickable="true"/>
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
