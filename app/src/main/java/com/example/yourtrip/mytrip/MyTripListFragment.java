@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -144,7 +143,7 @@ public class MyTripListFragment extends Fragment {
         });
         dimLayer.setOnClickListener(v -> closeMenu());
         btnAIMake.setOnClickListener(v -> {
-            Intent intent = new Intent(requireActivity(), CreateAICourseBasicActivity.class);
+            Intent intent = new Intent(requireActivity(), CreateAICourseDateActivity.class);
             startActivity(intent);
             closeMenu();
         });
