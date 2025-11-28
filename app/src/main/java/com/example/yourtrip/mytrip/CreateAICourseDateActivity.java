@@ -1,5 +1,6 @@
 package com.example.yourtrip.mytrip;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -151,11 +152,11 @@ public class CreateAICourseDateActivity extends AppCompatActivity {
                 return;
             }
 
-            // 여기서부터는 다음 화면으로 넘기는 로직
-            // Intent intent = new Intent(CreateAICourseBasicActivity.this, AICourseConditionActivity.class);
-            // intent.putExtra("startDate", startDate);
-            // intent.putExtra("endDate", endDate);
-            // startActivity(intent);
+            // 다음 화면으로 넘기는 로직
+             Intent intent = new Intent(CreateAICourseDateActivity.this, CreateAICourseLocationActivity.class);
+             intent.putExtra("startDate", startDate);
+             intent.putExtra("endDate", endDate);
+             startActivity(intent);
         });
     }
 
