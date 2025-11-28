@@ -143,7 +143,11 @@ public class MyTripListFragment extends Fragment {
             else openMenu();
         });
         dimLayer.setOnClickListener(v -> closeMenu());
-        btnAIMake.setOnClickListener(v -> Toast.makeText(getContext(), "AI 제작 기능 준비 중입니다.", Toast.LENGTH_SHORT).show());
+        btnAIMake.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), CreateAICourseBasicActivity.class);
+            startActivity(intent);
+            closeMenu();
+        });
         btnManualMake.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), CreateCourseBasicActivity.class);
             startActivity(intent);
