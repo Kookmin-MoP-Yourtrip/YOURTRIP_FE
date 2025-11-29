@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.yourtrip.MainActivity;
 import com.example.yourtrip.R;
 import com.example.yourtrip.feed.FeedFragment;
@@ -27,6 +28,8 @@ public class MypageFragment extends Fragment {
 
     private ImageView imgProfile;
     private TextView tvNickname;
+
+    public static String latestProfileUrl = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,12 +79,16 @@ public class MypageFragment extends Fragment {
                 // 닉네임 표시
                 tvNickname.setText(p.nickname);
 
+                String urlToLoad = latestProfileUrl != null ? latestProfileUrl : p.profileImageUrl;
+
                 // 이미지 표시
                 Glide.with(requireContext())
-                        .load(p.profileImageUrl)
+                        .load(urlToLoad)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .circleCrop()
                         .placeholder(R.drawable.ic_default_profile)
                         .error(R.drawable.ic_default_profile)
-                        .circleCrop()
                         .into(imgProfile);
             }
 
