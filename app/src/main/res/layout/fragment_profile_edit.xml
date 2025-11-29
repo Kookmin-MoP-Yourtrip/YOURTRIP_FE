@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <!-- ▣ 상단바 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:paddingHorizontal="12dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_arrow_back"
+            android:padding="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="프로필 편집"
+            android:textColor="@color/gray_700"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <!-- ▣ 스크롤 전체 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingBottom="32dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/btnSave">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="24dp">
+
+            <FrameLayout
+                android:layout_width="105dp"
+                android:layout_height="105dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp">
+
+                <!-- 프로필 이미지 -->
+                <!-- 프로필 이미지 -->
+                <ImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="105dp"
+                    android:layout_height="105dp"
+                    android:background="@drawable/ic_default_profile"
+                    android:scaleType="centerCrop"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <!-- 🔹 오른쪽 상단 + 버튼 오버레이 -->
+                <ImageView
+                    android:id="@+id/btnAddPhoto"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="6dp"
+                    android:src="@drawable/ic_add_btn"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </FrameLayout>
+
+            <!-- ▣ 닉네임 입력 박스 -->
+            <LinearLayout
+                style="@style/RoundedEditText.Default"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_box_round"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="14dp">
+
+                <View
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:background="@android:color/transparent"/>
+
+                <EditText
+                    android:id="@+id/edtNickname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="빌려온고양이00"
+                    android:paddingVertical="12dp"
+                    android:gravity="center"
+                    android:textColor="#26282B"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iconEdit"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_edit"
+                    android:layout_marginStart="6dp"
+                    android:background="@null"
+                    android:padding="2dp"
+                    android:contentDescription="닉네임 수정" />
+            </LinearLayout>
+
+            <!-- 닉네임 오류 -->
+            <TextView
+                android:id="@+id/tvNicknameError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="이미 사용 중인 닉네임입니다."
+                android:textColor="@color/red"
+                android:textSize="10sp"
+                android:visibility="gone"/>
+
+
+            <!-- 비밀번호 변경 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="비밀번호 변경"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#26282B" />
+
+            <EditText
+                android:id="@+id/editCurrentPw"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:hint="현재 비밀번호 입력"
+                android:textColor="@color/gray_700"
+                android:textColorHint="#646B72"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/bg_edittext"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/editNewPw"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:hint="새 비밀번호 입력 (영문, 숫자 포함 8~20자)"
+                android:textColor="@color/gray_700"
+                android:textColorHint="#646B72"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/bg_edittext"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/editConfirmPw"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:hint="새 비밀번호 재확인"
+                android:textColor="@color/gray_700"
+                android:textColorHint="#646B72"
+                android:paddingHorizontal="16dp"
+                android:background="@drawable/bg_edittext"
+                android:inputType="textPassword" />
+
+
+            <!-- 회원 탈퇴 -->
+            <TextView
+                android:id="@+id/btnDeleteUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회원 탈퇴"
+                android:textColor="#EE3E3E"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:paddingVertical="8dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <!-- 완료 버튼 -->
+    <android.widget.Button
+        android:id="@+id/btnSave"
+        style="@style/ChangeButtonStyle"
+        android:background="@drawable/bg_btn_active"
+        android:text="완료"
+        android:textColor="@color/white"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="42dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

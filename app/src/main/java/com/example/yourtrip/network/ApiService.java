@@ -12,6 +12,10 @@ import com.example.yourtrip.model.FeedCommentWriteResponse;
 import com.example.yourtrip.model.FeedDetailResponse;
 import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.UploadCourseListResponse;
+import com.example.yourtrip.mypage.NicknameChangeRequest;
+import com.example.yourtrip.mypage.PasswordChangeRequest;
+import com.example.yourtrip.mypage.ProfileImageResponse;
+import com.example.yourtrip.mypage.ProfileResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
 
 import java.util.List;
@@ -21,8 +25,10 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
@@ -105,6 +111,29 @@ public interface ApiService {
             @Query("page") int page,
             @Query("size") int size
     );
+
+    // 1. 프로필 조회
+    @GET("/api/mypage/profile")
+    Call<ProfileResponse> getProfile();
+
+    // 2. 프로필 이미지 업로드
+    @Multipart
+    @PATCH("/api/mypage/profile/image")
+    Call<ProfileImageResponse> uploadProfileImage(
+            @Part MultipartBody.Part file
+    );
+
+    // 3. 닉네임 변경
+    @PATCH("/api/mypage/profile/nickname")
+    Call<Void> updateNickname(@Body NicknameChangeRequest request);
+
+    // 4. 비밀번호 변경
+    @PATCH("/api/mypage/profile/password")
+    Call<Void> updatePassword(@Body PasswordChangeRequest request);
+
+    // 5. 회원 탈퇴
+    @DELETE("/api/mypage/profile")
+    Call<Void> deleteUser();
 
 }
 
