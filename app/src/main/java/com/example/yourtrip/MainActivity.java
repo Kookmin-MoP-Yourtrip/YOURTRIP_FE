@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.yourtrip.feed.FeedFragment;
 import com.example.yourtrip.home.HomeFragment;
 import com.example.yourtrip.mypage.MypageFragment;
-import com.example.yourtrip.mytrip.MyTripListFragment;
+import com.example.yourtrip.mytrip.list.MyTripListFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 //import com.example.yourtrip.feed.FeedFragment;
 //import com.example.yourtrip.home.HomeFragment;
 //import com.example.yourtrip.mypage.MypageFragment;
-//import com.example.yourtrip.mytrip.MyTripListFragment;
+//import com.example.yourtrip.mytrip.list.MyTripListFragment;
 //import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;  // MyCourseListItemResponse import 추가
 //import com.google.android.material.appbar.MaterialToolbar;
 //import com.google.android.material.bottomnavigation.BottomNavigationView;

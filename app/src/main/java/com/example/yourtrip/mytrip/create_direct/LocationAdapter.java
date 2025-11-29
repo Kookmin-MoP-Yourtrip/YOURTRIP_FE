@@ -1,6 +1,5 @@
-package com.example.yourtrip.mytrip;
+package com.example.yourtrip.mytrip.create_direct;
 
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,8 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.text.Editable;
-import android.text.TextWatcher;
+
 import com.bumptech.glide.Glide;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

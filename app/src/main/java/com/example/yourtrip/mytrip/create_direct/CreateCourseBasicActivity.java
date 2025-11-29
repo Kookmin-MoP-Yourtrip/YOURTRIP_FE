@@ -1,5 +1,5 @@
 //detail 코스 작성 페이지로 넘어가는 코드
-package com.example.yourtrip.mytrip;
+package com.example.yourtrip.mytrip.create_direct;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,12 +13,10 @@ import android.widget.Toast;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.yourtrip.R;
 import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
-import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -28,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -1,4 +1,4 @@
-package com.example.yourtrip.mytrip;
+package com.example.yourtrip.mytrip.list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.mytrip.create_ai.CreateAICourseDateActivity;
+import com.example.yourtrip.mytrip.create_direct.CreateCourseBasicActivity;
+import com.example.yourtrip.mytrip.create_direct.CreateCourseDetailActivity;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 import com.example.yourtrip.mytrip.model.MyCourseListResponse; //목록 전체

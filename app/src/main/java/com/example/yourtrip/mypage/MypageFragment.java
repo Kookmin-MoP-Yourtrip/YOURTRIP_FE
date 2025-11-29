@@ -17,7 +17,7 @@ import com.example.yourtrip.R;
 import com.example.yourtrip.feed.FeedFragment;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
-import com.example.yourtrip.mytrip.MyTripListFragment;
+import com.example.yourtrip.mytrip.list.MyTripListFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;
