@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.yourtrip.MainActivity;
 import com.example.yourtrip.R;
-import com.example.yourtrip.feed.FeedFragment;
-import com.example.yourtrip.mytrip.MyTripListFragment;
 
 public class MypageFragment extends Fragment {
     @Override
@@ -30,7 +28,7 @@ public class MypageFragment extends Fragment {
 
         // 피드 보기
         btnMyFeed.setOnClickListener(v -> {
-            ((MainActivity) requireActivity()).switchFragment(new MyFeedViewFragment(), false);
+            ((MainActivity) requireActivity()).switchFragment(new MyPersonalFeedFragment(), false);
         });
 
         return view;
