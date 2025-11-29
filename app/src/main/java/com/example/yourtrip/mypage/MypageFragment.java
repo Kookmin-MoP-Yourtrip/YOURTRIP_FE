@@ -25,12 +25,12 @@ public class MypageFragment extends Fragment {
 
         // 코스 보기
         btnMyCourse.setOnClickListener(v -> {
-            ((MainActivity) requireActivity()).switchFragment(new MyTripListFragment(), true);
+            ((MainActivity) requireActivity()).switchFragment(new MyCourseViewFragment(), false);
         });
 
         // 피드 보기
         btnMyFeed.setOnClickListener(v -> {
-            ((MainActivity) requireActivity()).switchFragment(new FeedFragment(), true);
+            ((MainActivity) requireActivity()).switchFragment(new MyFeedViewFragment(), false);
         });
 
         return view;

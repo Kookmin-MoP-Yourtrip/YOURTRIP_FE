@@ -145,5 +145,12 @@ public interface ApiService {
             @Query("size") int size
     );
 
+    @GET("/api/feeds/users/{userId}")
+    Call<FeedListResponse> getUserFeeds(
+            @Path("userId") int userId,
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
 }
 
