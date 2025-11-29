@@ -130,5 +130,17 @@
         <item name="android:windowMinWidthMinor">80%p</item>
     </style>
 
+    <!-- MaterialTimePicker를 위한 커스텀 테마 -->
+    <style name="CustomMaterialTimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
+        <!-- 확인/취소 버튼 및 활성화된 텍스트 필드 테두리 색상 -->
+        <item name="colorPrimary">@color/blue_main</item> <!-- 원하는 메인 색상으로 변경 (예: 파란색) -->
+        <!-- AM/PM 선택 배경 등 일부 UI 요소 색상 -->
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- 다이얼로그의 전체적인 배경색 -->
+        <item name="colorSurface">@color/white</item>
+        <!-- 제목, 비활성 텍스트 등 기본 텍스트 색상 -->
+        <item name="colorOnSurface">@color/black</item>
+    </style>
+
 
 </resources>

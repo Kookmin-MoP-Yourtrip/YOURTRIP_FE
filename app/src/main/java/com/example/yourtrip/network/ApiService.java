@@ -21,8 +21,10 @@ import com.example.yourtrip.mytrip.model.PlaceAddRequest;
 import com.example.yourtrip.mytrip.model.PlaceAddResponse;
 import com.example.yourtrip.mytrip.model.DayPlacesResponse;
 import com.example.yourtrip.mytrip.model.LocationItem;
+import com.example.yourtrip.mytrip.model.PlaceTimeRequest;
 
 import java.util.List;
+import com.google.gson.JsonObject;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -34,6 +36,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.PATCH;
 import retrofit2.http.Query;
 
 
@@ -87,6 +90,15 @@ public interface ApiService {
     Call<DayPlacesResponse> getPlacesForDay(
             @Path("courseId") long courseId,
             @Path("dayId") long dayId
+    );
+
+    //특정 장소의 시간을 수정하는 api
+    @PATCH("/api/my-courses/{courseId}/days/{dayId}/places/{placeId}/start-time")
+    Call<JsonObject> updatePlaceTime(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId,
+            @Body PlaceTimeRequest requestBody
     );
 
 
