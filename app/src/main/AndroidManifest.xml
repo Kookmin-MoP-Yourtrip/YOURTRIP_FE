@@ -71,6 +71,9 @@
         <activity
             android:name=".mytrip.CreateAICourseLocationActivity"
             android:exported="false" />
+        <activity
+            android:name=".mytrip.CreateAICourseTagsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

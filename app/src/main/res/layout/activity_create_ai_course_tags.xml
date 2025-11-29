@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 상단바 (제목은 코드에서 "AI 코스 만들기"로 세팅)-->
+    <include
+        android:id="@+id/topBar"
+        layout="@layout/view_common_top_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 전체 콘텐츠 영역 -->
+    <LinearLayout
+        android:id="@+id/contentArea"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/btnNext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+        <LinearLayout
+            android:id="@+id/block_date"
+            style="@style/FormBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="2dp">
+
+            <!-- 안내 문구 -->
+            <TextView
+                android:id="@+id/tvInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="원하는 여행 키워드를 모두 선택해 주세요."
+                android:textSize="20sp"
+                android:textColor="@color/gray_700"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="0dp" />
+
+            <!-- 서브 설명 -->
+            <TextView
+                android:id="@+id/tvSubInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="당신은 어떤 여행을 떠나고 싶나요?"
+                android:textSize="13sp"
+                android:textColor="@color/gray_550"
+                android:layout_marginBottom="5dp" />
+
+        </LinearLayout>
+
+        <!-- 🔹 태그 선택하기 -->
+        <LinearLayout
+            android:id="@+id/layoutSearchTagSection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+
+            <include
+                android:id="@+id/includeSearchTags"
+                layout="@layout/view_tag_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 다음 버튼 (하단 고정) -->
+    <android.widget.Button
+        android:id="@+id/btnNext"
+        android:layout_width="0dp"
+        style="@style/ChangeButtonStyle"
+        android:layout_margin="30dp"
+        android:text="다음"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
