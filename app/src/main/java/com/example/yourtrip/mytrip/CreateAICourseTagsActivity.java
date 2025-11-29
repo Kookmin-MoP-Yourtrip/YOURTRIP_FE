@@ -3,9 +3,7 @@ package com.example.yourtrip.mytrip;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,18 +11,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.commonUtil.TagConverter;
 import com.example.yourtrip.mytrip.model.AICourseCreateRequest;
-import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
-import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
 import com.example.yourtrip.network.ApiService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CreateAICourseTagsActivity extends AppCompatActivity {
 
@@ -138,9 +130,10 @@ public class CreateAICourseTagsActivity extends AppCompatActivity {
 
     private void setNextButton() {
         btnNext.setOnClickListener(v -> {
-            Log.d(TAG, "AICourseCreate_API 요청 데이터: " + "startDate = "+ startDate+", endDate = "+endDate+", location = "+location +", selectedTags = "+selectedTags);
+            List<String> sendTags = TagConverter.toServerCodes(selectedTags);
+            Log.d(TAG, "AICourseCreate_API 요청 데이터: " + "startDate = "+ startDate+", endDate = "+endDate+", location = "+location +", sendTags = "+sendTags);
 
-            AICourseCreateRequest request = new AICourseCreateRequest(startDate, endDate, location, selectedTags);
+            AICourseCreateRequest request = new AICourseCreateRequest(startDate, endDate, location, sendTags);
 //            submitAICourse(request); //TODO: API 연동
         });
     }
