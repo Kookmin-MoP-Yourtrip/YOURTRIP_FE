@@ -1,6 +1,6 @@
 package com.example.yourtrip.mypage;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -49,7 +49,6 @@ public class ProfileEditFragment extends Fragment {
 
         imgProfile = v.findViewById(R.id.imgProfile);
 
-        // 플러스(+) 버튼 참조
         ImageView btnAddPhoto = v.findViewById(R.id.btnAddPhoto);
 
         edtNickname = v.findViewById(R.id.edtNickname);
@@ -60,7 +59,6 @@ public class ProfileEditFragment extends Fragment {
         btnDeleteUser = v.findViewById(R.id.btnDeleteUser);
         btnSave = v.findViewById(R.id.btnSave);
 
-        // 상단바 뒤로가기 버튼
         ImageView btnBack = v.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(vv ->
                 requireActivity().getSupportFragmentManager().popBackStack()
@@ -68,16 +66,12 @@ public class ProfileEditFragment extends Fragment {
 
         loadProfile();
 
-        // 기존 클릭 (프로필 이미지 클릭)
         imgProfile.setOnClickListener(vv -> pickImage());
-
-        // 플러스(+) 버튼 클릭 시 이미지 선택
         btnAddPhoto.setOnClickListener(vv -> pickImage());
 
         btnSave.setOnClickListener(vv -> saveProfile());
         btnDeleteUser.setOnClickListener(vv -> showDeleteConfirmDialog());
 
-        // 닉네임 입력할 때 자동 중복 체크
         edtNickname.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int st, int c, int a) {}
             @Override public void afterTextChanged(Editable s) {}
@@ -89,7 +83,7 @@ public class ProfileEditFragment extends Fragment {
         });
     }
 
-    // 1. 프로필 조회 API
+    // 1. 프로필 조회
     private void loadProfile() {
         ApiService api = RetrofitClient
                 .getInstance(requireContext())
@@ -144,15 +138,17 @@ public class ProfileEditFragment extends Fragment {
         ApiService api = RetrofitClient
                 .getInstance(requireContext())
                 .create(ApiService.class);
+
         api.uploadProfileImage(body).enqueue(new Callback<ProfileImageResponse>() {
             @Override
             public void onResponse(Call<ProfileImageResponse> call, Response<ProfileImageResponse> response) { }
+
             @Override
             public void onFailure(Call<ProfileImageResponse> call, Throwable t) { }
         });
     }
 
-    // 닉네임 중복 체크 API
+    // 닉네임 중복 체크
     private void checkNicknameDuplicate(String nickname) {
 
         if (nickname.trim().isEmpty()) {
@@ -166,9 +162,9 @@ public class ProfileEditFragment extends Fragment {
             @Override
             public void onResponse(Call<Void> call, Response<Void> res) {
                 if (res.isSuccessful()) {
-                    tvNicknameError.setVisibility(View.GONE);   // 사용 가능
+                    tvNicknameError.setVisibility(View.GONE);
                 } else {
-                    tvNicknameError.setVisibility(View.VISIBLE); // 중복 or 유효성 실패
+                    tvNicknameError.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -177,22 +173,21 @@ public class ProfileEditFragment extends Fragment {
     }
 
 
-    // 4. 닉네임 + 비밀번호 변경
+    // 비밀번호 검증
     private boolean isValidPassword(String pw) {
         return pw.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
     }
 
+    // 저장
     private void saveProfile() {
 
         ApiService api = RetrofitClient.getInstance(requireContext()).create(ApiService.class);
 
-        // 닉네임 중복이면 저장 금지
         if (tvNicknameError.getVisibility() == View.VISIBLE) {
             Toast.makeText(requireContext(), "닉네임 중복을 해결해주세요.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 닉네임 변경
         NicknameChangeRequest nickReq =
                 new NicknameChangeRequest(edtNickname.getText().toString());
 
@@ -201,7 +196,6 @@ public class ProfileEditFragment extends Fragment {
             @Override public void onFailure(Call<Void> call, Throwable t) { }
         });
 
-        // 비밀번호 변경 로직
         String oldPw = editCurrentPw.getText().toString();
         String newPw = editNewPw.getText().toString();
         String confirmPw = editConfirmPw.getText().toString();
@@ -231,28 +225,38 @@ public class ProfileEditFragment extends Fragment {
         requireActivity().getSupportFragmentManager().popBackStack();
     }
 
-    // 5. 커스텀 다이얼로그 - 탈퇴 확인
+    // 5. 탈퇴 확인 팝업
     private void showDeleteConfirmDialog() {
-        Dialog dialog = new Dialog(requireContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_delete_account);
 
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(requireContext(), R.style.TransparentDialogStyle);
 
-        Button btnConfirm = dialog.findViewById(R.id.btnConfirmDelete);
-        Button btnCancel = dialog.findViewById(R.id.btnCancelDelete);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_delete_account, null);
+        builder.setView(dialogView);
+
+        final AlertDialog dialog = builder.create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        Button btnConfirm = dialogView.findViewById(R.id.btnConfirmDelete);
+        Button btnCancel = dialogView.findViewById(R.id.btnCancelDelete);
 
         btnConfirm.setOnClickListener(v -> {
             dialog.dismiss();
-            deleteAccountApi();   // 실제 탈퇴 API 호출
+            deleteAccountApi();
         });
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
 
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+
         dialog.show();
     }
 
-    // 6. 탈퇴 API -> 탈퇴 완료 팝업
+    // 탈퇴 API
     private void deleteAccountApi() {
 
         ApiService api = RetrofitClient
@@ -270,15 +274,22 @@ public class ProfileEditFragment extends Fragment {
         });
     }
 
-    // 7. 탈퇴 완료 팝업
+    // 7. 탈퇴 완료 팝업 (수정됨)
     private void showDeleteCompleteDialog() {
-        Dialog dialog = new Dialog(requireContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_delete_complete);
 
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(requireContext(), R.style.TransparentDialogStyle);
 
-        Button btnOk = dialog.findViewById(R.id.btnDeleteCompleteOk);
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_delete_complete, null);
+        builder.setView(dialogView);
+
+        final AlertDialog dialog = builder.create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        Button btnOk = dialogView.findViewById(R.id.btnDeleteCompleteOk);
 
         btnOk.setOnClickListener(v -> {
             dialog.dismiss();

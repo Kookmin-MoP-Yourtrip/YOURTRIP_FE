@@ -162,7 +162,8 @@
                 android:textColorHint="#646B72"
                 android:paddingHorizontal="16dp"
                 android:background="@drawable/bg_edittext"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textSize="13sp"/>
 
             <EditText
                 android:id="@+id/editNewPw"
@@ -174,19 +175,21 @@
                 android:textColorHint="#646B72"
                 android:paddingHorizontal="16dp"
                 android:background="@drawable/bg_edittext"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textSize="13sp"/>
 
             <EditText
                 android:id="@+id/editConfirmPw"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="12dp"
-                android:hint="새 비밀번호 소  재확인"
+                android:hint="새 비밀번호 재확인"
                 android:textColor="@color/gray_700"
                 android:textColorHint="#646B72"
                 android:paddingHorizontal="16dp"
                 android:background="@drawable/bg_edittext"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textSize="13sp"/>
 
 
             <!-- 회원 탈퇴 -->
