@@ -76,7 +76,7 @@
                     android:clickable="true"
                     android:focusable="true" />
 
-                <!-- 🔹 오른쪽 상단 + 버튼 오버레이 -->
+                <!-- 오른쪽 상단 + 버튼 오버레이 -->
                 <ImageView
                     android:id="@+id/btnAddPhoto"
                     android:layout_width="30dp"
@@ -181,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="12dp"
-                android:hint="새 비밀번호 재확인"
+                android:hint="새 비밀번호 소  재확인"
                 android:textColor="@color/gray_700"
                 android:textColorHint="#646B72"
                 android:paddingHorizontal="16dp"
@@ -196,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:text="회원 탈퇴"
                 android:textColor="#EE3E3E"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:layout_marginTop="24dp"
                 android:paddingVertical="8dp"/>

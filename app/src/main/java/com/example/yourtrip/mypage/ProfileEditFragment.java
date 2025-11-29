@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.*;
 import android.widget.*;
 
@@ -31,7 +33,7 @@ public class ProfileEditFragment extends Fragment {
 
     private ImageView imgProfile;
     private EditText edtNickname, editCurrentPw, editNewPw, editConfirmPw;
-    private TextView btnDeleteUser;
+    private TextView btnDeleteUser, tvNicknameError;
     private Button btnSave;
 
     private Uri selectedImageUri;
@@ -51,6 +53,7 @@ public class ProfileEditFragment extends Fragment {
         ImageView btnAddPhoto = v.findViewById(R.id.btnAddPhoto);
 
         edtNickname = v.findViewById(R.id.edtNickname);
+        tvNicknameError = v.findViewById(R.id.tvNicknameError);
         editCurrentPw = v.findViewById(R.id.editCurrentPw);
         editNewPw = v.findViewById(R.id.editNewPw);
         editConfirmPw = v.findViewById(R.id.editConfirmPw);
@@ -73,6 +76,17 @@ public class ProfileEditFragment extends Fragment {
 
         btnSave.setOnClickListener(vv -> saveProfile());
         btnDeleteUser.setOnClickListener(vv -> showDeleteConfirmDialog());
+
+        // 닉네임 입력할 때 자동 중복 체크
+        edtNickname.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int st, int c, int a) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkNicknameDuplicate(s.toString());
+            }
+        });
     }
 
     // 1. 프로필 조회 API
@@ -138,12 +152,45 @@ public class ProfileEditFragment extends Fragment {
         });
     }
 
+    // 닉네임 중복 체크 API
+    private void checkNicknameDuplicate(String nickname) {
+
+        if (nickname.trim().isEmpty()) {
+            tvNicknameError.setVisibility(View.GONE);
+            return;
+        }
+
+        ApiService api = RetrofitClient.getInstance(requireContext()).create(ApiService.class);
+
+        api.checkNickname(nickname).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> res) {
+                if (res.isSuccessful()) {
+                    tvNicknameError.setVisibility(View.GONE);   // 사용 가능
+                } else {
+                    tvNicknameError.setVisibility(View.VISIBLE); // 중복 or 유효성 실패
+                }
+            }
+
+            @Override public void onFailure(Call<Void> call, Throwable t) {}
+        });
+    }
+
+
     // 4. 닉네임 + 비밀번호 변경
+    private boolean isValidPassword(String pw) {
+        return pw.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
+    }
+
     private void saveProfile() {
 
-        ApiService api = RetrofitClient
-                .getInstance(requireContext())
-                .create(ApiService.class);
+        ApiService api = RetrofitClient.getInstance(requireContext()).create(ApiService.class);
+
+        // 닉네임 중복이면 저장 금지
+        if (tvNicknameError.getVisibility() == View.VISIBLE) {
+            Toast.makeText(requireContext(), "닉네임 중복을 해결해주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         // 닉네임 변경
         NicknameChangeRequest nickReq =
@@ -154,14 +201,25 @@ public class ProfileEditFragment extends Fragment {
             @Override public void onFailure(Call<Void> call, Throwable t) { }
         });
 
-        // 비밀번호 변경
-        if (!editNewPw.getText().toString().isEmpty()) {
+        // 비밀번호 변경 로직
+        String oldPw = editCurrentPw.getText().toString();
+        String newPw = editNewPw.getText().toString();
+        String confirmPw = editConfirmPw.getText().toString();
+
+        if (!newPw.isEmpty()) {
+
+            if (!isValidPassword(newPw)) {
+                Toast.makeText(requireContext(), "비밀번호는 영문+숫자 포함 최소 8자입니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!newPw.equals(confirmPw)) {
+                Toast.makeText(requireContext(), "새 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             PasswordChangeRequest pwReq =
-                    new PasswordChangeRequest(
-                            editCurrentPw.getText().toString(),
-                            editNewPw.getText().toString()
-                    );
+                    new PasswordChangeRequest(oldPw, newPw);
 
             api.updatePassword(pwReq).enqueue(new Callback<Void>() {
                 @Override public void onResponse(Call<Void> call, Response<Void> response) { }
@@ -170,10 +228,7 @@ public class ProfileEditFragment extends Fragment {
         }
 
         Toast.makeText(requireContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
-
-        requireActivity()
-                .getSupportFragmentManager()
-                .popBackStack();
+        requireActivity().getSupportFragmentManager().popBackStack();
     }
 
     // 5. 커스텀 다이얼로그 - 탈퇴 확인

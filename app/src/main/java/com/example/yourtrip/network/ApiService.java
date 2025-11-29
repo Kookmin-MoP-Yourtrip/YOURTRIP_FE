@@ -166,6 +166,10 @@ public interface ApiService {
     @PATCH("/api/mypage/profile/nickname")
     Call<Void> updateNickname(@Body NicknameChangeRequest request);
 
+    // 3. 닉네임 중복 체크
+    @GET("/api/mypage/profile/nickname/check")
+    Call<Void> checkNickname(@Query("nickname") String nickname);
+
     // 4. 비밀번호 변경
     @PATCH("/api/mypage/profile/password")
     Call<Void> updatePassword(@Body PasswordChangeRequest request);
