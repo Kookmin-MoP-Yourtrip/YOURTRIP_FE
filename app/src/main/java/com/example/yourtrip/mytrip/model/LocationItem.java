@@ -2,6 +2,7 @@ package com.example.yourtrip.mytrip.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.ArrayList;
 
 // Serializable 인터페이스를 구현하여 객체를 Intent나 Bundle을 통해 전달할 수 있도록 합니다.
 public class LocationItem implements Serializable {
@@ -20,6 +21,7 @@ public class LocationItem implements Serializable {
         this.placeLocation = placeLocation;
         this.memo = memo;
         this.startTime = startTime;
+        this.imageUrls = new ArrayList<>();
     }
 
 
@@ -40,4 +42,15 @@ public class LocationItem implements Serializable {
     public void setMemo(String memo) {
         this.memo = memo;
     }
+
+    public void addImageUrl(String url) {
+        // 리스트가 null일 경우, 새로 생성하여 NullPointerException을 방지합니다.
+        if (this.imageUrls == null) {
+            this.imageUrls = new ArrayList<>();
+        }
+        // 리스트에 새로운 URL을 추가합니다.
+        this.imageUrls.add(url);
+    }
 }
+
+

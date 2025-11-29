@@ -23,6 +23,7 @@ import com.example.yourtrip.mytrip.model.DayPlacesResponse;
 import com.example.yourtrip.mytrip.model.LocationItem;
 import com.example.yourtrip.mytrip.model.PlaceMemoRequest;
 import com.example.yourtrip.mytrip.model.PlaceTimeRequest;
+import com.example.yourtrip.mytrip.model.ImageUploadResponse;
 
 import java.util.List;
 import com.google.gson.JsonObject;
@@ -105,7 +106,7 @@ public interface ApiService {
     //특정 장소에 사진 추가
     @Multipart
     @POST("/api/my-courses/{courseId}/days/{dayId}/places/{placeId}/images")
-    Call<JsonObject> uploadPlaceImage(
+    Call<ImageUploadResponse> uploadPlaceImage(
             @Path("courseId") long courseId,
             @Path("dayId") long dayId,
             @Path("placeId") long placeId,
