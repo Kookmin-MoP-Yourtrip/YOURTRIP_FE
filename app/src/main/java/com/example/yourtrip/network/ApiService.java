@@ -21,6 +21,7 @@ import com.example.yourtrip.mytrip.model.PlaceAddRequest;
 import com.example.yourtrip.mytrip.model.PlaceAddResponse;
 import com.example.yourtrip.mytrip.model.DayPlacesResponse;
 import com.example.yourtrip.mytrip.model.LocationItem;
+import com.example.yourtrip.mytrip.model.PlaceMemoRequest;
 import com.example.yourtrip.mytrip.model.PlaceTimeRequest;
 
 import java.util.List;
@@ -99,6 +100,25 @@ public interface ApiService {
             @Path("dayId") long dayId,
             @Path("placeId") long placeId,
             @Body PlaceTimeRequest requestBody
+    );
+
+    //특정 장소에 사진 추가
+    @Multipart
+    @POST("/api/my-courses/{courseId}/days/{dayId}/places/{placeId}/images")
+    Call<JsonObject> uploadPlaceImage(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId,
+            @Part MultipartBody.Part placeImage
+    );
+
+    //특정 장소에 메모 추가
+    @PATCH("/api/my-courses/{courseId}/days/{dayId}/places/{placeId}/memo")
+    Call<JsonObject> updatePlaceMemo(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId,
+            @Body PlaceMemoRequest requestBody
     );
 
 

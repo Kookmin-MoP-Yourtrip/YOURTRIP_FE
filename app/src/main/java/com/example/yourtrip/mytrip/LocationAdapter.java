@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import com.bumptech.glide.Glide;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.yourtrip.R;
@@ -33,6 +36,8 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     // [추가] Fragment와 통신하기 위한 인터페이스 정의
     public interface OnLocationInteractionListener {
         void onTimeUpdateRequested(long placeId, String time, int position);
+        void onPhotoAddRequested(long placeId, int position);
+        void onMemoUpdateRequested(long placeId, String memo, int position);
     }
 
     // 뷰 타입을 구분하기 위한 상수. 숫자는 어떤 값이든 상관없지만, 서로 달라야 합니다.
@@ -113,14 +118,18 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (position >= 0 && position < items.size()) {
             Object item = items.get(position);
             if (item instanceof LocationItem) {
-                // 이 코드가 정상 동작하려면 LocationItem.java에 setStartTime 메서드가 있어야 합니다.
                 ((LocationItem) item).setStartTime(time); // 데이터 모델 값 변경
                 notifyItemChanged(position); // 해당 아이템 뷰만 새로고침
             }
         }
     }
 
-
+    public Object getItemAt(int position) {
+        if (position >= 0 && position < items.size()) {
+            return items.get(position);
+        }
+        return null;
+    }
 
     // 리스트 아이템 타입 판단 -> 뷰 타입 반환
     @Override
@@ -222,6 +231,22 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 tvTime.setTextColor(itemView.getContext().getResources().getColor(R.color.gray_500));
             }
 
+            // --- 이미지 표시 로직 (Glide 사용) ---
+            // 장소에 이미지가 하나 이상 있다면, 첫 번째 이미지를 ivMap에 표시
+            if (item.getImageUrls() != null && !item.getImageUrls().isEmpty()) {
+                Glide.with(itemView.getContext())
+                        .load(item.getImageUrls().get(0)) // 첫 번째 이미지를 로드
+                        .centerCrop()
+                        .into(ivMap);
+            } else {
+                // 이미지가 없다면 기본 배경색 또는 플레이스홀더 표시
+                ivMap.setImageResource(0); // 이미지 리소스 제거
+                ivMap.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.gray_150));
+            }
+
+            // --- [추가] 메모 입력 리스너 ---
+            etMemo.setText(item.getMemo()); // 초기 메모 설정
+
 
             // --- 클릭 이벤트 리스너 설정 ---
             // [수정] 클릭 시 Adapter에 구현된 showTimePickerDialog를 호출하도록 변경
@@ -233,12 +258,28 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
 
-            btnDelete.setOnClickListener(v -> {
-                // TODO: 이 아이템을 삭제하는 로직 구현 (API 호출 등)
+            btnAddPhoto.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onPhotoAddRequested(item.getPlaceId(), position);
+                }
             });
 
-            btnAddPhoto.setOnClickListener(v -> {
-                // TODO: 갤러리를 열어 사진을 선택하는 로직 구현
+            //우선은 포커스르 잃었을 때로 설정했음  -> 추후에 협업 기능이 들어오면 수정하기
+            etMemo.setOnFocusChangeListener((v, hasFocus) -> {
+                // 포커스를 잃었을 때 (입력이 끝났다고 간주) API 호출
+                if (!hasFocus) {
+                    int position = getBindingAdapterPosition();
+                    String newMemo = etMemo.getText().toString();
+                    // 기존 메모와 다를 경우에만 업데이트 요청
+                    if (position != RecyclerView.NO_POSITION && listener != null && !newMemo.equals(item.getMemo())) {
+                        listener.onMemoUpdateRequested(item.getPlaceId(), newMemo, position);
+                    }
+                }
+            });
+
+            btnDelete.setOnClickListener(v -> {
+                // TODO: 이 아이템을 삭제하는 로직 구현 (API 호출 등)
             });
         }
     }
