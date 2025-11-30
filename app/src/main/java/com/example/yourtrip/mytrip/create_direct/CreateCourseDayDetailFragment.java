@@ -171,7 +171,6 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
                     }
                 });
 
-        // [삭제] 권한 요청 Launcher 초기화 코드는 이제 필요 없습니다.
 
         // [수정] 갤러리 선택 결과 처리 Launcher (안전한 방식으로 변경)
         pickImageLauncher = registerForActivityResult(
@@ -183,7 +182,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
                             Object item = locationAdapter.getItemAt(selectedItemPosition);
                             if (item instanceof LocationItem) {
                                 long placeId = ((LocationItem) item).getPlaceId();
-                                // [중요] 실제 파일 경로 대신, 선택된 이미지의 Uri를 업로드 메서드로 바로 전달합니다. (성능 및 호환성 최적화)
+                                // 실제 파일 경로 대신, 선택된 이미지의 Uri를 업로드 메서드로 바로 전달
                                 uploadImageToServer(placeId, imageUri);
                             }
                         }
@@ -225,10 +224,6 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
     }
 
 
-    // ========================================================================
-    // A. Adapter-Fragment Interaction (어댑터로부터의 요청 처리)
-    // ========================================================================
-
     /**
      * 시간 수정 요청을 받았을 때 호출되는 콜백 메서드 (from Adapter)
      */
@@ -251,7 +246,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
 //        // 1. 앱의 drawable 폴더에 있는 임의의 이미지 리소스 ID를 가져옴 (R.drawable.ic_launcher_background)
 //        int resourceId = R.drawable.ic_feed_camera; // 테스트용 이미지, 원하는 것으로 변경 가능
 //
-//        // 2. 리소스 ID를 사용하여 안드로이드 리소스를 가리키는 Uri를 생성합니다.
+//        // 2. 리소스 ID를 사용하여 안드로이드 리소스를 가리키는 Uri를 생성
 //        Uri sampleImageUri = new Uri.Builder()
 //                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
 //                .authority(getResources().getResourcePackageName(resourceId))
@@ -261,7 +256,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
 //
 //        Log.d(TAG, "[테스트 모드] 생성된 샘플 URI: " + sampleImageUri.toString());
 //
-//        // 3. 생성된 임의의 Uri로 uploadImageToServer 메서드를 직접 호출합니다.
+//        // 3. 생성된 임의의 Uri로 uploadImageToServer 메서드를 직접 호출
 //        uploadImageToServer(placeId, sampleImageUri);
         // ========================================================================
         
@@ -278,9 +273,6 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
     }
 
 
-    // ========================================================================
-    // B. API Calls (서버 통신)
-    // ========================================================================
 
     /**
      * 특정 일차의 장소 목록을 서버에서 불러오는 메서드.
@@ -348,7 +340,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
             // 4. MIME 타입을 확인하고, byte 배열로 RequestBody 생성
             String mimeType = requireContext().getContentResolver().getType(imageUri);
             if (mimeType == null) {
-                // 시스템이 타입을 알려주지 못할 경우, 파일 확장자를 보고 직접 유추합니다.
+                // 시스템이 타입을 알려주지 못할 경우, 파일 확장자를 보고 직접 유추
                 if (fileName != null && fileName.contains(".")) {
                     String extension = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
                     if (extension.equals(".png")) {
@@ -356,7 +348,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
                     } else if (extension.equals(".webp")) {
                         mimeType = "image/webp";
                     } else {
-                        // 그 외의 경우 (jpg, jpeg 등) 기본값으로 jpeg를 사용합니다.
+                        // 그 외의 경우 (jpg, jpeg 등) 기본값으로 jpeg를 사용
                         mimeType = "image/jpeg";
                     }
                 } else {
@@ -381,7 +373,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
                         // 서버 응답에서 새로운 이미지 URL을 추출
                         String newImageUrl = response.body().getImageUrl();
 
-                        // Adapter에게 특정 위치(position)의 아이템만 갱신하라고 지시
+                        // Adapter에게 특정 위치(position)의 아이템만 갱신
                         if (locationAdapter != null && newImageUrl != null && selectedItemPosition != -1) {
                             locationAdapter.updateItemImage(selectedItemPosition, newImageUrl);
                         }
@@ -434,9 +426,6 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
         });
     }
 
-    // ========================================================================
-    // C. Helpers & Utilities (보조 및 유틸리티)
-    // ========================================================================
 
     /**
      * 장소 추가 화면(AddLocationActivity)을 실행하는 메서드.

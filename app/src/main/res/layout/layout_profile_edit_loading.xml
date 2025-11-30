@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="40dp"
+    android:paddingBottom="32dp"
+    android:paddingHorizontal="24dp"
+    android:gravity="top|center_horizontal">
+
+    <!-- 상단 타이틀 바 -->
+    <View
+        android:layout_width="140dp"
+        android:layout_height="22dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+    <!-- 프로필 이미지 -->
+    <View
+        android:layout_width="105dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_circle"
+        android:backgroundTint="@color/gray_200" />
+
+    <!-- 닉네임 입력 박스 -->
+    <View
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+    <!-- 닉네임 오류문구 자리 -->
+    <View
+        android:layout_width="120dp"
+        android:layout_height="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+    <!-- 비밀번호 변경 라벨 -->
+    <View
+        android:layout_width="140dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+    <!-- 현재 비밀번호 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+    <!-- 새 비밀번호 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+    <!-- 비밀번호 재확인 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+    <!-- 회원탈퇴 텍스트 -->
+    <View
+        android:layout_width="120dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+    <!-- 완료 버튼 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+</LinearLayout>

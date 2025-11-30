@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import com.example.yourtrip.MainActivity;
 import com.example.yourtrip.R;
+
+
 public class UploadCourseCompleteActivity extends AppCompatActivity {
 
     @Override
@@ -24,9 +28,14 @@ public class UploadCourseCompleteActivity extends AppCompatActivity {
 
         // 업로드한 코스 보러가기 버튼
         findViewById(R.id.btnUploadedCourse).setOnClickListener(v -> {
-//            Intent intent = new Intent(this, UploadedCourseDetailActivity.class);
-//            intent.putExtra("uploadCourseId", uploadCourseId);
-//            startActivity(intent);
+            if (uploadCourseId != -1L) {
+                Intent intent = new Intent(this, AfterUploadCourseDetailActivity.class);
+                intent.putExtra("uploadCourseId", uploadCourseId);
+                startActivity(intent);
+
+            } else {
+                Toast.makeText(this, "코스 ID를 받아오지 못했습니다.", Toast.LENGTH_SHORT).show();
+            }
         });
 
         // 홈으로 돌아가기 버튼
