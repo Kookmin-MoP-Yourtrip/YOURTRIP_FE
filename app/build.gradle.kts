@@ -42,13 +42,14 @@ android {
 dependencies {
 
     implementation(libs.appcompat)
-    implementation(libs.material)
+//    implementation(libs.material)
     implementation(libs.activity)
-    implementation(libs.constraintlayout)
+//    implementation(libs.constraintlayout)
     implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     //스플래시 스크린
     implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation(libs.androidx.constraintlayout)
+//    implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
