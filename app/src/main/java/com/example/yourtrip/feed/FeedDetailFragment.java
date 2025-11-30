@@ -35,6 +35,7 @@ public class FeedDetailFragment extends Fragment {
     private int feedId;
     private View layoutLoading;
     private View layoutContent;
+    private boolean isLiked = false;
 
 
     @Override
@@ -64,6 +65,21 @@ public class FeedDetailFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+
+        btnLike = view.findViewById(R.id.btn_like);
+
+        btnLike.setOnClickListener(v -> {
+            if (isLiked) {
+                // 좋아요 취소 → 비워진 하트로 변경
+                btnLike.setImageResource(R.drawable.ic_heart_default);
+                isLiked = false;
+            } else {
+                // 좋아요 누름 → 채워진 하트로 변경
+                btnLike.setImageResource(R.drawable.ic_heart_filled);
+                isLiked = true;
+            }
+        });
+
 
         loadFeedDetail();
 

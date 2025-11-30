@@ -129,7 +129,7 @@
                     android:id="@+id/iconEdit"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:background="none"
+                    android:background="@android:color/transparent"
                     android:contentDescription="타이틀 입력"
                     android:src="@drawable/ic_edit"
                     tools:ignore="ContentDescription"/>
