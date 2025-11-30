@@ -205,6 +205,9 @@ public interface ApiService {
             @Query("page") int page,
             @Query("size") int size
     );
+    // 피드 삭제
+    @DELETE("/api/feeds/{feedId}")
+    Call<Void> deleteFeed(@Path("feedId") int feedId);
 
 
     //=============마이페이지 api================//

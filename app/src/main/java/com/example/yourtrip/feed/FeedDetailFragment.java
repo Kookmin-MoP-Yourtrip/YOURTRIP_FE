@@ -106,6 +106,11 @@ public class FeedDetailFragment extends Fragment {
             moreMenu.setVisibility(View.GONE);
         });
 
+        btnDelete.setOnClickListener(v -> {
+            moreMenu.setVisibility(View.GONE); // 더보기 메뉴 닫기
+            deleteFeed();
+        });
+
 
 
         btnLike = view.findViewById(R.id.btn_like);
@@ -279,6 +284,39 @@ public class FeedDetailFragment extends Fragment {
             }
         });
     }
+    private void deleteFeed() {
+
+        ApiService api = RetrofitClient.getAuthService(getContext());
+
+        api.deleteFeed(feedId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if (response.code() == 204) {     // 삭제 성공
+                    requireActivity().runOnUiThread(() -> {
+                        // 이전 화면으로 이동
+                        requireActivity().onBackPressed();
+                    });
+                    return;
+                }
+
+                if (response.code() == 404) {
+                    // 피드 없음
+                    // 필요하면 Toast 추가
+                }
+
+                if (response.code() == 403) {
+                    // 권한 없음
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
 
 }
 
