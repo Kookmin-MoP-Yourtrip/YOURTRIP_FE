@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -13,15 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.yourtrip.R;
 
+import java.util.ArrayList;
 import java.util.List;
-
 public class UploadFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_FIRST = 0;
     private static final int TYPE_IMAGE = 1;
     private static final int TYPE_ADD_BUTTON = 2;
 
-    private final List<Uri> imageList;
+    private List<String> originalImageUrls = new ArrayList<>();  // 수정 모드 전용(서버 이미지)
+    private List<Uri> newImageUris = new ArrayList<>();          // 업로드 + 수정 공통
+
     private final OnUploadClickListener listener;
 
     public interface OnUploadClickListener {
@@ -29,94 +30,87 @@ public class UploadFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         void onDeletePhotoClick(int position);
     }
 
-    public UploadFeedAdapter(List<Uri> imageList, OnUploadClickListener listener) {
-        this.imageList = imageList;
+    // 🔹 업로드 화면용 생성자 (새 이미지만)
+    public UploadFeedAdapter(List<Uri> newImageUris,
+                             OnUploadClickListener listener) {
+        this.newImageUris = newImageUris;
         this.listener = listener;
+    }
+
+    // 🔹 수정 화면용 모드 설정
+    public void setEditMode(List<String> original, List<Uri> news) {
+        this.originalImageUrls = original;
+        this.newImageUris = news;
+    }
+
+    @Override
+    public int getItemCount() {
+        int total = originalImageUrls.size() + newImageUris.size();
+
+        if (total == 0) return 1;
+        if (total < 5) return total + 1;
+        return total;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (imageList.size() == 0)
-            return TYPE_FIRST;
+        int total = originalImageUrls.size() + newImageUris.size();
 
-        // 마지막에 + 버튼 넣을지 결정
-        if (position == imageList.size()) {
-            return imageList.size() < 5 ? TYPE_ADD_BUTTON : TYPE_IMAGE;
-        }
+        if (total == 0) return TYPE_FIRST;
+        if (position == total && total < 5) return TYPE_ADD_BUTTON;
 
         return TYPE_IMAGE;
     }
 
     @Override
-    public int getItemCount() {
-        if (imageList.size() == 0)
-            return 1; // 첫 추가 버튼만
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        if (imageList.size() < 5)
-            return imageList.size() + 1; // 이미지들 + 추가 버튼
+        if (holder instanceof FirstViewHolder || holder instanceof AddButtonViewHolder) {
+            holder.itemView.setOnClickListener(v -> listener.onAddPhotoClick());
+            return;
+        }
 
-        return imageList.size(); // 5장이면 + 없음
+        ImageViewHolder vh = (ImageViewHolder) holder;
+
+        if (position < originalImageUrls.size()) {
+            Glide.with(vh.itemView.getContext())
+                    .load(originalImageUrls.get(position))
+                    .centerCrop()
+                    .into(vh.imageView);
+        } else {
+            Uri uri = newImageUris.get(position - originalImageUrls.size());
+            Glide.with(vh.itemView.getContext())
+                    .load(uri)
+                    .centerCrop()
+                    .into(vh.imageView);
+        }
+
+        vh.btnDelete.setOnClickListener(v -> listener.onDeletePhotoClick(position));
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        if (viewType == TYPE_FIRST) {
-            View view = inflater.inflate(R.layout.item_add_image_first, parent, false);
-            return new FirstViewHolder(view);
-        } else if (viewType == TYPE_ADD_BUTTON) {
-            View view = inflater.inflate(R.layout.item_add_image_button, parent, false);
-            return new AddButtonViewHolder(view);
-        } else {
-            View view = inflater.inflate(R.layout.item_feed_upload_image, parent, false);
-            return new ImageViewHolder(view);
-        }
+        if (viewType == TYPE_FIRST)
+            return new FirstViewHolder(inflater.inflate(R.layout.item_add_image_first, parent, false));
+        else if (viewType == TYPE_ADD_BUTTON)
+            return new AddButtonViewHolder(inflater.inflate(R.layout.item_add_image_button, parent, false));
+        else
+            return new ImageViewHolder(inflater.inflate(R.layout.item_feed_upload_image, parent, false));
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-        if (holder instanceof FirstViewHolder) {
-            holder.itemView.setOnClickListener(v -> listener.onAddPhotoClick());
-
-        } else if (holder instanceof AddButtonViewHolder) {
-            holder.itemView.setOnClickListener(v -> listener.onAddPhotoClick());
-
-        } else if (holder instanceof ImageViewHolder) {
-
-            Uri uri = imageList.get(position);
-            ImageViewHolder vh = (ImageViewHolder) holder;
-
-            Glide.with(vh.itemView.getContext())
-                    .load(uri)
-                    .centerCrop()
-                    .into(vh.imageView);
-
-            vh.btnDelete.setOnClickListener(v -> listener.onDeletePhotoClick(position));
-        }
-    }
-
-    // Holder들
-    static class FirstViewHolder extends RecyclerView.ViewHolder {
-        public FirstViewHolder(@NonNull View itemView) { super(itemView); }
-    }
-
-    static class AddButtonViewHolder extends RecyclerView.ViewHolder {
-        public AddButtonViewHolder(@NonNull View itemView) { super(itemView); }
-    }
+    static class FirstViewHolder extends RecyclerView.ViewHolder { public FirstViewHolder(View v) { super(v); } }
+    static class AddButtonViewHolder extends RecyclerView.ViewHolder { public AddButtonViewHolder(View v) { super(v); } }
 
     static class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView, btnDelete;
-        FrameLayout container;
-
         public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
-            container = (FrameLayout) itemView;
             imageView = itemView.findViewById(R.id.img_selected);
             btnDelete = itemView.findViewById(R.id.btn_delete);
         }
     }
 }
+

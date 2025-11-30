@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    android:gravity="center_vertical"
+    android:background="@android:color/white">
+
+    <!-- 왼쪽 공간 확보용 더미 뷰 (센터 유지) -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+
+    <!-- 제목 텍스트 (java에서 변경) -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="타이틀"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/gray_700"/>
+
+    <!-- 오른쪽 '닫기(X)' 버튼 -->
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="닫기"
+        android:scaleType="center"
+        android:src="@drawable/ic_close_btn"
+        app:tint="@color/gray_500"/>
+
+</LinearLayout>

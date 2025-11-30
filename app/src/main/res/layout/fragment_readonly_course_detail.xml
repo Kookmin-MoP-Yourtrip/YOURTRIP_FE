@@ -15,7 +15,7 @@
 
         <!-- 🔹일차 스크롤 탭 (RecyclerView) -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewTripDays"
+            android:id="@+id/rv_recyclerViewTripDays"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             app:layout_scrollFlags="scroll|enterAlways"
@@ -39,7 +39,7 @@
 
         <!-- 2. 안쪽 RecyclerView: 실제 아이템 목록과 스크롤을 담당 -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerLocationList"
+            android:id="@+id/rv_recyclerLocationList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
@@ -48,15 +48,15 @@
             />
 
     </FrameLayout>
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerLocationList"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="@drawable/bg_simple_border_blue"-->
-<!--        android:padding="15dp"-->
-<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-<!--        tools:itemCount="1"-->
-<!--        tools:listitem="@layout/item_trip_location_card" />-->
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/recyclerLocationList"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:background="@drawable/bg_simple_border_blue"-->
+    <!--        android:padding="15dp"-->
+    <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+    <!--        tools:itemCount="1"-->
+    <!--        tools:listitem="@layout/item_trip_location_card" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
