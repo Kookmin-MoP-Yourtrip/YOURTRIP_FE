@@ -42,25 +42,26 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 
     private ApiService apiService;
 
-    private static final String TAG = "CreateCourseBasic";
+    private static final String TAG = "CreateCourseBasic"; //로그찍을 때 사용할 태그 문자열
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_course_basic);
+        setContentView(R.layout.activity_create_course_basic); //이 레이아웃을 이 activity 화면으로 사용
 
-        initViews();
-        setTopBar();
-        setDatePicker();
+        initViews(); //findViewById로 xml의 뷰들을 멤버 변수에 연결
+        setTopBar(); //상단바 타이틀과 뒤로가기 버튼 설정
+        setDatePicker(); //시작/종료 날짜 EditText 클릭 시 MaterialDatePicker 띄우게 설정
 
         apiService = RetrofitClient.getAuthService(this);
         setNextButton();
 
         // 추가: 입력 필드 변경 감지
-        setInputWatchers();
+        setInputWatchers(); //모든 값이 채워졌는지 확인해서 btnNext 활성/비활성
     }
 
     // 뷰 초기화
+    //xml에서 정의한 각 뷰를 코드와 연결
     private void initViews() {
         tvTitle = findViewById(R.id.tv_title);
         btnBack = findViewById(R.id.btnBack);
@@ -218,13 +219,14 @@ public class CreateCourseBasicActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     // [수정] API 성공 시, 여기서 다음 화면으로 이동
-                    Toast.makeText(CreateCourseBasicActivity.this, "코스 생성 완료!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateCourseBasicActivity.this, "코스 생성 완료!", Toast.LENGTH_SHORT).show(); //"코스생성완료" 토스트 띄우기
 
                     // 서버로부터 받은 응답 데이터
                     MyCourseCreateBasicResponse courseResponse = response.body();
                     Log.d(TAG, "MyCourseCreateBasic_API 응답 데이터: " + courseResponse.toString());
 
 
+                    //createCourseBasicActivity로 이동하기 위한 intent 생성
                     Intent intent = new Intent(CreateCourseBasicActivity.this, CreateCourseDetailActivity.class);
                     // "course_detail" 이라는 키로, 서버에서 받은 응답 객체 전체를 담아서 전달
 //                    intent.putExtra("course_detail", courseResponse);
