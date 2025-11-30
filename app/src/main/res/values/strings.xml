@@ -8,5 +8,6 @@
 
     <!-- TimePickerDialog 제목 문자열 -->
     <string name="time_picker_title">방문 시간 설정</string>
+    <string name="title_activity_upload_course_confirm">UploadCourseConfirmActivity</string>
 
 </resources>

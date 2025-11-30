@@ -30,6 +30,8 @@ import com.example.yourtrip.mytrip.model.PlaceTimeRequest;
 import com.example.yourtrip.mytrip.model.ImageUploadResponse;
 
 import java.util.List;
+
+import com.example.yourtrip.mytrip.model.UploadCourseResponse;
 import com.google.gson.JsonObject;
 
 import okhttp3.MultipartBody;
@@ -126,6 +128,22 @@ public interface ApiService {
             @Path("dayId") long dayId,
             @Path("placeId") long placeId,
             @Body PlaceMemoRequest requestBody
+    );
+
+    //코스 업로드 위한 Multipart API
+    @Multipart
+    @POST("/api/upload-courses/")
+    Call<UploadCourseResponse> uploadCourse(
+            // 썸네일 이미지 파일
+            @Part MultipartBody.Part thumbnailImage,
+            // 'request'라는 이름의 JSON 데이터
+            @Part("request") RequestBody requestJson
+    );
+
+    @Multipart
+    @POST("/api/upload-courses/")
+    Call<UploadCourseResponse> uploadCourseOnlyJson(
+            @Part("request") RequestBody request
     );
 
 

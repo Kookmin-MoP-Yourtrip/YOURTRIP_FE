@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- 다음 버튼 (하단 고정) -->
+
+    <LinearLayout
+        android:id="@+id/block_date"
+        style="@style/FormBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:orientation="vertical"
+        android:padding="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp">
+
+        <!-- 안내 문구 -->
+        <TextView
+            android:id="@+id/tvInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:text="코스가 업로드되었어요! 🥳."
+            android:textColor="@color/gray_700"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginVertical="20dp"/>
+
+        <!-- 서브 설명 -->
+        <TextView
+            android:id="@+id/tvSubInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:text="이제 다른 여행자들이 코스를 발견하고 따라갈 수 있어요."
+            android:textColor="@color/gray_550"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <android.widget.Button
+        android:id="@+id/btnUploadedCourse"
+        android:layout_width="0dp"
+        style="@style/GradationChangeButtonStyle"
+        android:layout_margin="25dp"
+        android:text="업로드한 코스 보러 가기"
+        app:layout_constraintBottom_toTopOf="@id/btnHome"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <android.widget.Button
+        android:id="@+id/btnHome"
+        style="@style/ChangeButtonStyle"
+        android:layout_width="0dp"
+        android:layout_margin="30dp"
+        android:enabled="false"
+        android:text="홈으로 돌아가기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
