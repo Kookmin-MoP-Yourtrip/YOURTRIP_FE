@@ -38,6 +38,11 @@ public class HomeSearchResultFragment extends Fragment {
 
     private RecyclerView rv;
     private UploadCourseAdapter adapter;
+
+    private TextView btnSort, sortLatest, sortPopular;
+    private View sortMenu;
+    private String currentSort = "POPULAR";   // 기본값: 인기순
+
     private static final String LOG_TAG = "SEARCH_API";  // ⭐ LOG 태그
     @Nullable
     @Override
@@ -49,6 +54,38 @@ public class HomeSearchResultFragment extends Fragment {
 
         tagListContainer = view.findViewById(R.id.tagListContainer);
         rv = view.findViewById(R.id.rvSearchResult);
+        // 🔽 정렬 버튼 / 메뉴 뷰 연결
+        btnSort = view.findViewById(R.id.btnSort);
+        sortMenu = view.findViewById(R.id.sortMenu);
+        sortLatest = view.findViewById(R.id.sortLatest);
+        sortPopular = view.findViewById(R.id.sortPopular);
+
+        // 초기 상태: 메뉴 숨김
+        sortMenu.setVisibility(View.GONE);
+
+        // 🔽 정렬 버튼 누르면 메뉴 열고 닫기
+        btnSort.setOnClickListener(v -> {
+            if (sortMenu.getVisibility() == View.VISIBLE) {
+                sortMenu.setVisibility(View.GONE);
+            } else {
+                sortMenu.setVisibility(View.VISIBLE);
+            }
+        });
+
+        // 🔽 최신순 클릭
+        sortLatest.setOnClickListener(v -> {
+            sortMenu.setVisibility(View.GONE);
+            currentSort = "NEW";    // ✨ 최신순 파라미터
+            loadSearchResults();
+        });
+
+        // 🔽 인기순 클릭
+        sortPopular.setOnClickListener(v -> {
+            sortMenu.setVisibility(View.GONE);
+            currentSort = "POPULAR";   // ✨ 인기순 파라미터
+            loadSearchResults();
+        });
+
 
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new UploadCourseAdapter(new ArrayList<>());
@@ -99,7 +136,7 @@ public class HomeSearchResultFragment extends Fragment {
         Log.d(LOG_TAG, "sort        = POPULAR");
         Log.d(LOG_TAG, "--------------------------------------------");
 
-        api.getUploadCourses(sendKeyword, sendTags, "POPULAR")
+        api.getUploadCourses(sendKeyword, sendTags, currentSort)
                 .enqueue(new Callback<UploadCourseListResponse>() {
                     @Override
                     public void onResponse(Call<UploadCourseListResponse> call,

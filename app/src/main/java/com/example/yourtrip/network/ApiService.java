@@ -12,6 +12,7 @@ import com.example.yourtrip.model.FeedCommentWriteResponse;
 import com.example.yourtrip.model.FeedDetailResponse;
 import com.example.yourtrip.model.FeedLikeResponse;
 import com.example.yourtrip.model.FeedListResponse;
+import com.example.yourtrip.model.FeedUpdateResponse;
 import com.example.yourtrip.model.UploadCourseListResponse;
 import com.example.yourtrip.mypage.NicknameChangeRequest;
 import com.example.yourtrip.mypage.PasswordChangeRequest;
@@ -47,6 +48,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.PATCH;
@@ -204,18 +206,34 @@ public interface ApiService {
             @Query("size") int size
     );
 
+    // 피드 좋아요 토글
+    @POST("/api/feeds/{feedId}/like")
+    Call<FeedLikeResponse> toggleFeedLike(
+            @Path("feedId") int feedId
+    );
+
+    // 업로드한 피드 수정
+    @Multipart
+    @PUT("api/feeds/{feedId}")
+    Call<FeedUpdateResponse> updateFeed(
+            @Path("feedId") int feedId,
+            @Part List<MultipartBody.Part> mediaFiles,
+            @Part("request") RequestBody requestBody
+    );
+
+    // 유저별 피드 조회
     @GET("/api/feeds/users/{userId}")
     Call<FeedListResponse> getUserFeeds(
             @Path("userId") int userId,
             @Query("page") int page,
             @Query("size") int size
     );
+    // 피드 삭제
+    @DELETE("/api/feeds/{feedId}")
+    Call<Void> deleteFeed(@Path("feedId") int feedId);
 
-    @POST("/api/feeds/{feedId}/like")
-    Call<FeedLikeResponse> toggleFeedLike(
-            @Path("feedId") int feedId
-    );
 
+    //=============마이페이지 api================//
 
     // 1. 프로필 조회
     @GET("/api/mypage/profile")

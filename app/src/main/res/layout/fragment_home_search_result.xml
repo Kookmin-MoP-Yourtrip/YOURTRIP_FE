@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
-    <!-- 🔹 스크롤 안되는 영역 -->
+    <!-- 🔹 검색 상단 영역 -->
     <LinearLayout
         android:id="@+id/searchBarContainer"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="12dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- 상단 바 홈 바로가기 - 스크롤 제외 -->
+        <!-- 상단 타이틀 -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
@@ -30,11 +32,7 @@
             android:id="@+id/searchContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:paddingEnd="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/topBar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_marginHorizontal="16dp">
 
             <EditText
                 android:id="@+id/tvSearch"
@@ -48,50 +46,104 @@
                 android:id="@+id/btnSearch"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@android:color/transparent"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
                 android:src="@drawable/ic_search"
                 android:padding="8dp" />
         </RelativeLayout>
+    </LinearLayout>
 
-        <!-- 🔹 태그 리스트 + 정렬 버튼 -->
-        <LinearLayout
-            android:id="@+id/searchFilterArea"
+    <!-- 🔹 태그 리스트 영역 -->
+    <LinearLayout
+        android:id="@+id/searchFilterArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/searchBarContainer"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- 태그 리스트 -->
+        <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="12dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@+id/searchBarContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_height="wrap_content">
 
-            <!-- 태그리스트 -->
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:id="@+id/tagListContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tagListContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
     </LinearLayout>
 
 
-    <!-- 🔹 스크롤 가능한 컨텐츠 전체 영역 -->
+    <!-- 🔽 정렬 버튼 (패딩 영향 없음!) -->
+    <TextView
+        android:id="@+id/btnSort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_tag"
+        android:backgroundTint="@color/gray_150"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="6dp"
+        android:text="정렬"
+        android:textSize="14sp"
+        android:textColor="@color/gray_600"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:focusable="true"
+
+        app:layout_constraintTop_toBottomOf="@id/searchBarContainer"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <!-- 🔽 정렬 메뉴 (버튼에 딱 붙음) -->
+    <LinearLayout
+        android:id="@+id/sortMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_box_round"
+        android:paddingHorizontal="22dp"
+        android:paddingVertical="10dp"
+        android:layout_marginEnd="16dp"
+        android:elevation="8dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/btnSort"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/sortLatest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="최신순"
+            android:textSize="14sp"
+            android:textColor="@color/gray_700"
+            android:paddingVertical="6dp" />
+
+        <TextView
+            android:id="@+id/sortPopular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="인기순"
+            android:textSize="14sp"
+            android:textColor="@color/gray_700"
+            android:paddingVertical="6dp" />
+    </LinearLayout>
+
+
+    <!-- 🔹 스크롤 가능한 전체 영역 -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:fillViewport="true"
-
-        app:layout_constraintTop_toBottomOf="@id/searchBarContainer"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/btnSort"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,9 +155,7 @@
                 android:id="@+id/rvSearchResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="200dp"
-                app:layout_constraintTop_toBottomOf="@id/searchFilterArea"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                android:paddingBottom="200dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
