@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.example.yourtrip.R;
 import com.example.yourtrip.model.FeedDetailResponse;
+import com.example.yourtrip.model.FeedLikeResponse;
 import com.example.yourtrip.model.FeedMediaDetailResponse;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
@@ -68,18 +69,7 @@ public class FeedDetailFragment extends Fragment {
 
         btnLike = view.findViewById(R.id.btn_like);
 
-        btnLike.setOnClickListener(v -> {
-            if (isLiked) {
-                // 좋아요 취소 → 비워진 하트로 변경
-                btnLike.setImageResource(R.drawable.ic_heart_default);
-                isLiked = false;
-            } else {
-                // 좋아요 누름 → 채워진 하트로 변경
-                btnLike.setImageResource(R.drawable.ic_heart_filled);
-                isLiked = true;
-            }
-        });
-
+        btnLike.setOnClickListener(v -> toggleLikeAPI());
 
         loadFeedDetail();
 
@@ -159,6 +149,16 @@ public class FeedDetailFragment extends Fragment {
                     }
                 }
 
+                // 좋아요 초기 상태 세팅
+                isLiked = data.isLiked();   // ← 서버 응답의 isLiked
+                if (isLiked) {
+                    btnLike.setImageResource(R.drawable.ic_heart_filled);
+                } else {
+                    btnLike.setImageResource(R.drawable.ic_heart_default);
+                }
+
+
+
                 // ViewPager2 적용
                 FeedPhotoAdapter adapter = new FeedPhotoAdapter(photos);
                 vpPhotos.setAdapter(adapter);
@@ -171,6 +171,53 @@ public class FeedDetailFragment extends Fragment {
             public void onFailure(Call<FeedDetailResponse> call, Throwable t) {
                 t.printStackTrace();
                 layoutLoading.setVisibility(View.GONE);
+            }
+        });
+    }
+    private void animateLike(ImageView view) {
+        view.animate()
+                .scaleX(1.1f)   // 1 → 1.3배 확대
+                .scaleY(1.1f)
+                .setDuration(120)
+                .withEndAction(() ->
+                        view.animate()
+                                .scaleX(1f)     // 다시 원래 크기
+                                .scaleY(1f)
+                                .setDuration(120)
+                )
+                .start();
+    }
+
+    private void toggleLikeAPI() {
+
+        ApiService api = RetrofitClient.getAuthService(getContext());
+        Call<FeedLikeResponse> call = api.toggleFeedLike(feedId);
+
+        call.enqueue(new Callback<FeedLikeResponse>() {
+            @Override
+            public void onResponse(Call<FeedLikeResponse> call, Response<FeedLikeResponse> response) {
+
+                if (!response.isSuccessful() || response.body() == null) return;
+
+                FeedLikeResponse result = response.body();
+
+                // 서버 응답 기반으로 갱신
+                isLiked = result.isLiked();
+
+                if (isLiked) {
+                    btnLike.setImageResource(R.drawable.ic_heart_filled);
+                    animateLike(btnLike);     // 좋아요 애니메이션
+                } else {
+                    btnLike.setImageResource(R.drawable.ic_heart_default);
+                }
+
+                // heartCount UI도 필요하다면 추가
+                // tvHeartCount.setText(String.valueOf(result.getHeartCount()));
+            }
+
+            @Override
+            public void onFailure(Call<FeedLikeResponse> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }

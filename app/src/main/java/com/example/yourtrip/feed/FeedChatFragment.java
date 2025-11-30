@@ -35,7 +35,8 @@ public class FeedChatFragment extends Fragment {
     private RecyclerView rvChatList;
     private EditText editFeedChat;
     private TextView btnChatSend;
-
+    private View loadingLayout;      // ⭐ 추가
+    private View contentLayout;      // ⭐ 추가
     private List<FeedChat> chatList = new ArrayList<>();
     private FeedChatAdapter adapter;
 
@@ -49,6 +50,10 @@ public class FeedChatFragment extends Fragment {
         rvChatList = view.findViewById(R.id.rvChatList);
         editFeedChat = view.findViewById(R.id.editFeedChat);
         btnChatSend = view.findViewById(R.id.btnChatSend);
+
+        // ⭐ 스켈레톤/콘텐츠 레이아웃 찾기
+        loadingLayout = view.findViewById(R.id.loadingLayout_feed_chat);
+        contentLayout = view.findViewById(R.id.contentLayout_feed_chat);
 
         initRecyclerView();
         setListeners();
@@ -68,10 +73,6 @@ public class FeedChatFragment extends Fragment {
         rvChatList.setAdapter(adapter);
         rvChatList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // 🔥 테스트 더미 데이터 (API 붙이기 전)
-        chatList.add(new FeedChat(null, "이원희", "와!! 카페가 너무 예뻐요. 정보 알려주시면 안 될까요?? ㅠ"));
-        chatList.add(new FeedChat(null, "민주예요", "샌드위치 맛있겠네요ㅎㅎ"));
-        chatList.add(new FeedChat(null, "머리고쿨", "여러분 여기 연남동 샌드샌드입니다"));
 
         adapter.notifyDataSetChanged();
     }
@@ -125,6 +126,10 @@ public class FeedChatFragment extends Fragment {
     }
 
     private void loadComments(int feedId) {
+        // ⭐ 스켈레톤 ON
+        loadingLayout.setVisibility(View.VISIBLE);
+        contentLayout.setVisibility(View.GONE);
+
 //        ApiService api = RetrofitClient.getInstance().create(ApiService.class);
         ApiService api = RetrofitClient.getInstance((getContext())).create(ApiService.class);
 
@@ -133,6 +138,10 @@ public class FeedChatFragment extends Fragment {
                     @Override
                     public void onResponse(Call<FeedCommentListResponse> call,
                                            Response<FeedCommentListResponse> response) {
+
+                        // ⭐ 스켈레톤 OFF → 실제 UI ON
+                        loadingLayout.setVisibility(View.GONE);
+                        contentLayout.setVisibility(View.VISIBLE);
 
                         if (response.isSuccessful() && response.body() != null) {
                             List<FeedCommentDetailResponse> serverComments = response.body().getComments();
@@ -154,6 +163,9 @@ public class FeedChatFragment extends Fragment {
                     @Override
                     public void onFailure(Call<FeedCommentListResponse> call, Throwable t) {
                         Log.e("FEED_CHAT", "댓글 조회 실패: " + t.getMessage());
+                        // 실패해도 스켈레톤 OFF
+                        loadingLayout.setVisibility(View.GONE);
+                        contentLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }

@@ -10,27 +10,26 @@ import com.example.yourtrip.model.FeedCommentListResponse;
 import com.example.yourtrip.model.FeedCommentWriteRequest;
 import com.example.yourtrip.model.FeedCommentWriteResponse;
 import com.example.yourtrip.model.FeedDetailResponse;
+import com.example.yourtrip.model.FeedLikeResponse;
 import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.UploadCourseListResponse;
 import com.example.yourtrip.mypage.NicknameChangeRequest;
 import com.example.yourtrip.mypage.PasswordChangeRequest;
 import com.example.yourtrip.mypage.ProfileImageResponse;
 import com.example.yourtrip.mypage.ProfileResponse;
+import com.example.yourtrip.mytrip.model.DayPlacesResponse;
+import com.example.yourtrip.mytrip.model.ImageUploadResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
 import com.example.yourtrip.mytrip.model.MyCourseDetailResponse;
-import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 import com.example.yourtrip.mytrip.model.MyCourseListResponse;
 import com.example.yourtrip.mytrip.model.PlaceAddRequest;
 import com.example.yourtrip.mytrip.model.PlaceAddResponse;
-import com.example.yourtrip.mytrip.model.DayPlacesResponse;
-import com.example.yourtrip.mytrip.model.LocationItem;
 import com.example.yourtrip.mytrip.model.PlaceMemoRequest;
 import com.example.yourtrip.mytrip.model.PlaceTimeRequest;
-import com.example.yourtrip.mytrip.model.ImageUploadResponse;
+import com.google.gson.JsonObject;
 
 import java.util.List;
-import com.google.gson.JsonObject;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -44,7 +43,6 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.PATCH;
 import retrofit2.http.Query;
 
 
@@ -154,7 +152,6 @@ public interface ApiService {
             @Part("request") RequestBody request
     );
 
-
     // 피드 상세 조회 API
     @GET("/api/feeds/{feedId}")
     Call<FeedDetailResponse> getFeedDetail(
@@ -190,6 +187,12 @@ public interface ApiService {
             @Query("page") int page,
             @Query("size") int size
     );
+
+    @POST("/api/feeds/{feedId}/like")
+    Call<FeedLikeResponse> toggleFeedLike(
+            @Path("feedId") int feedId
+    );
+
 
     // 1. 프로필 조회
     @GET("/api/mypage/profile")

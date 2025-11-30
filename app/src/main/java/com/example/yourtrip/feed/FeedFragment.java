@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +37,11 @@ public class FeedFragment extends Fragment {
     private EditText etSearch;
     private ImageView btnSearch;
 
+    private TextView btnSort, sortLatest, sortPopular;
+    private View sortMenu;
+    private String currentSort = "POPULAR";   // 기본값: 최신순
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -45,6 +51,35 @@ public class FeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_feed_main, container, false);
 
         rvFeed = view.findViewById(R.id.rv_feed);
+
+        btnSort = view.findViewById(R.id.btnSort);
+        sortMenu = view.findViewById(R.id.sortMenu);
+        sortLatest = view.findViewById(R.id.sortLatest);
+        sortPopular = view.findViewById(R.id.sortPopular);
+
+        // 정렬 버튼: 메뉴 토글
+        btnSort.setOnClickListener(v -> {
+            if (sortMenu.getVisibility() == View.VISIBLE) {
+                sortMenu.setVisibility(View.GONE);
+            } else {
+                sortMenu.setVisibility(View.VISIBLE);
+            }
+        });
+
+        // 최신순
+        sortLatest.setOnClickListener(v -> {
+            sortMenu.setVisibility(View.GONE);
+            currentSort = "NEW";     // 🔥 최신순 정렬 파라미터
+            loadFeedList();
+        });
+
+        // 인기순
+        sortPopular.setOnClickListener(v -> {
+            sortMenu.setVisibility(View.GONE);
+            currentSort = "POPULAR"; // 🔥 인기순 정렬 파라미터
+            loadFeedList();
+        });
+
 
         // 2열 그리드
         rvFeed.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -156,7 +191,7 @@ public class FeedFragment extends Fragment {
 
         ApiService api = RetrofitClient.getAuthService(getContext());
 
-        api.getFeedList("NEW", 0, 20)
+        api.getFeedList(currentSort, 0, 20)
                 .enqueue(new Callback<FeedListResponse>() {
                     @Override
                     public void onResponse(Call<FeedListResponse> call, Response<FeedListResponse> response) {

@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.yourtrip.MainActivity;
 import com.example.yourtrip.R;
-import com.example.yourtrip.mytrip.MyTripListFragment;
+import com.example.yourtrip.mytrip.list.MyTripListFragment;
 
 public class MyCourseViewFragment extends Fragment {
 
@@ -48,4 +48,5 @@ public class MyCourseViewFragment extends Fragment {
             }
         });
     }
+
 }

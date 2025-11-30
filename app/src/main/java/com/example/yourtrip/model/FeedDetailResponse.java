@@ -13,6 +13,8 @@ public class FeedDetailResponse {
     private String content;
     private List<String> hashtags;
 
+    private boolean isLiked;
+
     private int commentCount;
     private int heartCount;
     private int viewCount;
@@ -71,4 +73,10 @@ public class FeedDetailResponse {
     public List<FeedMediaDetailResponse> getMediaList() {
         return mediaList;
     }
+
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
 }

@@ -2,103 +2,111 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 상단바 -->
+    <!-- 1️⃣ 스켈레톤 -->
+    <include
+        android:id="@+id/loadingLayout_feed_chat"
+        layout="@layout/layout_feed_chat_loading"
+        android:visibility="visible"/>
 
-    <!-- ▣ 상단바 -->
+    <!-- 2️⃣ 실제 콘텐츠 -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/topBar"
+        android:id="@+id/contentLayout_feed_chat"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/white"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/ic_arrow_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+        <!-- ▣ 상단바 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="댓글"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/gray_700"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="댓글"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/gray_700"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <!-- 댓글 리스트 -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvChatList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/topBar"
-        app:layout_constraintBottom_toTopOf="@+id/inputContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- 댓글 입력 영역 -->
-    <LinearLayout
-        android:id="@+id/inputContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="top"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <!-- 댓글 입력창 -->
-        <EditText
-            android:id="@+id/editFeedChat"
+        <!-- 댓글 리스트 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvChatList"
             android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/topBar"
+            app:layout_constraintBottom_toTopOf="@+id/inputContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- 댓글 입력 영역 -->
+        <LinearLayout
+            android:id="@+id/inputContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            style="@style/RoundedEditText.Default"
+            android:orientation="horizontal"
             android:padding="16dp"
+            android:gravity="top"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            android:hint="새로운 댓글 남기기"
-            android:textSize="14sp"
-            android:textColor="@color/gray_700"
-            android:textColorHint="@color/gray_500"
+            <!-- 댓글 입력창 -->
+            <EditText
+                android:id="@+id/editFeedChat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/RoundedEditText.Default"
+                android:padding="16dp"
 
-            android:inputType="textMultiLine|textCapSentences"
-            android:maxLines="3"
-            android:gravity="top|start"
-            android:scrollbars="vertical"/>
+                android:hint="새로운 댓글 남기기"
+                android:textSize="14sp"
+                android:textColor="@color/gray_700"
+                android:textColorHint="@color/gray_500"
 
-        <!-- 전송 버튼 -->
-        <!-- 그만두기 버튼 -->
-        <TextView
-            android:layout_marginStart="8dp"
-            android:id="@+id/btnChatSend"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:background="@drawable/bg_box_round_8dp"
-            android:paddingHorizontal="12dp"
-            android:gravity="center_vertical"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLines="3"
+                android:gravity="top|start"
+                android:scrollbars="vertical"/>
 
-            android:text="추가"
-            android:textColor="@color/gray_550"
-            android:textSize="12sp"
+            <!-- 전송 버튼 -->
+            <!-- 그만두기 버튼 -->
+            <TextView
+                android:layout_marginStart="8dp"
+                android:id="@+id/btnChatSend"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/bg_box_round_8dp"
+                android:paddingHorizontal="12dp"
+                android:gravity="center_vertical"
 
-            android:clickable="true"
-            android:focusable="true" />
+                android:text="추가"
+                android:textColor="@color/gray_550"
+                android:textSize="12sp"
 
-    </LinearLayout>
+                android:clickable="true"
+                android:focusable="true" />
 
-
-
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
