@@ -20,10 +20,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.yourtrip.R;
+import com.example.yourtrip.mytrip.model.MyCourseDetailResponse;
 import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 import com.example.yourtrip.mytrip.upload.UploadCourseTagsActivity;
 import com.example.yourtrip.mytrip.util.DateUtils;
+
+import java.io.Serializable;
 import java.util.List;
+
 
 /**
  * MyTripListFragment에서 '나의 코스 목록'을 보여주는 역할만 전담하는 어댑터
@@ -37,6 +41,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         void onItemClick(MyCourseListItemResponse myTrip);
     }
     private OnItemClickListener listener;
+    private OnMoreButtonClickListener moreButtonClickListener;
+    public interface OnMoreButtonClickListener {
+        void onMoreButtonClick(MyCourseListItemResponse courseItem);
+    }
 
     // 🟡Fragment에서 리스너를 설정할 수 있는 메서드
     public void setOnItemClickListener(OnItemClickListener listener) {

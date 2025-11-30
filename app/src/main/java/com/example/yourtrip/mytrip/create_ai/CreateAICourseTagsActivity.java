@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.commonUtil.TagConverter;
 import com.example.yourtrip.mytrip.model.AICourseCreateRequest;
 import com.example.yourtrip.network.ApiService;
 
@@ -129,9 +130,10 @@ public class CreateAICourseTagsActivity extends AppCompatActivity {
 
     private void setNextButton() {
         btnNext.setOnClickListener(v -> {
-            Log.d(TAG, "AICourseCreate_API 요청 데이터: " + "startDate = "+ startDate+", endDate = "+endDate+", location = "+location +", selectedTags = "+selectedTags);
+            List<String> sendTags = TagConverter.toServerCodes(selectedTags);
+            Log.d(TAG, "AICourseCreate_API 요청 데이터: " + "startDate = "+ startDate+", endDate = "+endDate+", location = "+location +", sendTags = "+sendTags);
 
-            AICourseCreateRequest request = new AICourseCreateRequest(startDate, endDate, location, selectedTags);
+            AICourseCreateRequest request = new AICourseCreateRequest(startDate, endDate, location, sendTags);
 //            submitAICourse(request); //TODO: API 연동
         });
     }

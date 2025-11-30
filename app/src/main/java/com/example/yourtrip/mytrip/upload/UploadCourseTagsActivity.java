@@ -55,7 +55,7 @@ public class UploadCourseTagsActivity extends AppCompatActivity {
         setTopBar();
         setTagClickListeners();
         setNextButton();
-        updateNextButtonState(); // 초기 버튼 상태는 비활성화
+//        updateNextButtonState(); // 버튼 태그 선택 여부 상관없이 계속 활성화 되도록 주석처리로 다 바꿈
     }
 
     /**
@@ -151,7 +151,7 @@ public class UploadCourseTagsActivity extends AppCompatActivity {
             selectedTagsInCategory.add(clickedTag);
         }
         // '다음' 버튼 활성화 여부 업데이트
-        updateNextButtonState();
+//        updateNextButtonState();
     }
 
     /**
@@ -167,10 +167,10 @@ public class UploadCourseTagsActivity extends AppCompatActivity {
             for (TextView tag : selectedBudgetTags) allSelectedTags.add(tag.getText().toString());
 
             // [중요] 각 카테고리별로 최소 1개씩 선택했는지 검사
-            if (selectedMoveTypeTags.isEmpty() || selectedCompanionTags.isEmpty() || selectedMoodTags.isEmpty() || selectedBudgetTags.isEmpty()) {
-                Toast.makeText(this, "각 카테고리별로 태그를 1개 이상 선택해주세요.", Toast.LENGTH_SHORT).show();
-                return;
-            }
+//            if (selectedMoveTypeTags.isEmpty() || selectedCompanionTags.isEmpty() || selectedMoodTags.isEmpty() || selectedBudgetTags.isEmpty()) {
+//                Toast.makeText(this, "각 카테고리별로 태그를 1개 이상 선택해주세요.", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
 
             // 다음 화면(UploadCourseInfoActivity)으로 모든 정보를 전달합니다.
             Intent intent = new Intent(this, UploadCourseInfoActivity.class);
@@ -183,12 +183,12 @@ public class UploadCourseTagsActivity extends AppCompatActivity {
     /**
      * '다음' 버튼의 활성화 상태를 업데이트하는 메서드
      */
-    private void updateNextButtonState() {
-        // 모든 카테고리에서 하나 이상씩 선택되었을 때만 버튼 활성화
-        boolean isEnabled = !selectedMoveTypeTags.isEmpty()
-                && !selectedCompanionTags.isEmpty()
-                && !selectedMoodTags.isEmpty()
-                && !selectedBudgetTags.isEmpty();
-        btnNext.setEnabled(isEnabled);
-    }
+//    private void updateNextButtonState() {
+//        // 모든 카테고리에서 하나 이상씩 선택되었을 때만 버튼 활성화
+//        boolean isEnabled = !selectedMoveTypeTags.isEmpty()
+//                && !selectedCompanionTags.isEmpty()
+//                && !selectedMoodTags.isEmpty()
+//                && !selectedBudgetTags.isEmpty();
+//        btnNext.setEnabled(isEnabled);
+//    }
 }

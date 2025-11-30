@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mytrip.upload.UploadCourseConfirmActivity">
+
+    <!-- 1. 상단바와 함께 스크롤되어 사라질 영역 -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <!-- [핵심] 이 레이아웃에 app:layout_scrollFlags를 설정하여 스크롤 동작을 정의 -->
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- (1) 상단바 -->
+                <include
+                    android:id="@+id/top_bar"
+                    layout="@layout/view_common_top_bar" />
+
+                <!-- (2) 기존 코스 정보 카드 -->
+                <include
+                    android:id="@+id/item_trip_card"
+                    layout="@layout/item_trip_card_no_shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp" />
+
+                <!-- (3) 소개글 -->
+                <TextView
+                    android:id="@+id/tv_upload_content"
+                    style="@style/RoundedEditText.Default"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@drawable/bg_box_round"
+                    android:focusable="false"
+                    android:gravity="top"
+                    android:hint="이 코스를 사람들에게 소개해주세요."
+                    android:inputType="textMultiLine"
+                    android:minHeight="80dp"
+                    android:padding="16dp"
+                    android:textColor="@color/gray_700"
+                    android:textSize="14sp"
+                    tools:text="빵의 도시 대전에서 누구보다 알차게 즐길 수 있는 코스입니다~" />
+
+                <!-- (4) 태그 목록 -->
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/flexbox_upload_confirm_tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:flexWrap="wrap" />
+
+            </LinearLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- 스크롤 이벤트를 AppBarLayout과 연동시킬 메인 콘텐츠 영역 -->
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="88dp"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- FrameLayout은 이제 NestedScrollView의 자식이 됩니다. -->
+        <FrameLayout
+            android:id="@+id/trip_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_box_border">
+
+
+        </FrameLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <android.widget.Button
+        android:id="@+id/btn_upload"
+        style="@style/ChangeButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:enabled="true"
+        android:text="업로드하기"
+        android:layout_gravity="bottom" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

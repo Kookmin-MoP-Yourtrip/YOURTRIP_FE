@@ -1,6 +1,8 @@
 // CourseDetailResponse.java
 package com.example.yourtrip.mytrip.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
@@ -38,5 +40,14 @@ public class MyCourseDetailResponse implements Serializable { // Serializable êµ
         // Getterë“¤...
         public long getDayId() { return dayId; }
         public int getDay() { return day; }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "DaySchedule{" +
+                    "dayId=" + dayId +
+                    ", day=" + day +
+                    '}';
+        }
     }
 }

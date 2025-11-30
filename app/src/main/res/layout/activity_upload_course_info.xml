@@ -22,7 +22,7 @@
         android:layout_marginTop="4dp"
         android:backgroundTint="@color/gray_200"
         android:max="2"
-        android:progress="1"
+        android:progress="2"
         android:progressTint="@color/blue_main"
 
         app:layout_constraintTop_toBottomOf="@id/topBar"
@@ -76,6 +76,7 @@
 
             <!-- 대표 이미지 선택 영역 -->
             <FrameLayout
+                android:id="@+id/layout_image_frame"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center_horizontal"
@@ -129,7 +130,7 @@
                     android:id="@+id/iconEdit"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:background="@android:color/transparent"
+                    android:background="@null"
                     android:contentDescription="타이틀 입력"
                     android:src="@drawable/ic_edit"
                     tools:ignore="ContentDescription"/>
