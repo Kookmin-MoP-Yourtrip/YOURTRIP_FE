@@ -6,4 +6,7 @@
     <string name="title_activity_create_course_basic">CreateCourseBasicActivity</string>
     <string name="title_activity_maps">MapsActivity</string>
 
+    <!-- TimePickerDialog 제목 문자열 -->
+    <string name="time_picker_title">방문 시간 설정</string>
+
 </resources>

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
@@ -61,10 +62,26 @@
             android:exported="false" /> <!-- 메인 화면 -->
         <activity android:name=".MainActivity" /> <!-- 나의 여행 -->
         <activity
-            android:name=".mytrip.CreateCourseBasicActivity"
+            android:name=".mytrip.create_direct.CreateCourseBasicActivity"
             android:exported="false" />
-        <activity android:name=".mytrip.CreateCourseDetailActivity" />
-        <activity android:name=".mytrip.AddLocationActivity" />
+        <activity android:name=".mytrip.create_direct.CreateCourseDetailActivity" />
+        <activity android:name=".mytrip.create_direct.AddLocationActivity" />
+        <activity
+            android:name=".mytrip.create_ai.CreateAICourseDateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mytrip.create_ai.CreateAICourseLocationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mytrip.create_ai.CreateAICourseTagsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".mytrip.upload.UploadCourseTagsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mytrip.upload.UploadCourseInfoActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

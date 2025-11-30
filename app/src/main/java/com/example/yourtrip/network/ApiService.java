@@ -25,8 +25,12 @@ import com.example.yourtrip.mytrip.model.PlaceAddRequest;
 import com.example.yourtrip.mytrip.model.PlaceAddResponse;
 import com.example.yourtrip.mytrip.model.DayPlacesResponse;
 import com.example.yourtrip.mytrip.model.LocationItem;
+import com.example.yourtrip.mytrip.model.PlaceMemoRequest;
+import com.example.yourtrip.mytrip.model.PlaceTimeRequest;
+import com.example.yourtrip.mytrip.model.ImageUploadResponse;
 
 import java.util.List;
+import com.google.gson.JsonObject;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -40,6 +44,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.PATCH;
 import retrofit2.http.Query;
 
 
@@ -93,6 +98,34 @@ public interface ApiService {
     Call<DayPlacesResponse> getPlacesForDay(
             @Path("courseId") long courseId,
             @Path("dayId") long dayId
+    );
+
+    //특정 장소의 시간을 수정하는 api
+    @PATCH("/api/my-courses/{courseId}/days/{dayId}/places/{placeId}/start-time")
+    Call<JsonObject> updatePlaceTime(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId,
+            @Body PlaceTimeRequest requestBody
+    );
+
+    //특정 장소에 사진 추가
+    @Multipart
+    @POST("/api/my-courses/{courseId}/days/{dayId}/places/{placeId}/images")
+    Call<ImageUploadResponse> uploadPlaceImage(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId,
+            @Part MultipartBody.Part placeImage
+    );
+
+    //특정 장소에 메모 추가
+    @PATCH("/api/my-courses/{courseId}/days/{dayId}/places/{placeId}/memo")
+    Call<JsonObject> updatePlaceMemo(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId,
+            @Body PlaceMemoRequest requestBody
     );
 
 

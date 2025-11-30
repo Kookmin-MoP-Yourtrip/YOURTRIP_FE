@@ -86,30 +86,46 @@
                 android:background="#EEEEEE"
                 android:radius = "12dp"/>
 
-            <LinearLayout
-                android:id="@+id/btnAddPhoto"
+
+            <!-- 사진 영역을 FrameLayout으로 감싸서 뷰를 겹칠 준비를 합니다. -->
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_weight="1"
-                android:layout_marginStart="6dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:background="@color/gray_150"
-                android:radius = "12dp">
+                android:layout_marginStart="6dp">
 
+                <!-- 2-1. 추가된 사진을 보여줄 ImageView (기본적으로 숨김) -->
                 <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_feed_camera"/>
+                    android:id="@+id/ivAddedPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" /> <!-- 처음엔 숨겨둠 -->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="장소 사진 추가"
-                    android:layout_marginTop="6dp"
-                    android:textSize="14sp"
-                    android:textColor="#555555"/>
-            </LinearLayout>
+                <!-- 2-2. '+ 장소 사진 추가' 버튼 (기본적으로 보임) -->
+                <LinearLayout
+                    android:id="@+id/btnAddPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="@color/gray_150">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_feed_camera"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="장소 사진 추가"
+                        android:layout_marginTop="6dp"
+                        android:textSize="14sp"
+                        android:textColor="#555555"/>
+                </LinearLayout>
+
+            </FrameLayout>
 
         </LinearLayout>
 

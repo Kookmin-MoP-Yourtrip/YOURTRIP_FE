@@ -1,4 +1,4 @@
-package com.example.yourtrip.mytrip;
+package com.example.yourtrip.mytrip.create_direct;
 
 import android.net.Uri; // 사진 Uri를 다루기 위해 import
 

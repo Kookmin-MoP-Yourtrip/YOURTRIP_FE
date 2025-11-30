@@ -1,4 +1,4 @@
-package com.example.yourtrip.mytrip;
+package com.example.yourtrip.mytrip.list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.mytrip.create_ai.CreateAICourseDateActivity;
+import com.example.yourtrip.mytrip.create_direct.CreateCourseBasicActivity;
+import com.example.yourtrip.mytrip.create_direct.CreateCourseDetailActivity;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 import com.example.yourtrip.mytrip.model.MyCourseListResponse; //목록 전체
@@ -143,7 +145,11 @@ public class MyTripListFragment extends Fragment {
             else openMenu();
         });
         dimLayer.setOnClickListener(v -> closeMenu());
-        btnAIMake.setOnClickListener(v -> Toast.makeText(getContext(), "AI 제작 기능 준비 중입니다.", Toast.LENGTH_SHORT).show());
+        btnAIMake.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), CreateAICourseDateActivity.class);
+            startActivity(intent);
+            closeMenu();
+        });
         btnManualMake.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), CreateCourseBasicActivity.class);
             startActivity(intent);
