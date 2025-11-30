@@ -29,19 +29,19 @@
                 <!-- 상단바 -->
                 <include
                     android:id="@+id/top_bar"
-                    layout="@layout/view_common_top_bar" />
+                    layout="@layout/view_top_bar_with_close" />
 
                 <!-- 기존 코스 정보 카드 -->
                 <include
                     android:id="@+id/item_trip_card"
-                    layout="@layout/item_trip_card_no_shadow"
+                    layout="@layout/item_uploaded_course_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp" />
 
                 <!-- 소개글 -->
                 <TextView
-                    android:id="@+id/tv_upload_content"
+                    android:id="@+id/tv_uploaded_content"
                     style="@style/RoundedEditText.Default"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,7 +65,9 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    app:flexWrap="wrap" />
+                    app:flexWrap="wrap"
+                    android:textColor="@color/gray_600"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -82,7 +84,6 @@
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- FrameLayout은 이제 NestedScrollView의 자식이 됩니다. -->
         <FrameLayout
             android:id="@+id/trip_fragment_container"
             android:layout_width="match_parent"
@@ -93,15 +94,5 @@
         </FrameLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <android.widget.Button
-        android:id="@+id/btn_upload"
-        style="@style/ChangeButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:enabled="true"
-        android:text="업로드하기"
-        android:layout_gravity="bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

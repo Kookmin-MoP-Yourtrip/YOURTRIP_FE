@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 클릭 효과를 주기 위해 clickable=true, focusable=true 설정 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_fork_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="7dp"
+    android:background="@drawable/bg_fork_button"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- 포크 아이콘 -->
+    <ImageView
+        android:id="@+id/iv_fork_icon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_fork"
+        tools:tint="@color/blue_main"
+        android:layout_gravity="center_vertical" /> <!-- [핵심 수정] 아이콘 스스로 세로 중앙 정렬 -->
+
+    <!-- 포크 카운트 숫자 -->
+    <TextView
+        android:id="@+id/tv_fork_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:textColor="@color/blue_main"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        tools:text="112"
+        android:layout_gravity="center_vertical" /> <!-- [핵심 수정] 텍스트 스스로 세로 중앙 정렬 -->
+
+</LinearLayout>

@@ -15,10 +15,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.yourtrip.MainActivity;
 import com.example.yourtrip.R;
-import com.example.yourtrip.feed.FeedFragment;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
-import com.example.yourtrip.mytrip.list.MyTripListFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;

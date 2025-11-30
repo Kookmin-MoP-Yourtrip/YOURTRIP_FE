@@ -82,6 +82,9 @@
         <activity android:name=".mytrip.upload.UploadCourseCompleteActivity"
             android:exported="false"/>
 
+        <activity android:name=".mytrip.upload.AfterUploadCourseDetailActivity"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

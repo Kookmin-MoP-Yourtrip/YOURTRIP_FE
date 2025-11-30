@@ -14,6 +14,7 @@ import com.example.yourtrip.model.FeedLikeResponse;
 import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.FeedUpdateResponse;
 import com.example.yourtrip.model.UploadCourseListResponse;
+import com.example.yourtrip.model.UploadedCourseDetailResponse;
 import com.example.yourtrip.mypage.NicknameChangeRequest;
 import com.example.yourtrip.mypage.PasswordChangeRequest;
 import com.example.yourtrip.mypage.ProfileImageResponse;
@@ -149,6 +150,12 @@ public interface ApiService {
     @POST("/api/upload-courses/")
     Call<UploadCourseResponse> uploadCourseOnlyJson(
             @Part("request") RequestBody request
+    );
+
+    //업로드 코스 상세 조회 api
+    @GET("/api/upload-courses/{uploadCourseId}")
+    Call<UploadCourseResponse> getUploadedCourseDetail(
+            @Path("uploadCourseId") long uploadCourseId
     );
 
 
