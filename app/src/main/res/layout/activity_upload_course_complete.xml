@@ -53,10 +53,9 @@
 
     <android.widget.Button
         android:id="@+id/btnHome"
-        style="@style/ChangeButtonStyle"
+        style="@style/RoundedButton.OutlineBlue"
         android:layout_width="0dp"
         android:layout_margin="30dp"
-        android:enabled="false"
         android:text="홈으로 돌아가기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

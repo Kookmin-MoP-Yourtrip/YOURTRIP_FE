@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.yourtrip.MainActivity;
 import com.example.yourtrip.R;
 public class UploadCourseCompleteActivity extends AppCompatActivity {
 
@@ -30,7 +31,11 @@ public class UploadCourseCompleteActivity extends AppCompatActivity {
 
         // 홈으로 돌아가기 버튼
         findViewById(R.id.btnHome).setOnClickListener(v -> {
-            finishAffinity();  // 앱 홈 화면으로 이동
+            Intent intent = new Intent(this, MainActivity.class);
+            // 이전에 쌓여있던 모든 액티비티를 스택에서 제거하고, MainActivity를 새로 시작
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
     }
 }
