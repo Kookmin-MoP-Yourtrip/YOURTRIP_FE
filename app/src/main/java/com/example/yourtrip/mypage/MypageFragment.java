@@ -17,6 +17,8 @@ import com.example.yourtrip.MainActivity;
 import com.example.yourtrip.R;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
+import com.example.yourtrip.feed.FeedFragment;
+import com.example.yourtrip.mytrip.list.MyTripListFragment;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,71 +29,82 @@ public class MypageFragment extends Fragment {
     private ImageView imgProfile;
     private TextView tvNickname;
 
+    private View loadingLayout;
+    private View contentLayout;
+
     public static String latestProfileUrl = null;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_mypage, container, false);
 
-        // UI 요소 참조
         imgProfile = view.findViewById(R.id.imgProfile);
         tvNickname = view.findViewById(R.id.tvNickname);
 
+        loadingLayout = view.findViewById(R.id.loadingLayout_mypage);
+        contentLayout = view.findViewById(R.id.contentLayout_mypage);
+
         LinearLayout btnMyCourse = view.findViewById(R.id.btnMyCourse);
         LinearLayout btnMyFeed = view.findViewById(R.id.btnMyFeed);
-        TextView btnEditProfile = view.findViewById(R.id.btnEditProfile);
+        TextView btnEdit = view.findViewById(R.id.btnEditProfile);
 
-        // 코스 보기
-        btnMyCourse.setOnClickListener(v -> {
-            ((MainActivity) requireActivity()).switchFragment(new MyCourseViewFragment(), false);
-        });
+        // 초기 상태는 스켈레톤만
+        loadingLayout.setVisibility(View.VISIBLE);
+        contentLayout.setVisibility(View.GONE);
 
-        // 피드 보기
-        btnMyFeed.setOnClickListener(v -> {
-            ((MainActivity) requireActivity()).switchFragment(new MyPersonalFeedFragment(), false);
-        });
+        btnMyCourse.setOnClickListener(v ->
+                ((MainActivity) requireActivity()).switchFragment(new MyTripListFragment(), true)
+        );
 
-        // 프로필 수정
-        btnEditProfile.setOnClickListener(v ->
+        btnMyFeed.setOnClickListener(v ->
+                ((MainActivity) requireActivity()).switchFragment(new FeedFragment(), true)
+        );
+
+        btnEdit.setOnClickListener(v ->
                 ((MainActivity) requireActivity()).switchFragment(new ProfileEditFragment(), true)
         );
 
-        // 마이페이지 정보 로드
         loadProfile();
 
         return view;
     }
 
     private void loadProfile() {
-        ApiService api = RetrofitClient
-                .getInstance(requireContext())
-                .create(ApiService.class);
+
+        ApiService api = RetrofitClient.getInstance(requireContext()).create(ApiService.class);
 
         api.getProfile().enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> res) {
-                if (!res.isSuccessful() || res.body() == null) return;
+
+                if (!res.isSuccessful() || res.body() == null) {
+                    loadingLayout.setVisibility(View.GONE);
+                    return;
+                }
 
                 ProfileResponse p = res.body();
 
-                // 닉네임 표시
                 tvNickname.setText(p.nickname);
 
-                String urlToLoad = latestProfileUrl != null ? latestProfileUrl : p.profileImageUrl;
+                String url = latestProfileUrl != null ? latestProfileUrl : p.profileImageUrl;
 
-                // 이미지 표시
                 Glide.with(requireContext())
-                        .load(urlToLoad)
+                        .load(url)
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .circleCrop()
-                        .placeholder(R.drawable.ic_default_profile)
-                        .error(R.drawable.ic_default_profile)
                         .into(imgProfile);
+
+                // 최종 상태 전환
+                loadingLayout.setVisibility(View.GONE);
+                contentLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onFailure(Call<ProfileResponse> call, Throwable t) { }
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+                loadingLayout.setVisibility(View.GONE);
+            }
         });
     }
 }
