@@ -107,11 +107,6 @@ public class CreateAICourseTagsActivity extends AppCompatActivity {
                 boolean newState = !tag.isSelected();
                 tag.setSelected(newState);
 
-                // UI: 선택되면 white, 아니면 gray
-//                tag.setTextColor(getResources().getColor(
-//                        newState ? android.R.color.black : R.color.gray_500
-//                ));
-
                 // 데이터: 선택 리스트에 추가/제거
                 String tagText = tag.getText().toString();
 
@@ -133,7 +128,15 @@ public class CreateAICourseTagsActivity extends AppCompatActivity {
             List<String> sendTags = TagConverter.toServerCodes(selectedTags);
             Log.d(TAG, "AICourseCreate_API 요청 데이터: " + "startDate = "+ startDate+", endDate = "+endDate+", location = "+location +", sendTags = "+sendTags);
 
-            AICourseCreateRequest request = new AICourseCreateRequest(startDate, endDate, location, sendTags);
+            // 다음 화면으로 넘기는 로직
+            Intent intent = new Intent(CreateAICourseTagsActivity.this, CreateAICourseLoadingActivity.class);
+            intent.putExtra("startDate", startDate);
+            intent.putExtra("endDate", endDate);
+            intent.putExtra("location", location);
+            intent.putExtra("keywords", new ArrayList<>(sendTags));
+
+            startActivity(intent);
+//            AICourseCreateRequest request = new AICourseCreateRequest(startDate, endDate, location, sendTags);
 //            submitAICourse(request); //TODO: API 연동
         });
     }
