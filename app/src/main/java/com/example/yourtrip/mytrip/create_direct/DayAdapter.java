@@ -1,4 +1,4 @@
-package com.example.yourtrip.mytrip;
+package com.example.yourtrip.mytrip.create_direct;
 
 import android.content.Context; // Context 추가
 import android.graphics.Color; // Color 추가

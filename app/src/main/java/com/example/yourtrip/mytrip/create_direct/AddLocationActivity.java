@@ -1,4 +1,4 @@
-package com.example.yourtrip.mytrip;
+package com.example.yourtrip.mytrip.create_direct;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.widget.EditText;
 import android.text.Editable;
 import android.widget.ImageView;
@@ -32,16 +31,10 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.overlay.Marker;
 
-import com.example.yourtrip.network.ApiService;
-import com.example.yourtrip.network.RetrofitClient;
-import com.example.yourtrip.mytrip.model.PlaceAddRequest;
-import com.example.yourtrip.mytrip.model.PlaceAddResponse;
-
- import retrofit2.Call;
+import retrofit2.Call;
  import retrofit2.Callback;
  import retrofit2.Response;
 

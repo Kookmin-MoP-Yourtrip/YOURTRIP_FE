@@ -10,17 +10,24 @@ import com.example.yourtrip.model.FeedCommentListResponse;
 import com.example.yourtrip.model.FeedCommentWriteRequest;
 import com.example.yourtrip.model.FeedCommentWriteResponse;
 import com.example.yourtrip.model.FeedDetailResponse;
+import com.example.yourtrip.model.FeedLikeResponse;
 import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.UploadCourseListResponse;
+import com.example.yourtrip.mypage.NicknameChangeRequest;
+import com.example.yourtrip.mypage.PasswordChangeRequest;
+import com.example.yourtrip.mypage.ProfileImageResponse;
+import com.example.yourtrip.mypage.ProfileResponse;
+import com.example.yourtrip.mytrip.model.DayPlacesResponse;
+import com.example.yourtrip.mytrip.model.ImageUploadResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
 import com.example.yourtrip.mytrip.model.MyCourseDetailResponse;
-import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 import com.example.yourtrip.mytrip.model.MyCourseListResponse;
 import com.example.yourtrip.mytrip.model.PlaceAddRequest;
 import com.example.yourtrip.mytrip.model.PlaceAddResponse;
-import com.example.yourtrip.mytrip.model.DayPlacesResponse;
-import com.example.yourtrip.mytrip.model.LocationItem;
+import com.example.yourtrip.mytrip.model.PlaceMemoRequest;
+import com.example.yourtrip.mytrip.model.PlaceTimeRequest;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -29,8 +36,10 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
@@ -89,6 +98,34 @@ public interface ApiService {
             @Path("dayId") long dayId
     );
 
+    //특정 장소의 시간을 수정하는 api
+    @PATCH("/api/my-courses/{courseId}/days/{dayId}/places/{placeId}/start-time")
+    Call<JsonObject> updatePlaceTime(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId,
+            @Body PlaceTimeRequest requestBody
+    );
+
+    //특정 장소에 사진 추가
+    @Multipart
+    @POST("/api/my-courses/{courseId}/days/{dayId}/places/{placeId}/images")
+    Call<ImageUploadResponse> uploadPlaceImage(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId,
+            @Part MultipartBody.Part placeImage
+    );
+
+    //특정 장소에 메모 추가
+    @PATCH("/api/my-courses/{courseId}/days/{dayId}/places/{placeId}/memo")
+    Call<JsonObject> updatePlaceMemo(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId,
+            @Body PlaceMemoRequest requestBody
+    );
+
 
     //=============홈 api================//
     // 홈 다중 필터링(태그 & 텍스트) 검색
@@ -114,7 +151,6 @@ public interface ApiService {
             @Part List<MultipartBody.Part> mediaFiles,
             @Part("request") RequestBody request
     );
-
 
     // 피드 상세 조회 API
     @GET("/api/feeds/{feedId}")
@@ -144,6 +180,46 @@ public interface ApiService {
             @Query("page") int page,
             @Query("size") int size
     );
+
+    @GET("/api/feeds/users/{userId}")
+    Call<FeedListResponse> getUserFeeds(
+            @Path("userId") int userId,
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    @POST("/api/feeds/{feedId}/like")
+    Call<FeedLikeResponse> toggleFeedLike(
+            @Path("feedId") int feedId
+    );
+
+
+    // 1. 프로필 조회
+    @GET("/api/mypage/profile")
+    Call<ProfileResponse> getProfile();
+
+    // 2. 프로필 이미지 업로드
+    @Multipart
+    @PATCH("/api/mypage/profile/image")
+    Call<ProfileImageResponse> uploadProfileImage(
+            @Part MultipartBody.Part file
+    );
+
+    // 3. 닉네임 변경
+    @PATCH("/api/mypage/profile/nickname")
+    Call<Void> updateNickname(@Body NicknameChangeRequest request);
+
+    // 3. 닉네임 중복 체크
+    @GET("/api/mypage/profile/nickname/check")
+    Call<Void> checkNickname(@Query("nickname") String nickname);
+
+    // 4. 비밀번호 변경
+    @PATCH("/api/mypage/profile/password")
+    Call<Void> updatePassword(@Body PasswordChangeRequest request);
+
+    // 5. 회원 탈퇴
+    @DELETE("/api/mypage/profile")
+    Call<Void> deleteUser();
 
 }
 

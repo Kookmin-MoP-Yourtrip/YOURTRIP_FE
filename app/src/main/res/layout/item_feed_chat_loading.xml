@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="10dp">
+
+    <!-- 상단 프로필 + 닉네임 영역 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!-- 프로필 원 -->
+        <View
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/bg_circle"
+            android:backgroundTint="@color/gray_200"
+            android:layout_marginEnd="8dp" />
+
+        <!-- 닉네임 바 -->
+        <View
+            android:layout_width="100dp"
+            android:layout_height="16dp"
+            android:background="@drawable/bg_box_round"
+            android:backgroundTint="@color/gray_200" />
+
+    </LinearLayout>
+
+    <!-- 댓글 내용 박스 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_box_round"
+        android:backgroundTint="@color/gray_200" />
+
+</LinearLayout>

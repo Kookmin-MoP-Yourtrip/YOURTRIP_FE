@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_box_round"
+    android:elevation="3dp"
+    android:paddingVertical="24dp"
+    android:paddingHorizontal="26dp">
+
+    <!-- 안내 문구 -->
+    <TextView
+        android:id="@+id/tvDeleteWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="정말 탈퇴하시겠습니까?\n탈퇴 후 계정은 복구할 수 없습니다."
+        android:textStyle="bold"
+        android:textColor="@color/gray_700"
+        android:textSize="15sp"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- 네, 탈퇴합니다 (파란 테두리 버튼) -->
+    <android.widget.Button
+        android:id="@+id/btnConfirmDelete"
+        style="@style/RoundedButton.OutlineBlue"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="네, 탈퇴합니다."
+        android:textSize="14sp" />
+
+    <!-- 아니요 (파란색 꽉찬 버튼) -->
+    <android.widget.Button
+        android:id="@+id/btnCancelDelete"
+        style="@style/ChangeButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:text="아니요."
+        android:textSize="14sp"/>
+</LinearLayout>

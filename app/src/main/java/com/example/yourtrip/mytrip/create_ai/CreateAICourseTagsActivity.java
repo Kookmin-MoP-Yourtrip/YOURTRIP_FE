@@ -1,4 +1,4 @@
-package com.example.yourtrip.mytrip;
+package com.example.yourtrip.mytrip.create_ai;
 
 import android.content.Intent;
 import android.os.Bundle;
