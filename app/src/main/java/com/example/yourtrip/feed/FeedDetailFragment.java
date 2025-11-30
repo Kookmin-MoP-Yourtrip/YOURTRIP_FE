@@ -1,5 +1,7 @@
 package com.example.yourtrip.feed;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,10 +40,21 @@ public class FeedDetailFragment extends Fragment {
     private View layoutContent;
     private boolean isLiked = false;
 
+    private int loginUserId;   // 로그인한 사용자
+    private int writerId;      // 피드 작성자 (서버 응답에서 받음)
+
+    private ImageView btnMore;
+    private View moreMenu;
+    private View btnEdit, btnDelete;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        SharedPreferences prefs =
+                requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        loginUserId = prefs.getInt("userId", -1);
+
 
         View view = inflater.inflate(R.layout.fragment_feed_detail, container, false);
 
@@ -66,6 +79,34 @@ public class FeedDetailFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+
+        btnMore.setOnClickListener(v -> {
+            if (moreMenu.getVisibility() == View.VISIBLE) {
+                moreMenu.setVisibility(View.GONE);
+            } else {
+                moreMenu.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnEdit.setOnClickListener(v -> {
+
+            Fragment editFragment = new FeedEditFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("feedId", feedId);
+            editFragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, editFragment)
+                    .addToBackStack(null)
+                    .commit();
+
+            // 더보기 메뉴 닫기
+            moreMenu.setVisibility(View.GONE);
+        });
+
+
 
         btnLike = view.findViewById(R.id.btn_like);
 
@@ -93,6 +134,13 @@ public class FeedDetailFragment extends Fragment {
         layoutLoading = view.findViewById(R.id.loadingLayout_feed_detail);
         layoutContent = view.findViewById(R.id.contentLayout_feed_detail);
 
+
+        // ⭐ 더보기 관련
+        btnMore = view.findViewById(R.id.feed_detail_btn_more);
+        moreMenu = view.findViewById(R.id.feed_more_menu);
+        btnEdit = view.findViewById(R.id.btn_feed_edit);
+        btnDelete = view.findViewById(R.id.btn_feed_delete);
+        moreMenu.setVisibility(View.GONE);
     }
 
     private void loadFeedDetail() {
@@ -112,6 +160,16 @@ public class FeedDetailFragment extends Fragment {
                 }
 
                 FeedDetailResponse data = response.body();
+
+                writerId = data.getUserId();   // 서버에서 주는 작성자 ID
+
+                // ⭐ 작성자와 로그인 유저가 같을 때만 더보기 버튼 표시
+                if (loginUserId == writerId) {
+                    btnMore.setVisibility(View.VISIBLE);
+                } else {
+                    btnMore.setVisibility(View.GONE);
+                }
+
 
 
                 // 닉네임
