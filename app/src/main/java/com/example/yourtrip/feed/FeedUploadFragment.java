@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -51,6 +53,9 @@ public class FeedUploadFragment extends Fragment {
     private UploadFeedAdapter adapter;
     private final List<Uri> selectedImages = new ArrayList<>();
     private static final int MAX_IMAGES = 5;
+
+    private LinearLayout locationGroup;
+
 
     @Override
     public void onResume() {
@@ -93,14 +98,63 @@ public class FeedUploadFragment extends Fragment {
         rvPhotos = view.findViewById(R.id.rv_upload_photos);
         btnUpload = view.findViewById(R.id.btn_feed_upload);
 
+        // ⭐ 장소 태그 영역 + 버튼
+        locationGroup = view.findViewById(R.id.location_group);
+        View btnAddLocation = view.findViewById(R.id.btn_add_location);
+
         btnUpload.setOnClickListener(v -> uploadFeedToServer());
         view.findViewById(R.id.btn_cancel).setOnClickListener(v -> requireActivity().onBackPressed());
+
+        // ⭐ 장소추가 버튼 클릭 시 장소 입력 화면으로 이동
+        btnAddLocation.setOnClickListener(v -> openAddLocationFragment());
 
         setupRecyclerView();
         updateUploadButtonState();
 
+        // ⭐ 장소 추가 결과 받기
+        getParentFragmentManager().setFragmentResultListener(
+                "location_request",
+                this,
+                (requestKey, bundle) -> {
+                    String location = bundle.getString("selected_location");
+                    if (location != null) {
+                        addLocationChip(location);
+                    }
+                }
+        );
+
         return view;
     }
+
+    private void addLocationChip(String location) {
+        // ⭐ 새로운 장소가 추가되면 기존 태그는 모두 제거
+        locationGroup.removeAllViews();
+
+        // 커스텀 태그 레이아웃 inflate
+        View tagView = LayoutInflater.from(getContext())
+                .inflate(R.layout.item_location_tag, locationGroup, false);
+
+        TextView tvLocation = tagView.findViewById(R.id.tv_location);
+        tvLocation.setText(location);
+
+        // 삭제 기능 원하면 여기서 tagView에 onClick 달면 됨 (지금은 X 버튼 없음)
+        // tagView.setOnClickListener(v -> locationGroup.removeView(tagView));
+
+        locationGroup.addView(tagView);
+    }
+
+
+    private void openAddLocationFragment() {
+        Fragment addLocation = new FeedAddLocationFragment();
+
+        requireActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, addLocation)
+                .addToBackStack(null)
+                .commit();
+    }
+
     private void setupRecyclerView() {
 
         rvPhotos.setLayoutManager(
@@ -115,14 +169,13 @@ public class FeedUploadFragment extends Fragment {
 
             @Override
             public void onDeletePhotoClick(int position) {
-                selectedImages.remove(position);   // 🔥 업로드는 새 이미지만 있으니까 이것만 삭제
+                selectedImages.remove(position);
                 adapter.notifyDataSetChanged();
                 updateUploadButtonState();
             }
         });
 
         rvPhotos.setAdapter(adapter);
-
     }
 
     private void uploadFeedToServer() {
@@ -140,7 +193,6 @@ public class FeedUploadFragment extends Fragment {
             try {
                 String fileName = FileUtils.getFileName(requireContext(), uri);
 
-                // 🔥 압축된 이미지로 교체
                 byte[] compressedBytes = compressImage(requireContext(), uri);
 
                 RequestBody fileBody =
@@ -160,6 +212,15 @@ public class FeedUploadFragment extends Fragment {
                 return;
             }
         }
+        List<String> locations = new ArrayList<>();
+        for (int i = 0; i < locationGroup.getChildCount(); i++) {
+            View tagView = locationGroup.getChildAt(i);
+            TextView tvLocation = tagView.findViewById(R.id.tv_location);
+            if (tvLocation != null) {
+                locations.add(tvLocation.getText().toString());
+            }
+        }
+        String location = locations.isEmpty() ? null : locations.get(0);
 
 
         // ▣ JSON 부분 (title, location, content 모두 선택)
@@ -167,9 +228,9 @@ public class FeedUploadFragment extends Fragment {
         if (content.isEmpty()) content = null;
 
         FeedUploadRequest data = new FeedUploadRequest(
-                null,   // title
-                null,   // location
-                content // caption
+                null,      // title
+                location,  // location (Chip에서 가져온 값)
+                content    // caption
         );
 
         RequestBody jsonBody = RequestBody.create(
@@ -177,12 +238,10 @@ public class FeedUploadFragment extends Fragment {
                 new Gson().toJson(data)
         );
 
-
         Log.e("UPLOAD_DEBUG", "📤 JSON 데이터 = " + new Gson().toJson(data));
         for (Uri u : selectedImages) {
             Log.e("UPLOAD_DEBUG", "📸 선택된 이미지 = " + FileUtils.getFileName(requireContext(), u));
         }
-
 
         // ▣ Retrofit 업로드 요청
         api.uploadFeed(fileParts, jsonBody).enqueue(new Callback<Void>() {
@@ -227,13 +286,13 @@ public class FeedUploadFragment extends Fragment {
         btnUpload.setAlpha(selectedImages.isEmpty() ? 0.4f : 1f);
     }
 
-    // 사진 앞축
+    // 사진 압축
     private byte[] compressImage(Context context, Uri uri) {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream); // 🔥 품질 70%로 압축
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream); // 품질 70%로 압축
             return stream.toByteArray();
 
         } catch (Exception e) {
@@ -241,5 +300,4 @@ public class FeedUploadFragment extends Fragment {
             return null;
         }
     }
-
 }

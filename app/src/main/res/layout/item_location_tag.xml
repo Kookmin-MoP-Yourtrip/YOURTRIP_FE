@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 지역 태그 -->
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tag_location"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="6dp"
+    android:background="@drawable/bg_tag"
+    android:backgroundTint="@color/tag_skyblue"
+    android:clipToPadding="false"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <ImageView
+        android:layout_width="17dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="1dp"
+        android:src="@drawable/ic_location"
+        android:background="@android:color/transparent" />
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+
+        android:text="지역명"
+        android:textSize="12sp"
+        android:textColor="@color/gray_600"
+        android:maxLines="1"
+        android:ellipsize="end" />
+</LinearLayout>
