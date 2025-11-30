@@ -101,8 +101,8 @@ public class FeedUploadFragment extends Fragment {
 
         return view;
     }
-
     private void setupRecyclerView() {
+
         rvPhotos.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false)
         );
@@ -115,13 +115,14 @@ public class FeedUploadFragment extends Fragment {
 
             @Override
             public void onDeletePhotoClick(int position) {
-                selectedImages.remove(position);
+                selectedImages.remove(position);   // 🔥 업로드는 새 이미지만 있으니까 이것만 삭제
                 adapter.notifyDataSetChanged();
                 updateUploadButtonState();
             }
         });
 
         rvPhotos.setAdapter(adapter);
+
     }
 
     private void uploadFeedToServer() {
@@ -160,40 +161,6 @@ public class FeedUploadFragment extends Fragment {
             }
         }
 
-//        for (Uri uri : selectedImages) {
-//            try {
-//                // MIME 타입 읽기
-//                String mimeType = requireContext().getContentResolver().getType(uri);
-//                if (mimeType == null) mimeType = "image/jpeg"; // fallback
-//
-//                // 파일명
-//                String fileName = FileUtils.getFileName(requireContext(), uri);
-//
-//                // InputStream -> byte[] 변환
-//                InputStream is = requireContext().getContentResolver().openInputStream(uri);
-//                byte[] bytes = FileUtils.readBytes(is);
-//
-//                // 정확한 MIME 타입으로 RequestBody 생성
-//                RequestBody fileBody = RequestBody.create(
-//                        MediaType.parse(mimeType),
-//                        bytes
-//                );
-//
-//                MultipartBody.Part part = MultipartBody.Part.createFormData(
-//                        "mediaFiles",
-//                        fileName,
-//                        fileBody
-//                );
-//
-//                fileParts.add(part);
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                Toast.makeText(getContext(), "이미지 처리 오류", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//        }
-
 
         // ▣ JSON 부분 (title, location, content 모두 선택)
         String content = editText.getText().toString().trim();
@@ -204,14 +171,6 @@ public class FeedUploadFragment extends Fragment {
                 null,   // location
                 content // caption
         );
-//        String content = editText.getText().toString().trim();
-//        if (content.isEmpty()) content = "";
-//
-//        FeedUploadRequest data = new FeedUploadRequest(
-//                "",        // title 선택 → 빈 String으로
-//                "",        // location 선택 → 빈 String으로
-//                content
-//        );
 
         RequestBody jsonBody = RequestBody.create(
                 MediaType.parse("application/json; charset=utf-8"),

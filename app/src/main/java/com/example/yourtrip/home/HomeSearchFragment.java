@@ -26,6 +26,7 @@ public class HomeSearchFragment extends Fragment {
     private boolean lastEnabledState = false;   // 이전 버튼 활성 상태 기억
 
 
+
     private final List<TextView> tagViews = new ArrayList<>();
     private final ArrayList<String> selectedTags = new ArrayList<>();
 
@@ -40,6 +41,7 @@ public class HomeSearchFragment extends Fragment {
 
         initViews(view);
         btnSearch.setEnabled(false);  // ⭐ 초기 비활성화
+
 
         // 모든 태그 초기 텍스트 색상 지정
         for (TextView tag : tagViews) {
