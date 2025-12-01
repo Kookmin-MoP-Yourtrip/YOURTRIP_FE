@@ -83,6 +83,8 @@
             android:exported="false"/>
 
         <activity android:name=".mytrip.create_ai.CreateAICourseLoadingActivity"
+            android:exported="false"/>
+
         <activity android:name=".mytrip.upload.AfterUploadCourseDetailActivity"
             android:exported="false"/>
 
