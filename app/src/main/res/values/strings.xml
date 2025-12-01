@@ -10,4 +10,7 @@
     <string name="time_picker_title">방문 시간 설정</string>
     <string name="title_activity_upload_course_confirm">UploadCourseConfirmActivity</string>
 
+    <string name="naver_client_id">_4TkZFwdyoSESikT65Ex</string>
+    <string name="naver_client_secret">ltohUsxVeg
+</string>
 </resources>

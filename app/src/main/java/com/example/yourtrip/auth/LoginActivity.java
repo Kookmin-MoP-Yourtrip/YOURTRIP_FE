@@ -114,11 +114,18 @@ public class LoginActivity extends AppCompatActivity {
                         // userId
                         int userId = json.optInt("userId", -1);
 
+                        // ⭐ 닉네임 + 프로필 URL 가져오기
+                        String nickname = json.optString("nickname", "사용자이름");
+                        String profileImageUrl = json.optString("profileImageUrl", "");
+
+
                         // SharedPreferences에 JWT 토큰 저장
                         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                         prefs.edit()
                                 .putString("accessToken", token)
                                 .putInt("userId", userId)
+                                .putString("nickname", nickname)
+                                .putString("profileImageUrl", profileImageUrl)
                                 .apply();
 
                         // 저장된 토큰 Logcat 확인
