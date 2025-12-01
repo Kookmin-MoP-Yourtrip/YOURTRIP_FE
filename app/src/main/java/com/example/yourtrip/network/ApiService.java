@@ -14,10 +14,13 @@ import com.example.yourtrip.model.FeedLikeResponse;
 import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.FeedUpdateResponse;
 import com.example.yourtrip.model.UploadCourseListResponse;
+import com.example.yourtrip.model.UploadedCourseDetailResponse;
 import com.example.yourtrip.mypage.NicknameChangeRequest;
 import com.example.yourtrip.mypage.PasswordChangeRequest;
 import com.example.yourtrip.mypage.ProfileImageResponse;
 import com.example.yourtrip.mypage.ProfileResponse;
+import com.example.yourtrip.mytrip.model.AICourseCreateRequest;
+import com.example.yourtrip.mytrip.model.AICourseCreateResponse;
 import com.example.yourtrip.mytrip.model.DayPlacesResponse;
 import com.example.yourtrip.mytrip.model.ImageUploadResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
@@ -81,6 +84,9 @@ public interface ApiService {
     // 나의 코스 기본 생성 api
     @POST("/api/my-courses")
     Call<MyCourseCreateBasicResponse> createMyCourse(@Body MyCourseCreateRequest request);
+
+    @POST("/api/my-courses/ai")
+    Call<AICourseCreateResponse> createAICourse(@Body AICourseCreateRequest request);
 
     // 나의 코스 리스트 조회 api
     @GET("/api/my-courses")
@@ -149,6 +155,12 @@ public interface ApiService {
     @POST("/api/upload-courses/")
     Call<UploadCourseResponse> uploadCourseOnlyJson(
             @Part("request") RequestBody request
+    );
+
+    //업로드 코스 상세 조회 api
+    @GET("/api/upload-courses/{uploadCourseId}")
+    Call<UploadCourseResponse> getUploadedCourseDetail(
+            @Path("uploadCourseId") long uploadCourseId
     );
 
 

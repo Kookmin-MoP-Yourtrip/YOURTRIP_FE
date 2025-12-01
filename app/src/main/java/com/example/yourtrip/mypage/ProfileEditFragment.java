@@ -44,9 +44,11 @@ public class ProfileEditFragment extends Fragment {
     private Button btnSave;
 
     private Uri selectedImageUri = null;
-
-    // ActivityResultLauncher 선언
     private ActivityResultLauncher<Intent> imagePickerLauncher;
+
+    // 스켈레톤 + 실제 콘텐츠
+    private View loadingLayout;
+    private View contentLayout;
 
     @Nullable
     @Override
@@ -56,6 +58,14 @@ public class ProfileEditFragment extends Fragment {
 
     @Override
     public void onViewCreated(View v, @Nullable Bundle savedInstanceState) {
+
+        // 스켈레톤 & 콘텐츠 초기 바인딩
+        loadingLayout = v.findViewById(R.id.loadingLayout_profile_edit);
+        contentLayout = v.findViewById(R.id.contentLayout_profile_edit);
+
+        contentLayout.setVisibility(View.GONE);  // 실제 화면 숨김
+        contentLayout.setAlpha(0f);              // 깜빡임 방지
+        loadingLayout.setVisibility(View.VISIBLE); // 스켈레톤만 보임
 
         imgProfile = v.findViewById(R.id.imgProfile);
         ImageView btnAddPhoto = v.findViewById(R.id.btnAddPhoto);
@@ -75,9 +85,10 @@ public class ProfileEditFragment extends Fragment {
                 ((MainActivity) requireActivity()).switchFragment(new MypageFragment(), false)
         );
 
+        // 프로필 로딩 시작
         loadProfile();
 
-        // 이미지 선택 ActivityResultLauncher 등록
+        // 이미지 선택 런처
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -119,9 +130,16 @@ public class ProfileEditFragment extends Fragment {
         api.getProfile().enqueue(new Callback<ProfileResponse>() {
             @Override
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> res) {
+
+                // 스켈레톤 제거
+                loadingLayout.setVisibility(View.GONE);
+                contentLayout.setVisibility(View.VISIBLE);
+                contentLayout.animate().alpha(1f).setDuration(200).start();
+
                 if (!res.isSuccessful() || res.body() == null) return;
 
                 ProfileResponse p = res.body();
+
                 edtNickname.setText(p.nickname);
 
                 Glide.with(requireContext())
@@ -129,12 +147,16 @@ public class ProfileEditFragment extends Fragment {
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .circleCrop()
-                        .placeholder(R.drawable.ic_default_profile)
                         .into(imgProfile);
             }
 
             @Override
-            public void onFailure(Call<ProfileResponse> call, Throwable t) {}
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
+
+                loadingLayout.setVisibility(View.GONE);
+                contentLayout.setVisibility(View.VISIBLE);
+                contentLayout.animate().alpha(1f).setDuration(200).start();
+            }
         });
     }
 
@@ -164,8 +186,6 @@ public class ProfileEditFragment extends Fragment {
                     if (res.isSuccessful() && res.body() != null) {
 
                         String newUrl = res.body().profileImageUrl;
-
-                        // MyPageFragment 반영
                         MypageFragment.latestProfileUrl = newUrl;
 
                         Glide.with(requireContext())
@@ -191,7 +211,7 @@ public class ProfileEditFragment extends Fragment {
         }
     }
 
-    // 닉네임 체크
+    // 닉네임 중복 체크
     private void checkNicknameDuplicate(String nickname) {
         ApiService api = RetrofitClient.getInstance(requireContext()).create(ApiService.class);
 
@@ -217,20 +237,17 @@ public class ProfileEditFragment extends Fragment {
             return;
         }
 
-        // 닉네임 변경
         NicknameChangeRequest req = new NicknameChangeRequest(edtNickname.getText().toString());
         api.updateNickname(req).enqueue(new Callback<Void>() {
             @Override public void onResponse(Call<Void> call, Response<Void> res) {}
             @Override public void onFailure(Call<Void> call, Throwable t) {}
         });
 
-        // 비밀번호 변경
         String oldPw = editCurrentPw.getText().toString();
         String newPw = editNewPw.getText().toString();
         String confirmPw = editConfirmPw.getText().toString();
 
         if (!newPw.isEmpty()) {
-
             if (!newPw.equals(confirmPw)) {
                 Toast.makeText(requireContext(), "새 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                 return;
@@ -245,11 +262,10 @@ public class ProfileEditFragment extends Fragment {
         }
 
         Toast.makeText(requireContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
-
         ((MainActivity) requireActivity()).switchFragment(new MypageFragment(), false);
     }
 
-    // 탈퇴 confirm dialog
+    // 탈퇴 확인 다이얼로그
     private void showDeleteConfirmDialog() {
         AlertDialog dialog;
 

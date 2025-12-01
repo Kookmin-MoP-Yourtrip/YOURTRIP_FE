@@ -74,7 +74,7 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayViewHolder> {
         });
 
         // ViewHolder에 데이터를 바인딩
-//        holder.bind(daySchedule); // 이 부분은 중복 호출되므로 주석 처리된 상태로 두는 것이 맞습니다.
+//        holder.bind(daySchedule); // 이 부분은 중복 호출되므로 주석 처리
     }
 
     @Override
@@ -105,13 +105,9 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayViewHolder> {
             dayTextView.setText(dayText);
 
             if (isSelected) {
-                // 선택된 상태의 스타일 적용
-                // 🟡 수정: ViewHolder에 저장된 context를 사용하여 오류 해결
                 itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_day_tab_selected));
-                dayTextView.setTextColor(ContextCompat.getColor(context, R.color.blue_main)); // 예시 색상
+                dayTextView.setTextColor(ContextCompat.getColor(context, R.color.blue_main));
             } else {
-                // 선택되지 않은 상태의 스타일 적용
-                // 🟡 수정: ViewHolder에 저장된 context를 사용하여 오류 해결
                 itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_day_tab_normal));
                 dayTextView.setTextColor(Color.parseColor("#646B72"));
             }
