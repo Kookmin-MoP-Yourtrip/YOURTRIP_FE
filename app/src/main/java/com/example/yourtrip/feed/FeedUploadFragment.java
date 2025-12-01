@@ -55,6 +55,8 @@ public class FeedUploadFragment extends Fragment {
     private static final int MAX_IMAGES = 5;
 
     private LinearLayout locationGroup;
+    private TextView tvNickname;
+
 
 
     @Override
@@ -122,6 +124,16 @@ public class FeedUploadFragment extends Fragment {
                     }
                 }
         );
+
+        tvNickname = view.findViewById(R.id.tv_user_nickname);
+
+        // SharedPreferences 에 저장된 사용자 정보 읽기
+        String nickname = requireContext()
+                .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                .getString("nickname", "사용자이름");
+
+        // 실제 닉네임 적용
+        tvNickname.setText(nickname);
 
         return view;
     }

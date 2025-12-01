@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,11 +50,18 @@ public class FeedEditFragment extends Fragment {
     private RecyclerView rvPhotos;
     private Button btnSave;
     private TextView btnCancel;
+    // ⬇⬇⬇ 이 두 줄 추가
+    private View btnAddLocation;
+    private ViewGroup locationGroup;
 
     private int feedId;
 
-    // 기존 이미지 URL (서버에서 받은 순서 그대로)
-    private final List<String> originalImages = new ArrayList<>();
+    // ⭐ 기존 이미지 목록 (id + url 둘 다 보관)
+    private final List<FeedMediaDetailResponse> originalImages = new ArrayList<>();
+
+    // ⭐ 유지할 기존 이미지 id 목록
+    private final List<Long> keepMediaIds = new ArrayList<>();
+
 
     // 새로 추가한 이미지 URI
     private final List<Uri> newImages = new ArrayList<>();
@@ -74,8 +80,10 @@ public class FeedEditFragment extends Fragment {
 
                             Uri uri = result.getData().getData();
 
-                            if (uri != null && (originalImages.size() + newImages.size()) < MAX_IMAGES) {
+                            if (uri != null &&
+                                    (originalImages.size() + newImages.size()) < MAX_IMAGES) {
                                 newImages.add(uri);
+                                adapter.setEditMode(originalImages, newImages);
                                 adapter.notifyDataSetChanged();
                             }
                         }
@@ -95,6 +103,24 @@ public class FeedEditFragment extends Fragment {
         rvPhotos = view.findViewById(R.id.rv_upload_photos);
         btnSave = view.findViewById(R.id.btn_feed_edit);   // XML과 맞춤
         btnCancel = view.findViewById(R.id.tv_feed_cancel);
+
+        // ⬇⬇⬇ 여기 추가
+        locationGroup = view.findViewById(R.id.location_group);
+        btnAddLocation = view.findViewById(R.id.btn_add_location);
+
+        btnAddLocation.setOnClickListener(v -> openAddLocationFragment());
+
+        // FeedAddLocationFragment 에서 되돌아올 때 장소 결과 받기
+        getParentFragmentManager().setFragmentResultListener(
+                "location_request",
+                this,
+                (requestKey, bundle) -> {
+                    String location = bundle.getString("selected_location");
+                    if (location != null) {
+                        addLocationChip(location);
+                    }
+                }
+        );
 
         setupRecyclerView();
 
@@ -122,8 +148,13 @@ public class FeedEditFragment extends Fragment {
                     public void onDeletePhotoClick(int position) {
 
                         if (position < originalImages.size()) {
-                            originalImages.remove(position);
+                            // ⭐ 기존 이미지 삭제 → keep 목록에서 제거
+                            FeedMediaDetailResponse removed = originalImages.remove(position);
+                            keepMediaIds.remove(removed.getMediaId());
+
+
                         } else {
+                            // 새 이미지 삭제
                             newImages.remove(position - originalImages.size());
                         }
 
@@ -137,6 +168,21 @@ public class FeedEditFragment extends Fragment {
         rvPhotos.setAdapter(adapter);
     }
 
+    private void addLocationChip(String location) {
+        if (locationGroup == null) return;
+
+        // 기존 장소 태그는 하나만 유지하도록 모두 삭제
+        locationGroup.removeAllViews();
+
+        // item_location_tag.xml 재사용 (FeedUploadFragment와 동일)
+        View tagView = LayoutInflater.from(getContext())
+                .inflate(R.layout.item_location_tag, locationGroup, false);
+
+        TextView tvLocation = tagView.findViewById(R.id.tv_location);
+        tvLocation.setText(location);
+
+        locationGroup.addView(tagView);
+    }
 
     // 🔻 기존 피드 내용 + 기존 이미지 로드
     private void loadOriginalDetail() {
@@ -152,11 +198,19 @@ public class FeedEditFragment extends Fragment {
 
                 editText.setText(data.getContent());
 
-                // 기존 사진 URL 저장
+                // ⬇⬇⬇ 추가: 기존 장소 태그 세팅
+                if (data.getLocation() != null && !data.getLocation().isEmpty()) {
+                    addLocationChip(data.getLocation());
+                }
+
+                // ⭐ 기존 이미지 id + url 저장
                 originalImages.clear();
+                keepMediaIds.clear();
+
                 if (data.getMediaList() != null) {
                     for (FeedMediaDetailResponse m : data.getMediaList()) {
-                        originalImages.add(m.getMediaUrl());
+                        originalImages.add(m);
+                        keepMediaIds.add(m.getMediaId());   // 유지 대상에 기본 등록
                     }
                 }
 
@@ -171,6 +225,7 @@ public class FeedEditFragment extends Fragment {
         });
     }
 
+
     // 🔻 수정 요청 보내기
     private void updateFeed() {
 
@@ -178,41 +233,48 @@ public class FeedEditFragment extends Fragment {
 
         List<MultipartBody.Part> fileParts = new ArrayList<>();
 
-        // 새 이미지 있을 때만 새 이미지 전송
-        if (!newImages.isEmpty()) {
+        // 새 이미지 있을 때만 전송
+        for (Uri uri : newImages) {
+            try {
+                String fileName = FileUtils.getFileName(requireContext(), uri);
+                byte[] bytes = compressImage(requireContext(), uri);
 
-            for (Uri uri : newImages) {
-                try {
-                    String fileName = FileUtils.getFileName(requireContext(), uri);
-                    byte[] bytes = compressImage(requireContext(), uri);
+                RequestBody body = RequestBody.create(
+                        MediaType.parse("image/jpeg"), bytes);
 
-                    RequestBody body = RequestBody.create(
-                            MediaType.parse("image/jpeg"), bytes);
+                MultipartBody.Part part = MultipartBody.Part.createFormData(
+                        "mediaFiles",
+                        fileName,
+                        body
+                );
 
-                    MultipartBody.Part part = MultipartBody.Part.createFormData(
-                            "mediaFiles",
-                            fileName,
-                            body
-                    );
+                fileParts.add(part);
 
-                    fileParts.add(part);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getContext(), "이미지 처리 오류", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "이미지 처리 오류", Toast.LENGTH_SHORT).show();
+                return;
             }
-
-        } else {
-            // 🔥 새 이미지 없다 → 기존 이미지는 자동 유지 (fileParts = empty)
-            Log.e("EDIT", "기존 이미지 유지 → mediaFiles 전송 안함");
         }
 
-        // JSON 데이터 생성
-        String content = editText.getText().toString().trim();
+        // ⭐ JSON 데이터 생성 전, 선택된 location 읽어오기
+        String selectedLocation = null;
+        if (locationGroup != null && locationGroup.getChildCount() > 0) {
+            View tagView = locationGroup.getChildAt(0);
+            TextView tvLocation = tagView.findViewById(R.id.tv_location);
+            if (tvLocation != null) {
+                selectedLocation = tvLocation.getText().toString();
+            }
+        }
+
+        // ⭐ JSON 데이터 생성
         FeedUpdateRequest updateRequest = new FeedUpdateRequest(
-                null, null, content, new ArrayList<>(), null
+                null,                // title
+                selectedLocation,    // ✅ location
+                editText.getText().toString().trim(), // content
+                new ArrayList<>(),   // hashtags
+                null,                // uploadCourseId
+                keepMediaIds         // 유지할 기존 이미지 id
         );
 
         RequestBody jsonBody = RequestBody.create(
@@ -242,6 +304,7 @@ public class FeedEditFragment extends Fragment {
 
     }
 
+
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -261,5 +324,31 @@ public class FeedEditFragment extends Fragment {
             return null;
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        View bottomNav = requireActivity().findViewById(R.id.bottomNav);
+        if (bottomNav != null) bottomNav.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        View bottomNav = requireActivity().findViewById(R.id.bottomNav);
+        if (bottomNav != null) bottomNav.setVisibility(View.VISIBLE);
+    }
+
+    // 장소 추가 화면으로 이동
+    private void openAddLocationFragment() {
+        Fragment addLocation = new FeedAddLocationFragment();
+
+        requireActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, addLocation)
+                .addToBackStack(null)
+                .commit();
+    }
+
 
 }

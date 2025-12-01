@@ -67,7 +67,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="추가하고 싶은 장소를 입력해 주세요."
+            android:text="피드의 장소를 알려주세요"
             android:textSize="20sp"
             android:textColor="@color/gray_700"
             android:textStyle="bold"

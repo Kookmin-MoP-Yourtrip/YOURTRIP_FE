@@ -54,4 +54,20 @@ public class FeedAddLocationFragment extends Fragment {
 
         return view;
     }
+
+    // 🔻 화면 들어오면 bottomNav 숨김
+    @Override
+    public void onResume() {
+        super.onResume();
+        View bottomNav = requireActivity().findViewById(R.id.bottomNav);
+        if (bottomNav != null) bottomNav.setVisibility(View.GONE);
+    }
+
+    // 🔻 화면 나갈 때 다시 보이게
+    @Override
+    public void onStop() {
+        super.onStop();
+        View bottomNav = requireActivity().findViewById(R.id.bottomNav);
+        if (bottomNav != null) bottomNav.setVisibility(View.VISIBLE);
+    }
 }
