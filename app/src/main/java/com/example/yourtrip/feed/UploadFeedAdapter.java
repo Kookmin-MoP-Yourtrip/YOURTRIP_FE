@@ -118,9 +118,6 @@ public class UploadFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public AddButtonViewHolder(View v) { super(v); }
     }
 
-    static class FirstViewHolder extends RecyclerView.ViewHolder { public FirstViewHolder(View v) { super(v); } }
-    static class AddButtonViewHolder extends RecyclerView.ViewHolder { public AddButtonViewHolder(View v) { super(v); } }
-
     static class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView, btnDelete;
         public ImageViewHolder(@NonNull View itemView) {
