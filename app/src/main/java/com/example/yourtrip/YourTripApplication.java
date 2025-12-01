@@ -20,7 +20,7 @@ public class YourTripApplication extends Application {
             Log.d("Naver0_YourTripApplication", "네이버 지도 SDK 초기화를 시작합니다.");
             try {
                 NaverMapSdk.getInstance(this).setClient(
-                        new NaverMapSdk.NcpKeyClient("lm7f1yckad")
+                        new NaverMapSdk.NcpKeyClient("gkd6w4w1tu")
                 );
                 isNaverMapSdkInitialized = true; // 초기화 성공 상태를 기록
                 Log.d("Naver0_YourTripApplication", "네이버 지도 SDK 초기화에 성공했습니다.");

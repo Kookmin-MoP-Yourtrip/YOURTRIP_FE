@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.text.Editable;
 import android.widget.ImageView;
@@ -19,6 +18,7 @@ import android.app.AlertDialog;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.yourtrip.R;
 import com.example.yourtrip.mytrip.model.PlaceAddRequest;
@@ -27,13 +27,10 @@ import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 import com.example.yourtrip.network.NaverSearchResponse;
 
-import com.naver.maps.map.CameraAnimation;
-import com.naver.maps.map.MapView;
+import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
-import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.overlay.Marker;
 
 import java.util.List;
 
@@ -46,11 +43,8 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
     private ImageView btnBack;
     private TextView tvTitle;
     private EditText etPlaceName;
-    private MapView mapView;
-    private NaverMap naverMap;
     private Button btnNext;
     private ImageView btnSearch;
-    private boolean isMapReady = false;
 
     private ApiService apiService;
     private long courseId = -1L;
@@ -60,7 +54,6 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
     private LatLng selectedLocation = null;
     private String selectedAddress = null;
     private String selectedPlaceUrl = null;
-
 
 
     @Override
@@ -77,24 +70,13 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         setTopBar();
         setTextWatcherForPlaceName();
 
-        mapView = findViewById(R.id.map_view);
-        mapView.onCreate(savedInstanceState);
-
-        // 모든 뷰가 그려진 후 map async
-        View decorView = getWindow().getDecorView();
-        ViewTreeObserver.OnGlobalLayoutListener layoutListener =
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        Log.d("Naver2_getMapAsync", "뷰 그려짐 → map async 호출");
-                        if (mapView != null) {
-                            mapView.getMapAsync(AddLocationActivity.this);
-                        }
-                    }
-                };
-
-        decorView.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
+        FragmentManager fm = getSupportFragmentManager();
+        MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.mapFragment);
+        if (mapFragment == null) {
+            mapFragment = MapFragment.newInstance();
+            fm.beginTransaction().add(R.id.mapFragment, mapFragment).commit();
+        }
+        mapFragment.getMapAsync(this);
 
         btnSearch.setOnClickListener(v -> doSearch());
         btnNext.setOnClickListener(v -> nextButtonAction());
@@ -102,13 +84,7 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
-        this.naverMap = naverMap;
-        this.isMapReady = true;
-
-        LatLng defaultLocation = new LatLng(37.5665, 126.9780);
-        naverMap.moveCamera(CameraUpdate.scrollTo(defaultLocation));
-
-        mapView.invalidate();
+        Toast.makeText(this, "지도 준비 완료!", Toast.LENGTH_SHORT).show();
     }
 
     private void initViews() {
@@ -140,10 +116,6 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
 
     private void doSearch() {
 
-        if (!isMapReady) {
-            Toast.makeText(this, "지도를 불러오는 중입니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         String query = etPlaceName.getText().toString().trim();
 
@@ -172,13 +144,6 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
 
                 selectedLocation = new LatLng(lat, lng);
 
-                // 마커 표시
-                addMarkerToMap(selectedLocation);
-
-                naverMap.moveCamera(
-                        CameraUpdate.scrollTo(selectedLocation)
-                                .animate(CameraAnimation.Linear)
-                );
             }
 
             @Override
@@ -193,17 +158,6 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
             }
         });
     }
-
-
-    private void addMarkerToMap(LatLng location) {
-        if (!isMapReady) return;
-
-        Marker marker = new Marker();
-        marker.setPosition(location);
-        marker.setMap(naverMap);
-    }
-
-
     private void nextButtonAction() {
 
         String name = etPlaceName.getText().toString().trim();
@@ -349,11 +303,4 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
     private double convertMapX(String mapx) { return Double.parseDouble(mapx) / 10000000.0; }
     private double convertMapY(String mapy) { return Double.parseDouble(mapy) / 10000000.0; }
 
-    // MapView lifecycle
-    @Override protected void onStart() { super.onStart(); mapView.onStart(); }
-    @Override protected void onResume() { super.onResume(); mapView.onResume(); mapView.invalidate(); }
-    @Override protected void onPause() { mapView.onPause(); super.onPause(); }
-    @Override protected void onStop() { mapView.onStop(); super.onStop(); }
-    @Override protected void onDestroy() { mapView.onDestroy(); super.onDestroy(); }
-    @Override public void onLowMemory() { super.onLowMemory(); mapView.onLowMemory(); }
 }

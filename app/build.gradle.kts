@@ -64,7 +64,6 @@ dependencies {
 
     // naverMap
     implementation("com.naver.maps:map-sdk:3.23.0")
-//    implementation("com.naver.maps:map-sdk:3.19.1")
 
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 

@@ -76,11 +76,16 @@
         </LinearLayout>
 
         <!-- 네이버 map -->
-        <com.naver.maps.map.MapView
-            android:id="@+id/map_view"
+<!--        <com.naver.maps.map.MapView-->
+<!--            android:id="@+id/map_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="390dp">-->
+<!--        </com.naver.maps.map.MapView>-->
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/mapFragment"
             android:layout_width="match_parent"
-            android:layout_height="390dp">
-        </com.naver.maps.map.MapView>
+            android:layout_height="390dp"
+            android:name="com.naver.maps.map.MapFragment" />
 
     </LinearLayout>
 
