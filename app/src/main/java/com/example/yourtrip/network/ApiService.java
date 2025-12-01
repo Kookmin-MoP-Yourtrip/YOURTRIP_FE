@@ -73,8 +73,12 @@ public interface ApiService {
     Call<ResponseBody> setPassword(@Body PasswordRequest request);
 
     //닉네임,프로필 및 최종 프로필 등록 API
+    @Multipart
     @POST("/api/users/profile")
-    Call<ResponseBody> setProfile(@Body ProfileRequest request);
+    Call<ResponseBody> setProfile(
+            @Part("request") RequestBody request,
+            @Part MultipartBody.Part profileImage
+    );
 
     // 로그인 API
     @POST("/api/users/login")
@@ -275,4 +279,3 @@ public interface ApiService {
     Call<Void> deleteUser();
 
 }
-
