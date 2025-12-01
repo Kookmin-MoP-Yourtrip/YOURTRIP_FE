@@ -125,13 +125,25 @@
                 android:scrollbars="none"
                 android:overScrollMode="never" />
 
-            <!-- 장소는 현재 FE/BE에서 미사용이므로 업로드와 동일하게 유지 -->
+            <!-- ⭐ 장소 태그 리스트 -->
+            <LinearLayout
+                android:id="@+id/location_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="start" />
+
+
+
+            <!-- ▣ 장소 추가 버튼 -->
             <LinearLayout
                 android:id="@+id/btn_add_location"
                 android:layout_width="match_parent"
                 android:layout_height="47dp"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:background="@drawable/bg_box_border_12dp"
@@ -148,7 +160,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="장소 추가하기"
+                    android:text="장소 입력하기"
                     android:textColor="@color/blue_main"
                     android:textSize="16sp"
                     android:textStyle="bold"/>

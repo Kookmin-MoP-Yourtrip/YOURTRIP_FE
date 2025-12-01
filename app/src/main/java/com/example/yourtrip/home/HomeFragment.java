@@ -190,10 +190,11 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        List<UploadCourseItem> topFive =
-                matched.size() > 5 ? matched.subList(0, 5) : matched;
+        List<UploadCourseItem> topThree =
+                matched.size() > 3 ? matched.subList(0, 3) : matched;
 
-        themeAdapter.setItems(topFive);
+        themeAdapter.setItems(topThree);
+
     }
 
     // RecyclerView 기본 설정
@@ -263,14 +264,15 @@ public class HomeFragment extends Fragment {
                         // ⭐ 전체 저장 (태그 필터링용)
                         allCourseList = list;
 
-                        // 상위 5개만 추림
-                        List<UploadCourseItem> topFive =
-                                list.size() > 5 ? list.subList(0, 5) : list;
+                        // 상위 3개만 추림
+                        List<UploadCourseItem> topThree =
+                                list.size() > 3 ? list.subList(0, 3) : list;
 
-                        popularAdapter.setItems(topFive);
+
+                        popularAdapter.setItems(topThree);
 
                         // 디폴트: theme 도 인기 top5
-                        themeAdapter.setItems(topFive);
+                        themeAdapter.setItems(topThree);
                     }
 
                     @Override
