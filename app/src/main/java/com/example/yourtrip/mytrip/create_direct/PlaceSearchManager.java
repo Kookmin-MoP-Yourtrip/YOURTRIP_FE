@@ -1,68 +1,101 @@
 package com.example.yourtrip.mytrip.create_direct;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.example.yourtrip.network.NaverGeocodeAPI;
-import com.example.yourtrip.network.NaverGeocodeResponse;
+import com.example.yourtrip.R;
+import com.example.yourtrip.network.NaverSearchApiService;
+import com.example.yourtrip.network.NaverSearchResponse;
+import com.example.yourtrip.network.NaverSearchRetrofitClient;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PlaceSearchManager {
 
-    private static final String BASE_URL = "https://naveropenapi.apis.naver.com/";
-    private static final String CLIENT_ID = "YOUR_CLIENT_ID"; // 네이버 클라우드에서 발급받은 클라이언트 ID
-    private static final String CLIENT_SECRET = "YOUR_CLIENT_SECRET"; // 네이버 클라우드에서 발급받은 클라이언트 비밀
-    private Context context;
+    private final Context context;
+    private final NaverSearchApiService api;
+
+    private static final String TAG = "NAVER_LOCAL_SEARCH";
 
     public PlaceSearchManager(Context context) {
         this.context = context;
+        this.api = NaverSearchRetrofitClient.getClient().create(NaverSearchApiService.class);
     }
 
-    // 장소 검색
-    public void searchPlace(String placeName, PlaceSearchListener listener) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+    public void searchPlaces(String query, PlaceSearchListener listener) {
 
-        NaverGeocodeAPI api = retrofit.create(NaverGeocodeAPI.class);
+        //  네이버 API KEY
+        String clientId = context.getString(R.string.naver_client_id);
+        String clientSecret = context.getString(R.string.naver_client_secret);
 
-        // Geocoding API 호출
-        Call<NaverGeocodeResponse> call = api.getCoordinates(CLIENT_ID, CLIENT_SECRET, placeName);
+        Log.d(TAG, " 검색 요청 시작 — query = " + query);
+        Log.d(TAG, " ClientId=" + clientId + " / ClientSecret=" + clientSecret);
 
-        call.enqueue(new Callback<NaverGeocodeResponse>() {
+        Call<NaverSearchResponse> call = api.searchLocal(
+                clientId,
+                clientSecret,
+                query,
+                5,        // 최대 5개 (지역 검색 API 제한)
+                1,
+                "random"
+        );
+
+        //  요청 URL 확인
+        Log.d(TAG, " 요청 URL: " + call.request().url());
+
+        call.enqueue(new Callback<NaverSearchResponse>() {
             @Override
-            public void onResponse(Call<NaverGeocodeResponse> call, Response<NaverGeocodeResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    NaverGeocodeResponse geocodingResponse = response.body();
-                    if (geocodingResponse.getStatus().equals("OK")) {
-                        double latitude = geocodingResponse.getItems().get(0).getLatitude();
-                        double longitude = geocodingResponse.getItems().get(0).getLongitude();
+            public void onResponse(Call<NaverSearchResponse> call, Response<NaverSearchResponse> response) {
 
-                        // 성공적으로 좌표를 받아온 경우, 리스너에 결과 전달
-                        listener.onSuccess(latitude, longitude);
-                    } else {
-                        // 주소를 찾을 수 없으면 실패 처리
-                        listener.onFailure("주소를 찾을 수 없습니다.");
-                    }
+                Log.d(TAG, " 응답 도착! HTTP CODE = " + response.code());
+
+                // body null 체크
+                if (!response.isSuccessful() || response.body() == null) {
+                    Log.e(TAG, " 응답 실패 — code=" + response.code());
+                    listener.onFailure("API 실패: " + response.code());
+                    return;
                 }
+
+                // 응답 전체 JSON 로그
+                Log.d(TAG, " 응답 Body: " + response.body().toString());
+
+                List<NaverSearchResponse.Item> items = response.body().items;
+
+                Log.d(TAG, " 검색 결과 개수 = " + (items != null ? items.size() : 0));
+
+                if (items == null || items.isEmpty()) {
+                    Log.w(TAG, "⚠ 검색 결과 없음");
+                    listener.onEmpty();
+                    return;
+                }
+
+                // 각 item 로그
+                for (int i = 0; i < items.size(); i++) {
+                    NaverSearchResponse.Item item = items.get(i);
+                    Log.d(TAG, " Item " + i + ": " + item.title +
+                            " | " + item.roadAddress +
+                            " | x=" + item.mapx + " / y=" + item.mapy);
+                }
+
+                listener.onSuccess(items);
             }
 
             @Override
-            public void onFailure(Call<NaverGeocodeResponse> call, Throwable t) {
-                // 네트워크 실패 시 처리
-                listener.onFailure("주소 검색에 실패했습니다.");
+            public void onFailure(Call<NaverSearchResponse> call, Throwable t) {
+                Log.e(TAG, " 네트워크 오류: " + t.getMessage());
+                listener.onFailure("네트워크 오류: " + t.getMessage());
             }
         });
     }
 
-    // 장소 검색 성공/실패 리스너 인터페이스
+    // 결과 상태 3가지로 분리하는 Listener
     public interface PlaceSearchListener {
-        void onSuccess(double latitude, double longitude);  // 성공 시 호출
-        void onFailure(String errorMessage);  // 실패 시 호출
+        void onSuccess(List<NaverSearchResponse.Item> items);
+        void onEmpty();
+        void onFailure(String errorMessage);
     }
 }
