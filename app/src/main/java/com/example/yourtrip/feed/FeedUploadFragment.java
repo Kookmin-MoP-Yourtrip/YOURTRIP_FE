@@ -199,13 +199,14 @@ public class FeedUploadFragment extends Fragment {
 
             @Override
             public void onDeletePhotoClick(int position) {
-                selectedImages.remove(position);
+                selectedImages.remove(position);   // 🔥 업로드는 새 이미지만 있으니까 이것만 삭제
                 adapter.notifyDataSetChanged();
                 updateUploadButtonState();
             }
         });
 
         rvPhotos.setAdapter(adapter);
+
     }
 
     private void uploadFeedToServer() {

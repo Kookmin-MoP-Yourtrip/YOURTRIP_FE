@@ -15,7 +15,6 @@ import com.example.yourtrip.model.FeedMediaDetailResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class UploadFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_FIRST = 0;
@@ -119,6 +118,9 @@ public class UploadFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public AddButtonViewHolder(View v) { super(v); }
     }
 
+    static class FirstViewHolder extends RecyclerView.ViewHolder { public FirstViewHolder(View v) { super(v); } }
+    static class AddButtonViewHolder extends RecyclerView.ViewHolder { public AddButtonViewHolder(View v) { super(v); } }
+
     static class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView, btnDelete;
         public ImageViewHolder(@NonNull View itemView) {
@@ -128,3 +130,4 @@ public class UploadFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 }
+

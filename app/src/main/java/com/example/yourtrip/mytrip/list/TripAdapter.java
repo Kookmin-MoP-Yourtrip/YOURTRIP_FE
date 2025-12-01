@@ -20,12 +20,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.yourtrip.R;
-import com.example.yourtrip.mytrip.model.MyCourseDetailResponse;
 import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 import com.example.yourtrip.mytrip.upload.UploadCourseTagsActivity;
 import com.example.yourtrip.mytrip.util.DateUtils;
 
-import java.io.Serializable;
 import java.util.List;
 
 

@@ -25,18 +25,21 @@ import com.example.yourtrip.mytrip.model.PlaceAddRequest;
 import com.example.yourtrip.mytrip.model.PlaceAddResponse;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
+import com.example.yourtrip.network.NaverSearchResponse;
+
 import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.overlay.Marker;
 
+import java.util.List;
+
 import retrofit2.Call;
- import retrofit2.Callback;
- import retrofit2.Response;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -47,94 +50,73 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
     private NaverMap naverMap;
     private Button btnNext;
     private ImageView btnSearch;
-    private boolean isMapReady = false; // 지도가 준비되었는지 확인하는 플래그
+    private boolean isMapReady = false;
+
     private ApiService apiService;
     private long courseId = -1L;
     private long dayId = -1L;
-    
+
+    // 검색 성공 시 저장될 값
+    private LatLng selectedLocation = null;
+    private String selectedAddress = null;
+    private String selectedPlaceUrl = null;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_add_location);
 
-        // 🟡 3. Intent에서 courseId와 dayId를 받옴
         courseId = getIntent().getLongExtra("courseId", -1L);
         dayId = getIntent().getLongExtra("dayId", -1L);
 
-        // 🟡 디버깅 로그 6: AddLocationActivity가 최종적으로 받은 dayId
-        Log.d("DEBUG_DAY_ID", "[AddLocationActivity onCreate] 최종적으로 전달받은 courseId: " + courseId + ", dayId: ");
-
-        //API 서비스 및 Intent 데이터 초기화 
         apiService = RetrofitClient.getAuthService(this);
 
         initViews();
         setTopBar();
         setTextWatcherForPlaceName();
 
-        // MapView 초기화
         mapView = findViewById(R.id.map_view);
-        mapView.onCreate(savedInstanceState); //mapView의 생명주기를 액티비티에 연결
+        mapView.onCreate(savedInstanceState);
 
-        // 로그로 SDK 초기화가 정상적으로 되었는지 확인
-        Log.d("Naver1_NAVER_SDK_TEST", String.valueOf(NaverMapSdk.getInstance(this).getClient()));
-        // getMapAsync는 여기서 한 번만 호출
-//        mapView.getMapAsync(this);
-//        Log.d("Naver2_getMapAsync", "onCreate: getMapAsync() 호출 시작.");
-
-        // 모든 뷰가 다 그려진 후에 getMapAsync를 호출
-        // 액티비티의 최상위 뷰(decorView)에 리스너를 붙여서,
-        // 레이아웃 그리기가 완전히 끝나는 시점을 포착합니다.
+        // 모든 뷰가 그려진 후 map async
         View decorView = getWindow().getDecorView();
-        decorView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // 리스너가 여러 번 호출되는 것을 막기 위해, 한 번 실행된 후에는 바로 제거합니다.
-                decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        ViewTreeObserver.OnGlobalLayoutListener layoutListener =
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        decorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        Log.d("Naver2_getMapAsync", "뷰 그려짐 → map async 호출");
+                        if (mapView != null) {
+                            mapView.getMapAsync(AddLocationActivity.this);
+                        }
+                    }
+                };
 
-                // 이제 모든 뷰의 크기와 위치 계산이 끝났음이 보장됩니다.
-                // 이 시점에서 getMapAsync를 호출합니다.
-                if (mapView != null) {
-                    Log.d("Naver2_getMapAsync", "GlobalLayoutListener: 모든 뷰가 그려진 후 getMapAsync 호출!");
-                    mapView.getMapAsync(AddLocationActivity.this);
-                }
-            }
-        });
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
 
-        Log.d("NaverMap", "onCreate: GlobalLayoutListener 등록 완료.");
-
-        // 검색 버튼 클릭 이벤트 처리
-        btnSearch.setOnClickListener(v -> searchPlace());
-        // btnNext 클릭 이벤트 처리
+        btnSearch.setOnClickListener(v -> doSearch());
         btnNext.setOnClickListener(v -> nextButtonAction());
     }
-    
+
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
-        // onMapReady가 호출되었다는 것은 지도 객체가 성공적으로 생성되었다는 의미
         this.naverMap = naverMap;
-        this.isMapReady = true; 
-        Log.d("NaverMap3_onMapReady", "onMapReady: 지도가 준비되었습니다.");
+        this.isMapReady = true;
 
-        // 지도 UI 초기 설정
-        naverMap.getUiSettings().setZoomControlEnabled(true);
-        // 기본 위치로 카메라 이동
-        LatLng defaultLocation = new LatLng(37.5665, 126.9780); //기본 위치 : 서울 시청으로 설정
+        LatLng defaultLocation = new LatLng(37.5665, 126.9780);
         naverMap.moveCamera(CameraUpdate.scrollTo(defaultLocation));
 
-        // onResume에서도 mapView.invalidate()를 호출할 것이므로 여기서도 호출해 렌더링을 보장
-        if (mapView != null) {
-            mapView.invalidate();
-        }
+        mapView.invalidate();
     }
-
 
     private void initViews() {
         tvTitle = findViewById(R.id.tv_title);
         btnBack = findViewById(R.id.btnBack);
         etPlaceName = findViewById(R.id.etPlaceName);
         btnNext = findViewById(R.id.btnNext);
-        btnSearch = findViewById(R.id.btnSearch); // 검색 버튼 초기화
+        btnSearch = findViewById(R.id.btnSearch);
     }
 
     private void setTopBar() {
@@ -144,285 +126,234 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
 
     private void setTextWatcherForPlaceName() {
         etPlaceName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-                // 아무 기능 없음
-            }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                // 텍스트 필드가 비어 있으면 버튼 비활성화, 아니면 버튼 활성화
                 btnNext.setEnabled(charSequence.length() > 0);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // 아무 작업도 하지 않지만 TextWatcher 구현하려면 반드시 필요함
             }
         });
     }
 
-    // 공통 주소 검색 함수
-    private void searchPlace(String placeName, PlaceSearchListener listener) {
-        // PlaceSearchManager를 사용하여 주소 검색
-        PlaceSearchManager placeSearchManager = new PlaceSearchManager(AddLocationActivity.this);
-        placeSearchManager.searchPlace(placeName, new PlaceSearchManager.PlaceSearchListener() {
+
+
+    private void doSearch() {
+
+        if (!isMapReady) {
+            Toast.makeText(this, "지도를 불러오는 중입니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String query = etPlaceName.getText().toString().trim();
+
+        if (query.isEmpty()) {
+            Toast.makeText(this, "검색어를 입력하세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        PlaceSearchManager manager = new PlaceSearchManager(this);
+
+        manager.searchPlaces(query, new PlaceSearchManager.PlaceSearchListener() {
             @Override
-            public void onSuccess(double latitude, double longitude) {
-                listener.onSuccess(latitude, longitude);  // 성공 시 listener 호출
+            public void onSuccess(List<NaverSearchResponse.Item> items) {
+
+                Toast.makeText(AddLocationActivity.this, "장소 검색 성공!", Toast.LENGTH_SHORT).show();
+
+                NaverSearchResponse.Item first = items.get(0);
+
+                // 주소 저장
+                selectedAddress = first.address;
+                selectedPlaceUrl = first.link;
+
+                // 좌표 저장
+                double lat = convertMapY(first.mapy);
+                double lng = convertMapX(first.mapx);
+
+                selectedLocation = new LatLng(lat, lng);
+
+                // 마커 표시
+                addMarkerToMap(selectedLocation);
+
+                naverMap.moveCamera(
+                        CameraUpdate.scrollTo(selectedLocation)
+                                .animate(CameraAnimation.Linear)
+                );
+            }
+
+            @Override
+            public void onEmpty() {
+                Toast.makeText(AddLocationActivity.this, "검색 결과 없음", Toast.LENGTH_SHORT).show();
+                showAddLocationDialog();
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                listener.onFailure(errorMessage);  // 실패 시 listener 호출
+                Toast.makeText(AddLocationActivity.this, "검색 실패: " + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // PlaceSearchListener 인터페이스 정의 (성공과 실패 시 처리 로직을 다르게 할 수 있게 함)
-    interface PlaceSearchListener {
-        void onSuccess(double latitude, double longitude);  // 성공 시
-        void onFailure(String errorMessage);  // 실패 시
-    }
 
-    // 검색 버튼 클릭 시 장소 검색
-    private void searchPlace() {
-        if (!isMapReady) {
-            Toast.makeText(this, "지도를 로딩 중입니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String placeName = etPlaceName.getText().toString();
-
-        if (!placeName.isEmpty()) {
-            // 주소 검색
-            searchPlace(placeName, new PlaceSearchListener() {
-                @Override
-                public void onSuccess(double latitude, double longitude) {
-                    // 검색 성공 시: 마커 추가 및 카메라 이동
-                    LatLng location = new LatLng(latitude, longitude);
-                    addMarkerToMap(location);
-
-                    // 카메라 이동
-                    CameraUpdate cameraUpdate = CameraUpdate.scrollTo(location).animate(CameraAnimation.Linear);
-                    naverMap.moveCamera(cameraUpdate);
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    // 검색 실패 시: 실패 메시지 띄우기
-                    Toast.makeText(AddLocationActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            Toast.makeText(AddLocationActivity.this, "주소를 입력해 주세요.", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    // 지도에 마커 표시
     private void addMarkerToMap(LatLng location) {
         if (!isMapReady) return;
+
         Marker marker = new Marker();
-        marker.setPosition(location);  // 검색된 위치에 마커 추가
+        marker.setPosition(location);
         marker.setMap(naverMap);
     }
 
-    // Next 버튼 클릭 시
+
     private void nextButtonAction() {
-        String placeName = etPlaceName.getText().toString().trim();
 
-        if (!placeName.isEmpty()) {
-            // 주소 검색
-            searchPlace(placeName, new PlaceSearchListener() {
-                @Override
-                public void onSuccess(double latitude, double longitude) {
-                    Log.d("AddLocationActivity", "장소 검색 성공. 위도: " + latitude + ", 경도: " + longitude);
-                    // 검색 성공 시: 다음 화면으로 전환
-                    Toast.makeText(AddLocationActivity.this, "장소가 추가되었습니다.", Toast.LENGTH_SHORT).show();
-                    // 검색 성공 시: API 호출 
-                    // TODO: placeUrl, placeLocation은 실제 주소 검색 API 결과에서 가져와야 함
-//                    PlaceAddRequest request = new PlaceAddRequest(placeName, latitude, longitude, "http://...url", "검색된 주소");
-//                    addPlaceApiCall(request);
+        String name = etPlaceName.getText().toString().trim();
 
-                    // 🟡 임시로 finish()를 직접 호출하여 테스트. (API 호출이 성공했다고 가정)
-                    finish();
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    Log.e("AddLocationActivity", "장소 검색 실패: " + errorMessage);
-                    // 검색 실패 시: 팝업 띄우기
-                    showAddLocationDialog();
-                }
-            });
-        } else {
-            Toast.makeText(AddLocationActivity.this, "주소를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+        if (name.isEmpty()) {
+            Toast.makeText(this, "장소명을 입력해주세요.", Toast.LENGTH_SHORT).show();
+            return;
         }
 
+        // 검색 후 선택된 위치가 존재하는 경우 → 즉시 저장
+        if (selectedLocation != null) {
+
+            PlaceAddRequest request = new PlaceAddRequest(
+                    name,
+                    selectedLocation.latitude,
+                    selectedLocation.longitude,
+                    selectedPlaceUrl,
+                    selectedAddress   // 검색할 때 저장된 주소
+            );
+
+            addPlaceApiCall(request);
+            return;
+        }
+
+        // 검색 버튼을 누르지 않았을 경우 → 자동 검색
+        PlaceSearchManager manager = new PlaceSearchManager(this);
+
+        manager.searchPlaces(name, new PlaceSearchManager.PlaceSearchListener() {
+
+            @Override
+            public void onSuccess(List<NaverSearchResponse.Item> items) {
+
+                NaverSearchResponse.Item first = items.get(0);
+
+                selectedAddress = first.address;
+                selectedPlaceUrl = first.link;
+
+                double lat = convertMapY(first.mapy);
+                double lng = convertMapX(first.mapx);
+
+                selectedLocation = new LatLng(lat, lng);
+
+                Toast.makeText(AddLocationActivity.this,
+                        "장소 검색 후 자동 등록합니다.", Toast.LENGTH_SHORT).show();
+
+                PlaceAddRequest request = new PlaceAddRequest(
+                        name,
+                        lat,
+                        lng,
+                        selectedPlaceUrl,
+                        selectedAddress
+                );
+
+                addPlaceApiCall(request);
+            }
+
+            @Override
+            public void onEmpty() {
+                showAddLocationDialog();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toast.makeText(AddLocationActivity.this,
+                        errorMessage, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
-    // 장소를 추가하는 팝업 띄우기
+
+
     private void showAddLocationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.TransparentDialogStyle);
-
-        // 커스텀 레이아웃 적용
         View dialogView = getLayoutInflater().inflate(R.layout.popup_location_dialog, null);
         builder.setView(dialogView);
 
-        final AlertDialog dialog = builder.create();
-        // 둥근 모서리 보이게
+        AlertDialog dialog = builder.create();
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
         TextView dialogMessage = dialogView.findViewById(R.id.dialogMessage);
-        dialogMessage.setText("등록되지 않은 주소예요. \n 이대로 추가할까요?");
+        dialogMessage.setText("등록되지 않은 주소예요.\n이대로 추가할까요?");
 
-        //이대로 추가하기 버튼
-        Button btnAdd = dialogView.findViewById(R.id.btnAdd); 
+        Button btnAdd = dialogView.findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(v -> {
+
             String placeName = etPlaceName.getText().toString().trim();
-            Toast.makeText(this, "장소가 추가되었습니다.", Toast.LENGTH_SHORT).show();
-            //api 호출 메서드 연결
-            // 수동 추가 시: 위도, 경도 등은 null로 전달
-            PlaceAddRequest request = new PlaceAddRequest(placeName, null, null, null, null);
+
+            PlaceAddRequest request = new PlaceAddRequest(
+                    placeName,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
             addPlaceApiCall(request);
             dialog.dismiss();
         });
 
-        //다시 검색 버튼
-        Button btnSearchAgain = dialogView.findViewById(R.id.btnSearchAgain); 
+        Button btnSearchAgain = dialogView.findViewById(R.id.btnSearchAgain);
         btnSearchAgain.setOnClickListener(v -> {
-            // 검색 입력 필드를 비웁니다
-            clearSearchField();
+            etPlaceName.setText("");
             dialog.dismiss();
         });
-
-        dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(true);
 
         dialog.show();
     }
 
-    // (추가) 실제 장소 추가 API를 호출하는 공통 메서드
+
     private void addPlaceApiCall(PlaceAddRequest request) {
+
         if (courseId == -1 || dayId == -1) {
-            Toast.makeText(this, "코스 또는 일차 정보가 없어 추가할 수 없습니다.", Toast.LENGTH_SHORT).show();
-            Log.e("AddLocationActivity", "API 호출 실패: courseId 또는 dayId가 유효하지 않음.");
+            Toast.makeText(this, "코스 정보가 없습니다.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // ApiService를 사용하여 API 호출
-        apiService.addPlaceToDay(courseId, dayId, request).enqueue(new Callback<PlaceAddResponse>() {
-            @Override
-            public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    PlaceAddResponse placeResponse = response.body();
-                    Log.d("AddLocationActivity", "장소 추가 성공: " + placeResponse.getPlaceName()+ dayId);
+        apiService.addPlaceToDay(courseId, dayId, request)
+                .enqueue(new Callback<PlaceAddResponse>() {
+                    @Override
+                    public void onResponse(Call<PlaceAddResponse> call, Response<PlaceAddResponse> response) {
 
-                    // 성공 결과를 이전 화면으로 돌려줍니다.
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra("newPlace", placeResponse); // Serializable 객체 전달
-                    setResult(Activity.RESULT_OK, resultIntent);
-                    finish(); // 현재 액티비티 종료
-                } else {
-                    Log.e("AddLocationActivity", "장소 추가 API 실패: " + response.code());
-                    Toast.makeText(AddLocationActivity.this, "장소 추가에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }
+                        if (response.isSuccessful() && response.body() != null) {
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("newPlace", response.body());
+                            setResult(Activity.RESULT_OK, resultIntent);
+                            finish();
+                        } else {
+                            Toast.makeText(AddLocationActivity.this, "추가 실패", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<PlaceAddResponse> call, Throwable t) {
-                Log.e("AddLocationActivity", "장소 추가 API 네트워크 오류: " + t.getMessage());
-                Toast.makeText(AddLocationActivity.this, "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onFailure(Call<PlaceAddResponse> call, Throwable t) {
+                        Toast.makeText(AddLocationActivity.this, "네트워크 오류", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 
-    // 검색 필드 초기화
-    public void clearSearchField() {
-        etPlaceName.setText(""); // 텍스트 필드를 비웁니다
-    }
+    // 좌표 변환
+    private double convertMapX(String mapx) { return Double.parseDouble(mapx) / 10000000.0; }
+    private double convertMapY(String mapy) { return Double.parseDouble(mapy) / 10000000.0; }
 
-    //  MapView 라이프사이클 연결
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mapView != null) {
-            mapView.onStart();
-        }
-    }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (mapView != null) {
-//            mapView.onResume();
-//            // 맵이 아직 준비되지 않았다면 getMapAsync 호출
-//            if (!isMapReady) {
-//                mapView.post(() -> {
-//                    mapView.getMapAsync(this);
-//                    Log.d("Naver2_onResume_post", "MapView.post() 내부에서 getMapAsync() 호출");
-//                });
-//            }
-//        }
-//    }
-        @Override
-        protected void onResume() {
-            super.onResume();
-            if (mapView != null) {
-                mapView.onResume(); // MapView의 생명주기 메서드는 항상 호출
-
-//                if (!isMapReady) {
-//                    mapView.getMapAsync(this);
-//                    Log.d("Naver2_onResume_post", "onResume: getMapAsync() 호출");
-//                }
-                // ★ ㅁ 화면에 다시 나타날 때마다 MapView를 강제로 다시 그리게
-                mapView.invalidate();
-                Log.d("Naver2_onResume_post", "onResume: mapView.invalidate() 호출됨");
-            }
-        }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mapView != null) {
-            mapView.onPause();
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mapView != null) {
-            mapView.onSaveInstanceState(outState);  // 상태 저장
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mapView != null) {
-            mapView.onStop();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mapView != null) {
-            mapView.onDestroy();
-        }
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        if (mapView != null) {
-            mapView.onLowMemory();
-        }
-    }
+    // MapView lifecycle
+    @Override protected void onStart() { super.onStart(); mapView.onStart(); }
+    @Override protected void onResume() { super.onResume(); mapView.onResume(); mapView.invalidate(); }
+    @Override protected void onPause() { mapView.onPause(); super.onPause(); }
+    @Override protected void onStop() { mapView.onStop(); super.onStop(); }
+    @Override protected void onDestroy() { mapView.onDestroy(); super.onDestroy(); }
+    @Override public void onLowMemory() { super.onLowMemory(); mapView.onLowMemory(); }
 }
