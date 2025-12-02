@@ -2,8 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+//    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
+
 
 android {
     namespace = "com.example.yourtrip"
@@ -57,13 +58,18 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.play.services.maps)
+//    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    //kakao
+//    implementation("com.kakao.maps.open:android:2.13.0")
+////    implementation("com.kakao.maps.open:android-vectormap:2.13.0")
+//    implementation("com.kakao.sdk:v2-common:2.20.1")
+
     // naverMap
-    implementation("com.naver.maps:map-sdk:3.23.0")
+//    implementation("com.naver.maps:map-sdk:3.23.0")
 
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 

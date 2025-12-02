@@ -27,10 +27,10 @@ import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 import com.example.yourtrip.network.NaverSearchResponse;
 
-import com.naver.maps.map.MapFragment;
-import com.naver.maps.map.NaverMap;
-import com.naver.maps.map.OnMapReadyCallback;
-import com.naver.maps.geometry.LatLng;
+//import com.naver.maps.map.MapFragment;
+//import com.naver.maps.map.NaverMap;
+//import com.naver.maps.map.OnMapReadyCallback;
+//import com.naver.maps.geometry.LatLng;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class AddLocationActivity extends AppCompatActivity  {
 
     private ImageView btnBack;
     private TextView tvTitle;
@@ -51,7 +51,7 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
     private long dayId = -1L;
 
     // 검색 성공 시 저장될 값
-    private LatLng selectedLocation = null;
+//    private LatLng selectedLocation = null;
     private String selectedAddress = null;
     private String selectedPlaceUrl = null;
 
@@ -70,22 +70,22 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         setTopBar();
         setTextWatcherForPlaceName();
 
-        FragmentManager fm = getSupportFragmentManager();
-        MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.mapFragment);
-        if (mapFragment == null) {
-            mapFragment = MapFragment.newInstance();
-            fm.beginTransaction().add(R.id.mapFragment, mapFragment).commit();
-        }
-        mapFragment.getMapAsync(this);
+//        FragmentManager fm = getSupportFragmentManager();
+//        MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.mapFragment);
+//        if (mapFragment == null) {
+//            mapFragment = MapFragment.newInstance();
+//            fm.beginTransaction().add(R.id.mapFragment, mapFragment).commit();
+//        }
+//        mapFragment.getMapAsync(this);
 
         btnSearch.setOnClickListener(v -> doSearch());
         btnNext.setOnClickListener(v -> nextButtonAction());
     }
 
-    @Override
-    public void onMapReady(@NonNull NaverMap naverMap) {
-        Toast.makeText(this, "지도 준비 완료!", Toast.LENGTH_SHORT).show();
-    }
+//    @Override
+//    public void onMapReady(@NonNull NaverMap naverMap) {
+//        Toast.makeText(this, "지도 준비 완료!", Toast.LENGTH_SHORT).show();
+//    }
 
     private void initViews() {
         tvTitle = findViewById(R.id.tv_title);
@@ -142,7 +142,7 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
                 double lat = convertMapY(first.mapy);
                 double lng = convertMapX(first.mapx);
 
-                selectedLocation = new LatLng(lat, lng);
+//                selectedLocation = new LatLng(lat, lng);
 
             }
 
@@ -168,19 +168,19 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
         }
 
         // 검색 후 선택된 위치가 존재하는 경우 → 즉시 저장
-        if (selectedLocation != null) {
-
-            PlaceAddRequest request = new PlaceAddRequest(
-                    name,
-                    selectedLocation.latitude,
-                    selectedLocation.longitude,
-                    selectedPlaceUrl,
-                    selectedAddress   // 검색할 때 저장된 주소
-            );
-
-            addPlaceApiCall(request);
-            return;
-        }
+//        if (selectedLocation != null) {
+//
+//            PlaceAddRequest request = new PlaceAddRequest(
+//                    name,
+//                    selectedLocation.latitude,
+//                    selectedLocation.longitude,
+//                    selectedPlaceUrl,
+//                    selectedAddress   // 검색할 때 저장된 주소
+//            );
+//
+//            addPlaceApiCall(request);
+//            return;
+//        }
 
         // 검색 버튼을 누르지 않았을 경우 → 자동 검색
         PlaceSearchManager manager = new PlaceSearchManager(this);
@@ -198,7 +198,7 @@ public class AddLocationActivity extends AppCompatActivity implements OnMapReady
                 double lat = convertMapY(first.mapy);
                 double lng = convertMapX(first.mapx);
 
-                selectedLocation = new LatLng(lat, lng);
+//                selectedLocation = new LatLng(lat, lng);
 
                 Toast.makeText(AddLocationActivity.this,
                         "장소 검색 후 자동 등록합니다.", Toast.LENGTH_SHORT).show();

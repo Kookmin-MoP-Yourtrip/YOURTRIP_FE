@@ -88,7 +88,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         }
 
         // 더보기 버튼 클릭 시 메뉴를 보여줌
-        holder.btnMore.setOnClickListener(v -> showMoreMenu(v, holder.getBindingAdapterPosition()));
+        holder.btnMore.setOnClickListener(v -> showMoreMenu(v, holder.getAdapterPosition()));
     }
 
     @Override
@@ -118,7 +118,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             // 아이템 뷰 전체에 클릭 리스너를 설정
             itemView.setOnClickListener(v -> {
                 // 어댑터의 getAdapterPosition() 메서드를 통해 현재 클릭된 아이템의 위치 가져옴
-                int position = getBindingAdapterPosition();
+                int position = getAdapterPosition();
                 // 유효한 위치이고, 어댑터에 리스너가 설정되어 있다면
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     MyCourseListItemResponse clickedItem = courseList.get(position);

@@ -271,7 +271,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             // --- 클릭 이벤트 리스너 설정 ---
             // 클릭 시 Adapter에 구현된 showTimePickerDialog를 호출하도록 변경
             tvTime.setOnClickListener(v -> {
-                int position = getBindingAdapterPosition();
+                int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     // Adapter 클래스에 정의된 메서드를 호출
                     showTimePickerDialog((LocationItem) items.get(position), position);
@@ -280,7 +280,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             // 사진 추가 클릭 리스너 설정
             btnAddPhoto.setOnClickListener(v -> { // '+ 사진 추가' 버튼을 눌렀을 때
-                int position = getBindingAdapterPosition();
+                int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onPhotoAddRequested(item.getPlaceId(), position);
                 }
@@ -290,7 +290,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             etMemo.setOnFocusChangeListener((v, hasFocus) -> {
                 // 포커스를 잃었을 때 (입력이 끝났다고 간주) API 호출
                 if (!hasFocus) {
-                    int position = getBindingAdapterPosition();
+                    int position = getAdapterPosition();
                     String newMemo = etMemo.getText().toString();
                     // 기존 메모와 다를 경우에만 업데이트 요청
                     if (position != RecyclerView.NO_POSITION && listener != null && !newMemo.equals(item.getMemo())) {

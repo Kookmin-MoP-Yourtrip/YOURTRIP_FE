@@ -36,8 +36,8 @@ public class RetrofitClient {
         return getInstance(context).create(ApiService.class);
     }
 
-    // Naver Geocoding API 호출 서비스 추가
-    public static NaverGeocodeAPI getNaverGeocodingService(Context context) {
-        return getInstance(context).create(NaverGeocodeAPI.class);
-    }
+//    // Naver Geocoding API 호출 서비스 추가
+//    public static NaverGeocodeAPI getNaverGeocodingService(Context context) {
+//        return getInstance(context).create(NaverGeocodeAPI.class);
+//    }
 }

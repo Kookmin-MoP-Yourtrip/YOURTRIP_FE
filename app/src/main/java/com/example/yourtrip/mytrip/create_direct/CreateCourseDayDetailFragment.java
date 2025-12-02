@@ -76,8 +76,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
     // ActivityResultLaunchers
     private ActivityResultLauncher<Intent> addLocationLauncher;
     private ActivityResultLauncher<Intent> pickImageLauncher;
-    // [삭제] 권한 요청 Launcher는 이제 사용하지 않습니다.
-    // private ActivityResultLauncher<String> requestPermissionLauncher;
+
 
     // 사진 추가 시, 어떤 아이템이 선택되었는지 위치를 저장하기 위한 변수
     private int selectedItemPosition = -1;
