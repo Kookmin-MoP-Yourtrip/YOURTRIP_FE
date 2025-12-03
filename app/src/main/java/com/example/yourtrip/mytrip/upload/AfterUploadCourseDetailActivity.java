@@ -15,7 +15,6 @@ import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.example.yourtrip.MainActivity;
 import com.example.yourtrip.R;
-import com.example.yourtrip.mytrip.upload.ReadOnlyCourseDetailFragment;
 import com.example.yourtrip.mytrip.model.UploadCourseResponse;
 import com.example.yourtrip.mytrip.util.DateUtils;
 import com.example.yourtrip.network.ApiService;
@@ -24,7 +23,7 @@ import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.Arrays;
 import java.util.List;
-import java.io.Serializable;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +32,7 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "AfterUploadActivity";
 
-    private long uploadCourseId; // 이전 화면에서 전달받을 업로드된 코스 ID
+    private int uploadCourseId; // 이전 화면에서 전달받을 업로드된 코스 ID
     private ApiService apiService;
 
     // --- UI 뷰 멤버 변수 ---
@@ -56,7 +55,7 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
         apiService = RetrofitClient.getAuthService(this);
 
         // 이전 화면(UploadCourseCompleteActivity)에서 'uploadCourseId'를 받아옴
-        uploadCourseId = getIntent().getLongExtra("uploadCourseId", -1L);
+        uploadCourseId = getIntent().getIntExtra("uploadCourseId", -1);
         if (uploadCourseId == -1L) {
             Toast.makeText(this, "코스 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
             finish();

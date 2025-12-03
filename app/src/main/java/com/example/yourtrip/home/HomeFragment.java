@@ -1,5 +1,6 @@
 package com.example.yourtrip.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.yourtrip.R;
 import com.example.yourtrip.model.UploadCourseItem;
 import com.example.yourtrip.model.UploadCourseListResponse;
+import com.example.yourtrip.mytrip.upload.AfterUploadCourseDetailActivity;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 
@@ -76,6 +78,21 @@ public class HomeFragment extends Fragment {
 
         setupPopularRecycler();
         setupThemeRecycler();
+
+        // ⭐ 여기 추가!!
+        popularAdapter.setOnItemClickListener(item -> {
+            Intent intent = new Intent(getContext(), AfterUploadCourseDetailActivity.class);
+            intent.putExtra("uploadCourseId", item.uploadCourseId);  // ← 수정!
+            startActivity(intent);
+        });
+
+        themeAdapter.setOnItemClickListener(item -> {
+            Intent intent = new Intent(getContext(), AfterUploadCourseDetailActivity.class);
+            intent.putExtra("uploadCourseId", item.uploadCourseId);  // ← 수정!
+            startActivity(intent);
+        });
+
+
         setupLocationClickEvents();
         setupTagClickListeners();
 

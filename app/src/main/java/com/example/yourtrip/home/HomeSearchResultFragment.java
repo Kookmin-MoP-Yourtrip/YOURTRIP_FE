@@ -1,5 +1,6 @@
 package com.example.yourtrip.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.example.yourtrip.R;
 import com.example.yourtrip.commonUtil.TagConverter;
 import com.example.yourtrip.model.UploadCourseItem;
 import com.example.yourtrip.model.UploadCourseListResponse;
+import com.example.yourtrip.mytrip.upload.AfterUploadCourseDetailActivity;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 
@@ -90,6 +92,13 @@ public class HomeSearchResultFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new UploadCourseAdapter(new ArrayList<>());
         rv.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(item -> {
+            Intent intent = new Intent(getContext(), AfterUploadCourseDetailActivity.class);
+            intent.putExtra("uploadCourseId", item.uploadCourseId);  // ★★ 반드시 이 키 사용!
+            startActivity(intent);
+        });
+
 
         // ⭐ 전달받은 검색 데이터 처리
         Bundle args = getArguments();
