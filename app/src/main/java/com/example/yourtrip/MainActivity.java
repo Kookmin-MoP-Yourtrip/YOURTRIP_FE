@@ -1,5 +1,7 @@
 package com.example.yourtrip;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -9,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.yourtrip.commonUtil.NotLoggedInActivity;
 import com.example.yourtrip.feed.FeedFragment;
 import com.example.yourtrip.home.HomeFragment;
 import com.example.yourtrip.mypage.MypageFragment;
@@ -40,9 +43,31 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
 
             if (id == R.id.nav_home) target = new HomeFragment();
-            else if (id == R.id.nav_trip) target = new MyTripListFragment();
+            else if (id == R.id.nav_trip) {
+                // ⭐ 여기서 로그인 여부 확인
+                if (!isLoggedIn()) {
+                    // 로그인 안 되어 있으면 로그인 요청 화면으로 이동
+                    Intent intent = new Intent(MainActivity.this, NotLoggedInActivity.class);
+                    startActivity(intent);
+                    return false;   // 마이페이지 프래그먼트로 이동 막기
+                }
+
+                target = new MyTripListFragment();
+            }
             else if (id == R.id.nav_feed) target = new FeedFragment();
-            else if (id == R.id.nav_my) target = new MypageFragment();
+            else if (id == R.id.nav_my) {
+
+                // ⭐ 여기서 로그인 여부 확인
+                if (!isLoggedIn()) {
+                    // 로그인 안 되어 있으면 로그인 요청 화면으로 이동
+                    Intent intent = new Intent(MainActivity.this, NotLoggedInActivity.class);
+                    startActivity(intent);
+                    return false;   // 마이페이지 프래그먼트로 이동 막기
+                }
+
+                // 로그인되어있으면 마이페이지로 이동
+                target = new MypageFragment();
+            }
 
             if (target != null) {
                 switchFragment(target, false);
@@ -60,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private boolean isLoggedIn() {
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String token = prefs.getString("accessToken", null);
+        return token != null;
+    }
+
     /** 공통 뒤로가기 처리 */
     private void handleBackPress() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {

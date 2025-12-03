@@ -1,5 +1,8 @@
 package com.example.yourtrip.feed;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.commonUtil.NotLoggedInActivity;
 import com.example.yourtrip.model.FeedDetailResponse;
 import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.network.ApiService;
@@ -122,7 +126,15 @@ public class FeedFragment extends Fragment {
         ImageView btnAddFeed = view.findViewById(R.id.btn_add_feed);
 
         btnAddFeed.setOnClickListener(v -> {
-            // TODO: 피드 업로드 화면으로 이동
+
+            // 로그인 여부 확인
+            if (!isLoggedIn()) {
+                Intent intent = new Intent(getContext(), NotLoggedInActivity.class);
+                startActivity(intent);
+                return;
+            }
+
+            // 로그인 상태 → 기존처럼 피드 업로드 화면으로 이동
             FeedUploadFragment fragment = new FeedUploadFragment();
 
             requireActivity().getSupportFragmentManager()
@@ -135,6 +147,13 @@ public class FeedFragment extends Fragment {
 
         return view;
     }
+    private boolean isLoggedIn() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String token = prefs.getString("accessToken", null);
+        return token != null;
+    }
+
+
 
     private void searchFeedList(String keyword) {
 

@@ -70,6 +70,8 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
         // '업로드된 코스 상세 조회 API'를 호출하고,
         // 응답 데이터로 UI를 업데이트하고, 프래그먼트를 설정하는 로직을 추가
         Toast.makeText(this, "전달받은 코스 ID: " + uploadCourseId, Toast.LENGTH_SHORT).show();
+
+
     }
     
     //레이아웃 UI 초기화 메서드
