@@ -32,7 +32,7 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "AfterUploadActivity";
 
-    private int uploadCourseId; // 이전 화면에서 전달받을 업로드된 코스 ID
+    private long uploadCourseId; // 이전 화면에서 전달받을 업로드된 코스 ID
     private ApiService apiService;
 
     // --- UI 뷰 멤버 변수 ---
@@ -55,7 +55,9 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
         apiService = RetrofitClient.getAuthService(this);
 
         // 이전 화면(UploadCourseCompleteActivity)에서 'uploadCourseId'를 받아옴
-        uploadCourseId = getIntent().getIntExtra("uploadCourseId", -1);
+        uploadCourseId = getIntent().getLongExtra("uploadCourseId", -1L);
+        Log.d("UPLOAD_DETAIL_ID", "받은 uploadCourseId = " + uploadCourseId);   // ⭐ 추가
+
         if (uploadCourseId == -1L) {
             Toast.makeText(this, "코스 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
             finish();
@@ -115,16 +117,24 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
     }
     // 업로드된 코스 상세 조회 api 호출 메서드
     private void fetchUploadedCourseDetails() {
+        Log.d("UPLOAD_DETAIL_API", "API 요청 보냄 → ID = " + uploadCourseId); // ⭐ 추가
+
         apiService.getUploadedCourseDetail(uploadCourseId).enqueue(new Callback<UploadCourseResponse>() {
             @Override
             public void onResponse(Call<UploadCourseResponse> call, Response<UploadCourseResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
+
+                    Log.d("UPLOAD_DETAIL_API", "API 성공! title=" + response.body().getTitle());
+
                     UploadCourseResponse data = response.body();
                     // API 응답 성공 시, UI를 실제 데이터로 업데이트하고 프래그먼트를 설정
                     updateAllUI(data);
                     setupReadOnlyFragment(data);
                 } else {
                     Toast.makeText(AfterUploadCourseDetailActivity.this, "코스 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    Log.e("UPLOAD_DETAIL_API",
+                            "API 실패! code=" + response.code()
+                                    + " | errorBody=" + response.errorBody());
                 }
             }
 
