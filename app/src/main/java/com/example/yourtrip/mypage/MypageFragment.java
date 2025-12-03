@@ -53,12 +53,14 @@ public class MypageFragment extends Fragment {
         loadingLayout.setVisibility(View.VISIBLE);
         contentLayout.setVisibility(View.GONE);
 
+        //나의 업로드 코스 조회
         btnMyCourse.setOnClickListener(v ->
-                ((MainActivity) requireActivity()).switchFragment(new MyTripListFragment(), true)
+                ((MainActivity) requireActivity()).switchFragment(new MyCourseViewFragment(), false)
         );
 
+        //나의 피드 조회
         btnMyFeed.setOnClickListener(v ->
-                ((MainActivity) requireActivity()).switchFragment(new FeedFragment(), true)
+                ((MainActivity) requireActivity()).switchFragment(new MyPersonalFeedFragment(), false)
         );
 
         btnEdit.setOnClickListener(v ->

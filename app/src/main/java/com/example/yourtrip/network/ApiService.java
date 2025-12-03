@@ -163,6 +163,10 @@ public interface ApiService {
             @Path("uploadCourseId") long uploadCourseId
     );
 
+    //나의 업로드 코스 조회
+    @GET("/api/upload-courses/me")
+    Call<UploadCourseListResponse> getMyUploadedCourses();
+
 
     //=============홈 api================//
     // 홈 다중 필터링(태그 & 텍스트) 검색
