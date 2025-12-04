@@ -66,7 +66,7 @@ public class UploadCourseConfirmActivity extends AppCompatActivity {
     // styles.xml의 태그를 식별하기 위한 리스트
     private final List<String> moveTypeKeywords = Arrays.asList("뚜벅이", "자차");
     private final List<String> partnerKeywords = Arrays.asList("혼자", "연인", "친구", "가족");
-    private final List<String> budgetKeywords = Arrays.asList("가성비", "보통", "프리미엄");
+    private final List<String> budgetKeywords = Arrays.asList("가성비", "평균예산", "프리미엄");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

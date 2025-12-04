@@ -94,6 +94,7 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getContext(), AfterUploadCourseDetailActivity.class);
             intent.putExtra("uploadCourseId", (long)item.uploadCourseId);
             startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 
 

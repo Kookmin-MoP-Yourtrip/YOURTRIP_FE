@@ -40,7 +40,7 @@ public class TagMapper {
 
         // 예산
         put("가성비", "COST_EFFECTIVE");
-        put("보통", "NORMAL");
+        put("평균예산", "NORMAL");
         put("프리미엄", "PREMIUM");
     }};
 

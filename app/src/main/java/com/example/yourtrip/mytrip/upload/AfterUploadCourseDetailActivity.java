@@ -44,7 +44,7 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
     // 태그 스타일 카테고리 키워드 리스트
     private final List<String> moveTypeKeywords = Arrays.asList("뚜벅이", "자차");
     private final List<String> partnerKeywords = Arrays.asList("혼자", "연인", "친구", "가족");
-    private final List<String> budgetKeywords = Arrays.asList("가성비", "보통", "프리미엄"); // 이 외에는 여행 분위기로 간주
+    private final List<String> budgetKeywords = Arrays.asList("가성비", "평균예산", "프리미엄"); // 이 외에는 여행 분위기로 간주
 
 
     @Override

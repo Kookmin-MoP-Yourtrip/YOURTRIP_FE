@@ -204,7 +204,7 @@ public class HomeSearchResultFragment extends Fragment {
         if (tag.equals("하루") || tag.equals("1박 2일")|| tag.equals("주말")|| tag.equals("장기")) return R.style.Tag_Period;
         if (tag.equals("힐링") || tag.equals("액티비티")|| tag.equals("맛집탐방")|| tag.equals("감성")|| tag.equals("문화/전시")
                 || tag.equals("자연")|| tag.equals("쇼핑")) return R.style.Tag_Theme;
-        if (tag.equals("가성비") || tag.equals("프리미엄")|| tag.equals("보통")) return R.style.Tag_Budget;
+        if (tag.equals("가성비") || tag.equals("프리미엄")|| tag.equals("평균예산")) return R.style.Tag_Budget;
 
         return R.style.Tag;
     }
