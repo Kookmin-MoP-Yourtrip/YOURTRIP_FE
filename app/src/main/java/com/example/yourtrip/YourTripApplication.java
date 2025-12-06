@@ -1,40 +1,64 @@
-package com.example.yourtrip;
+//package com.example.yourtrip;
+//
+//import android.app.Application;
+//import android.util.Log;
+//
+//import com.kakao.vectormap.KakaoMapSdk;
+//import com.kakao.sdk.common.util.Utility;
+//
 
-import android.app.Application;
-import android.util.Log;
+//public class YourTripApplication extends Application {
+//
+//    @Override
+//    public void onCreate() {
+//        super.onCreate();
+//
+//        // ★★★ 2. 카카오맵 SDK를 초기화합니다. ★★★
+//        // "YOUR_KAKAO_NATIVE_APP_KEY" 부분을 실제 앱 키로 교체해주세요.
+//        KakaoMapSdk.init(this, "495d68c6d60965913bf464520c1f4e28");
+//
+//        String keyHash = com.kakao.sdk.common.util.Utility.getKeyHash(this);
+//        Log.d("Kakao-KeyHash", keyHash);
+//    }
+//}
 
-import com.naver.maps.map.NaverMapSdk;
-
-public class YourTripApplication extends Application {
-
-    // 앱 전체에서 SDK 초기화가 단 한 번만 실행되도록 보장하는 변수
-    private static boolean isNaverMapSdkInitialized = false;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d("Naver0_YourTripApplication", "onCreate()가 호출되었습니다.");
-
-        // SDK가 아직 초기화되지 않았을 때만 초기화 코드를 실행
-        if (!isNaverMapSdkInitialized) {
-            Log.d("Naver0_YourTripApplication", "네이버 지도 SDK 초기화를 시작합니다.");
-            try {
-                NaverMapSdk.getInstance(this).setClient(
-                        new NaverMapSdk.NcpKeyClient("lm7f1yckad")
-                );
-                isNaverMapSdkInitialized = true; // 초기화 성공 상태를 기록
-                Log.d("Naver0_YourTripApplication", "네이버 지도 SDK 초기화에 성공했습니다.");
-
-            } catch (Exception e) {
-                // 초기화 중 오류가 발생하면 로그를 남겨서 쉽게 확인할 수 있도록 함
-                Log.e("Naver0_YourTripApplication", "네이버 지도 SDK 초기화 중 오류 발생", e);
-            }
-        } else {
-            // 이미 초기화된 경우, 불필요한 재실행을 방지했음을 로그로 확인
-            Log.d("Naver0_YourTripApplication", "네이버 지도 SDK는 이미 초기화되었습니다.");
-        }
-    }
-}
+//package com.example.yourtrip;
+//
+//import android.app.Application;
+//import android.util.Log;
+//
+//import com.naver.maps.map.NaverMapSdk;
+//
+//public class YourTripApplication extends Application {
+//
+//    // 앱 전체에서 SDK 초기화가 단 한 번만 실행되도록 보장하는 변수
+//    private static boolean isNaverMapSdkInitialized = false;
+//
+//    @Override
+//    public void onCreate() {
+//        super.onCreate();
+//        Log.d("Naver0_YourTripApplication", "onCreate()가 호출되었습니다.");
+//
+//        // SDK가 아직 초기화되지 않았을 때만 초기화 코드를 실행
+//        if (!isNaverMapSdkInitialized) {
+//            Log.d("Naver0_YourTripApplication", "네이버 지도 SDK 초기화를 시작합니다.");
+//            try {
+//                NaverMapSdk.getInstance(this).setClient(
+//                        new NaverMapSdk.NcpKeyClient("gkd6w4w1tu")
+//                );
+//                isNaverMapSdkInitialized = true; // 초기화 성공 상태를 기록
+//                Log.d("Naver0_YourTripApplication", "네이버 지도 SDK 초기화에 성공했습니다.");
+//
+//            } catch (Exception e) {
+//                // 초기화 중 오류가 발생하면 로그를 남겨서 쉽게 확인할 수 있도록 함
+//                Log.e("Naver0_YourTripApplication", "네이버 지도 SDK 초기화 중 오류 발생", e);
+//            }
+//        } else {
+//            // 이미 초기화된 경우, 불필요한 재실행을 방지했음을 로그로 확인
+//            Log.d("Naver0_YourTripApplication", "네이버 지도 SDK는 이미 초기화되었습니다.");
+//        }
+//    }
+//}
 
 
 

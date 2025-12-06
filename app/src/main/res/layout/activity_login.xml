@@ -7,7 +7,7 @@
     android:layout_margin="30dp"
     android:orientation="vertical"
     android:paddingLeft="10dp"
-    android:paddingTop="40dp"
+    android:paddingTop="60dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp">
 
@@ -47,7 +47,7 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="여행자들이 증명한 수많은 여행 코스 자료가 기다리고 있어요."
             android:textColor="@color/gray_600"
@@ -72,7 +72,7 @@
         style="@style/RoundedEditText.Default"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="26dp"
+        android:layout_marginBottom="30dp"
         android:hint="비밀번호"
         android:inputType="textPassword"
         android:padding="16dp"
@@ -88,48 +88,56 @@
         android:layout_marginBottom="12dp"
         android:textSize="14sp"/>
 
+    <android.widget.Button
+        android:id="@+id/tvSkipLogin"
+        style="@style/RoundedButton.OutlineBlue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="로그인 없이 둘러보기"
+        android:textSize="14sp"/>
+
     <!--        android:background="#FBE300"-->
 
 
     <!-- 하단 링크들 -->
     <!-- 카카오 로그인 버튼 -->
-    <android.widget.Button
-        android:id="@+id/btnKakaoLogin"
-        style="@style/RoundedButton.OutlineBlue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="카카오톡으로 로그인"
-        android:textColor="#3B1E1E"
-        android:backgroundTint="#FBE300"
-        android:textSize="14sp"/>
+<!--    <android.widget.Button-->
+<!--        android:id="@+id/btnKakaoLogin"-->
+<!--        style="@style/RoundedButton.OutlineBlue"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="카카오톡으로 로그인"-->
+<!--        android:textColor="#3B1E1E"-->
+<!--        android:backgroundTint="#FBE300"-->
+<!--        android:textSize="14sp"/>-->
 
     <LinearLayout
         android:id="@+id/linkContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="120dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="3"><!-- 3개의 항목을 균등하게 나누기 위해 weightSum 설정 -->
 
-        <android.widget.Button
-            android:id="@+id/tvFindEmail"
-            style="@style/RoundedButton.OutlineBlue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:text="이메일 찾기"
-            android:textColor="@color/gray_600"
-            android:textSize="12sp" />
+        <!--        <android.widget.Button-->
+        <!--            android:id="@+id/tvFindEmail"-->
+        <!--            style="@style/RoundedButton.OutlineBlue"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:background="@color/white"-->
+        <!--            android:text="이메일 찾기"-->
+        <!--            android:textColor="@color/gray_600"-->
+        <!--            android:textSize="12sp" />-->
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text=" | "-->
-<!--            android:textColor="@color/gray_600"-->
-<!--            android:textSize="12sp" />-->
+        <!--        <TextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text=" | "-->
+        <!--            android:textColor="@color/gray_600"-->
+        <!--            android:textSize="12sp" />-->
 
         <android.widget.Button
             android:id="@+id/tvFindPassword"
@@ -142,14 +150,14 @@
             android:textColor="@color/gray_600"
             android:textSize="12sp" />
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="18dp"-->
-<!--            android:layout_marginEnd="18dp"-->
-<!--            android:text=" | "-->
-<!--            android:textColor="@color/gray_600"-->
-<!--            android:textSize="12sp" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text=" "
+                    android:textColor="@color/gray_600"
+                    android:textSize="12sp" />
 
         <android.widget.Button
             android:id="@+id/btnSignUp"
@@ -164,13 +172,13 @@
     </LinearLayout>
 
     <!-- 로그인 없이 둘러보기 -->
-    <android.widget.Button
-        android:id="@+id/tvSkipLogin"
-        style="@style/RoundedButton.OutlineBlue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="로그인 없이 둘러보기"
-        android:textSize="14sp"/>
+<!--    <android.widget.Button-->
+<!--        android:id="@+id/tvSkipLogin"-->
+<!--        style="@style/RoundedButton.OutlineBlue"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="로그인 없이 둘러보기"-->
+<!--        android:textSize="14sp"/>-->
 
 </LinearLayout>
 

@@ -46,5 +46,26 @@
 
         tools:layout="@layout/fragment_trip_create_detail" />
 
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginBottom="88dp"-->
+<!--        android:fillViewport="true"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+<!--        android:contentDescription="세부 일정 스크롤 영역"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--        <FrameLayout-->
+<!--            android:id="@+id/trip_fragment_container"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@drawable/bg_box_border"-->
+
+<!--            tools:layout="@layout/fragment_trip_create_detail" />-->
+
+<!--    </androidx.core.widget.NestedScrollView>-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

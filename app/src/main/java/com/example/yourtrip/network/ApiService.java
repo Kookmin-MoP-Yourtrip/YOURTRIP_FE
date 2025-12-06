@@ -73,8 +73,12 @@ public interface ApiService {
     Call<ResponseBody> setPassword(@Body PasswordRequest request);
 
     //닉네임,프로필 및 최종 프로필 등록 API
+    @Multipart
     @POST("/api/users/profile")
-    Call<ResponseBody> setProfile(@Body ProfileRequest request);
+    Call<ResponseBody> setProfile(
+            @Part("request") RequestBody request,
+            @Part MultipartBody.Part profileImage
+    );
 
     // 로그인 API
     @POST("/api/users/login")
@@ -139,6 +143,15 @@ public interface ApiService {
             @Path("dayId") long dayId,
             @Path("placeId") long placeId,
             @Body PlaceMemoRequest requestBody
+    );
+
+    //특정 장소 삭제 api
+    // 장소 삭제
+    @DELETE("api/my-courses/{courseId}/days/{dayId}/places/{placeId}")
+    Call<Void> deletePlace(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId
     );
 
     //코스 업로드 위한 Multipart API
@@ -279,4 +292,3 @@ public interface ApiService {
     Call<Void> deleteUser();
 
 }
-

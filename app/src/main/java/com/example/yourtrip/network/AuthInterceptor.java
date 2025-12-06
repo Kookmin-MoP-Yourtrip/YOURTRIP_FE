@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.example.yourtrip.YourTripApplication;
+//import com.example.yourtrip.YourTripApplication;
 
 import java.io.IOException;
 

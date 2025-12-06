@@ -32,11 +32,12 @@ import java.util.Locale;
  */
 public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    // [추가] Fragment와 통신하기 위한 인터페이스 정의
+    // Fragment와 통신하기 위한 인터페이스 정의
     public interface OnLocationInteractionListener {
         void onTimeUpdateRequested(long placeId, String time, int position);
         void onPhotoAddRequested(long placeId, int position);
         void onMemoUpdateRequested(long placeId, String memo, int position);
+        void onPlaceDeleteRequested(long placeId, int position);
     }
 
     // 뷰 타입을 구분하기 위한 상수. 숫자는 어떤 값이든 상관없지만, 서로 달라야 합니다.
@@ -62,7 +63,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.dayId = dayId;
         this.fragment = fragment;
 
-        // [수정] 생성자에서 Fragment를 리스너로 캐스팅
+        // 생성자에서 Fragment를 리스너로 캐스팅
         if (fragment instanceof OnLocationInteractionListener) {
             this.listener = (OnLocationInteractionListener) fragment;
         } else {
@@ -82,33 +83,37 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     // 새로운 장소 아이템을 리스트에 추가, RecyclerView 갱신
     public void addItem(LocationItem newItem) {
-        // 리스트의 맨 마지막에는 항상 '추가 버튼'이 있으므로,
-        // 그 바로 앞 위치에 새로운 장소 아이템을 추가합니다.
+        // 리스트의 맨 마지막에는 항상 '추가 버튼'이 있으므로
+        // 그 바로 앞 위치에 새로운 장소 아이템을 추가
         int position = items.size() - 1;
         items.add(position, newItem);
-
-        // 아이템이 추가된 위치를 어댑터에 알려줘서 화면을 효율적으로 갱신합니다.
+        
         notifyItemInserted(position);
-        // 번호가 모두 바뀌었으므로, 전체 아이템의 UI를 다시 그리도록 알려줍니다.
-        // (n번째 '추가' 버튼이 n+1번째가 되므로)
+        // 번호가 모두 바뀌었으므로, 전체 아이템의 UI를 다시 그림
         notifyItemRangeChanged(position, items.size());
+    }
+
+    // 삭제된 아이템을 리스트에서 제거하고 화면을 갱신하는 메서드-
+    public void removeItem(int position) {
+        if (position >= 0 && position < items.size()) {
+            items.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, items.size());
+        }
     }
 
 
     //새로운 장소 목록으로 전체 데이터 교체 및 화면 갱신
     public void updateItems(List<LocationItem> newPlaces) {
-        // 1. 기존 아이템 리스트를 완전히 비웁니다.
         items.clear();
-
-        // 2. 서버에서 받아온 새로운 장소 목록이 null이 아닐 경우, 모두 추가합니다.
+        
         if (newPlaces != null) {
             items.addAll(newPlaces);
         }
-
-        // 3. 리스트의 맨 마지막에 '+ 장소 추가하기' 버튼을 위한 데이터를 추가합니다.
+        // 리스트의 맨 마지막에 '+ 장소 추가하기' 버튼을 위한 데이터를 추가
         items.add("ADD_BUTTON");
 
-        // 4. 데이터셋 전체가 변경되었음을 알려 화면을 완전히 새로고침합니다.
+        // 화면을 완전히 새로고침
         notifyDataSetChanged();
     }
 
@@ -232,7 +237,18 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void bind(LocationItem item, String number) {
             tvNumber.setText(number);
             tvPlaceName.setText(item.getPlaceName());
-            tvAddress.setText(item.getPlaceLocation());
+
+            // 주소 정보(placeLocation)가 있는지 확인
+            String address = item.getPlaceLocation();
+            if (address != null && !address.trim().isEmpty()) {
+                // 주소가 있으면 보여주고, 텍스트 설정
+                tvAddress.setText(address);
+                tvAddress.setVisibility(View.VISIBLE);
+            } else {
+                // 주소가 없으면 (null 이거나 공백이면) 완전히 숨김
+                tvAddress.setVisibility(View.GONE);
+            }
+
             etMemo.setText(item.getMemo());
 
             // 아이템의 startTime 값에 따라 초기 UI 설정
@@ -271,7 +287,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             // --- 클릭 이벤트 리스너 설정 ---
             // 클릭 시 Adapter에 구현된 showTimePickerDialog를 호출하도록 변경
             tvTime.setOnClickListener(v -> {
-                int position = getBindingAdapterPosition();
+                int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     // Adapter 클래스에 정의된 메서드를 호출
                     showTimePickerDialog((LocationItem) items.get(position), position);
@@ -280,7 +296,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             // 사진 추가 클릭 리스너 설정
             btnAddPhoto.setOnClickListener(v -> { // '+ 사진 추가' 버튼을 눌렀을 때
-                int position = getBindingAdapterPosition();
+                int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onPhotoAddRequested(item.getPlaceId(), position);
                 }
@@ -290,7 +306,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             etMemo.setOnFocusChangeListener((v, hasFocus) -> {
                 // 포커스를 잃었을 때 (입력이 끝났다고 간주) API 호출
                 if (!hasFocus) {
-                    int position = getBindingAdapterPosition();
+                    int position = getAdapterPosition();
                     String newMemo = etMemo.getText().toString();
                     // 기존 메모와 다를 경우에만 업데이트 요청
                     if (position != RecyclerView.NO_POSITION && listener != null && !newMemo.equals(item.getMemo())) {
@@ -299,8 +315,12 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
 
+            //삭제 버튼 이벤트 리스너
             btnDelete.setOnClickListener(v -> {
-                // TODO: 이 아이템을 삭제하는 로직 구현 (API 호출 등)
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onPlaceDeleteRequested(item.getPlaceId(), position);
+                }
             });
         }
     }
@@ -331,11 +351,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         timePicker.addOnPositiveButtonClickListener(v -> {
             int selectedHour = timePicker.getHour();
             int selectedMinute = timePicker.getMinute();
-
-            // 서버에 저장할 24시간 형식 문자열(예: "17:20")
             String timeForServer = String.format(Locale.US, "%02d:%02d", selectedHour, selectedMinute);
-
-            // Fragment에 시간 업데이트를 요청
             listener.onTimeUpdateRequested(currentItem.getPlaceId(), timeForServer, position);
         });
 
@@ -361,9 +377,9 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         } catch (ParseException e) {
             Log.e("LocationAdapter", "시간 포맷 변경 중 오류 발생", e);
-            return time;
+            return time; // 파싱 실패 시 원본 시간 반환
         }
-        return time;
+        return time; // 성공적으로 파싱되었으나 date가 null인 경우
     }
 
 
@@ -383,15 +399,14 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             // "장소 추가하기" 버튼 전체에 클릭 리스너 설정
             itemView.setOnClickListener(v -> {
-                // 🟡 수정: 클릭되는 바로 그 순간에 Adapter로부터 최신 courseId와 dayId를 가져옵니다.
-                // 이렇게 하면 항상 현재 선택된 탭의 올바른 ID를 사용할 수 있습니다.
+                // 클릭되는 바로 그 순간에 Adapter로부터 최신 courseId와 dayId를 가져옴
                 long currentCourseId = adapter.courseId;
                 long currentDayId = adapter.getCurrentDayId(); // getCurrentDayId() 메서드 사용
 
                 // 🟡 디버깅 로그 5: '+ 장소 추가' 버튼이 클릭되었을 때
                 Log.d("DEBUG_DAY_ID", "[AddButton Click] '+ 장소 추가' 버튼 클릭. 현재 Adapter가 가진 dayId: " + currentDayId);
 
-                // Adapter가 가지고 있는 fragment 참조를 사용하여 Activity 실행을 요청합니다.
+                // Adapter가 가지고 있는 fragment 참조를 사용하여 Activity 실행을 요청
                 adapter.fragment.launchAddLocationActivity(currentCourseId, currentDayId);
             });
         }

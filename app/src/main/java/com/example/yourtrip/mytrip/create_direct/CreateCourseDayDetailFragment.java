@@ -1,33 +1,29 @@
 package com.example.yourtrip.mytrip.create_direct;
 
-// [삭제] 권한 관련 import 제거
-// import android.Manifest;
-// import android.content.pm.PackageManager;
-// import androidx.core.content.ContextCompat;
-
-// [삭제] 실제 파일 경로를 사용하지 않으므로, 아래 import들은 필요 없습니다.
-// import android.database.Cursor;
-// import android.provider.MediaStore;
-// import java.io.File;
-
-// [추가] InputStream과 파일 이름 처리를 위한 import
 import com.example.yourtrip.commonUtil.FileUtils;
 import java.io.InputStream;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import android.app.Dialog;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -76,8 +72,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
     // ActivityResultLaunchers
     private ActivityResultLauncher<Intent> addLocationLauncher;
     private ActivityResultLauncher<Intent> pickImageLauncher;
-    // [삭제] 권한 요청 Launcher는 이제 사용하지 않습니다.
-    // private ActivityResultLauncher<String> requestPermissionLauncher;
+
 
     // 사진 추가 시, 어떤 아이템이 선택되었는지 위치를 저장하기 위한 변수
     private int selectedItemPosition = -1;
@@ -124,7 +119,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
         // 네트워크 서비스 초기화
         apiService = RetrofitClient.getAuthService(requireContext());
 
-        // [수정] onCreate가 복잡해지지 않도록 Launcher 초기화 로직을 별도 메서드로 분리
+        // Launcher 초기화 로직을 별도 메서드
         initializeLaunchers();
     }
 
@@ -172,7 +167,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
                 });
 
 
-        // [수정] 갤러리 선택 결과 처리 Launcher (안전한 방식으로 변경)
+        // 갤러리 선택 결과 처리 Launcher 
         pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -271,6 +266,38 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
     public void onMemoUpdateRequested(long placeId, String memo, int position) {
         updatePlaceMemo(placeId, memo, position); // 실제 API 호출 로직으로 전달
     }
+    
+
+    /**
+     * 장소 삭제 요청을 받았을 때 호출되는 콜백 메서드 (from Adapter) - 둥근 모서리 수정 필요
+     */
+    @Override
+    public void onPlaceDeleteRequested(long placeId, int position) {
+        if (getActivity() == null) {
+            return; // Activity가 없으면 다이얼로그를 띄우지 않고 즉시 종료
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.TransparentDialogStyle);
+        View dialogView = getLayoutInflater().inflate(R.layout.popup_delete_confirm_dialog, null);
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            // '취소' 버튼 리스너
+            Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+            btnCancel.setOnClickListener(v -> dialog.dismiss());
+
+            // '삭제' 버튼 리스너
+            Button btnDeleteConfirm = dialogView.findViewById(R.id.btnDeleteConfirm);
+            btnDeleteConfirm.setOnClickListener(v -> {
+                deletePlaceApiCall(placeId, position);
+                dialog.dismiss();
+            });
+
+            dialog.show();
+        }
+    }
+
 
 
 
@@ -321,7 +348,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
     }
 
     /**
-     * [최적화] 특정 장소에 사진을 서버로 업로드하는 메서드. (File 대신 Uri를 받아 안전하게 처리)
+     * 특정 장소에 사진을 서버로 업로드하는 메서드. (File 대신 Uri를 받아 안전하게 처리)
      */
     private void uploadImageToServer(long placeId, Uri imageUri) {
         try {
@@ -422,6 +449,41 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 if (getContext() != null) Toast.makeText(getContext(), "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    /**
+     * 수정: 특정 장소를 서버에서 삭제하는 API를 호출하는 메서드.
+     */
+    private void deletePlaceApiCall(long placeId, final int position) {
+        // 이 프래그먼트가 가지고 있는 courseId와, 어댑터가 현재 보여주고 있는 dayId를 가져옴
+        long currentCourseId = this.courseId;
+        long currentDayId = locationAdapter.getCurrentDayId();
+
+        apiService.deletePlace(currentCourseId, currentDayId, placeId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                // 204 No Content 응답 코드는 isSuccessful()이 true를 반환
+                if (response.isSuccessful()) {
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(), "장소가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                    // 어댑터에게 아이템을 제거하고 UI를 갱신하도록 알립니다.
+                    if (locationAdapter != null) {
+                        locationAdapter.removeItem(position);
+                    }
+                } else {
+                    // 403, 404 등 다른 오류 응답 처리
+                    Log.e(TAG, "장소 삭제 실패: " + response.code() + " - " + response.message());
+                    if (getContext() != null) Toast.makeText(getContext(), "삭제에 실패했습니다: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e(TAG, "장소 삭제 네트워크 오류: " + t.getMessage(), t);
+                if (getContext() != null) Toast.makeText(getContext(), "네트워크 오류: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

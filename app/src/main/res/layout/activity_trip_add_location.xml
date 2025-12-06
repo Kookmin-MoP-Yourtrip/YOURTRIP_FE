@@ -70,17 +70,64 @@
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:focusable="true"
-                android:tint="@color/gray_550"
+                app:tint="@color/gray_550"
                 android:background="@color/gray_150"/>
 
         </LinearLayout>
 
         <!-- 네이버 map -->
-        <com.naver.maps.map.MapView
-            android:id="@+id/map_view"
+<!--        <com.naver.maps.map.MapView-->
+<!--            android:id="@+id/map_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="390dp">-->
+<!--        </com.naver.maps.map.MapView>-->
+<!--        <androidx.fragment.app.FragmentContainerView-->
+<!--            android:id="@+id/mapFragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="390dp"-->
+<!--            android:name="com.naver.maps.map.MapFragment" />-->
+
+        <TextView
+            android:id="@+id/tvTotalCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="총 0개의 검색 결과"
+            android:textSize="12sp"
+            android:paddingStart="5dp"
+            android:textColor="@color/gray_550"
+             />
+
+        <!-- 수정: RecyclerView를 감싸서 테두리 역할을 할 FrameLayout -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="390dp">
-        </com.naver.maps.map.MapView>
+            android:layout_height="385dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bg_box_border_12dp"
+            android:padding="4dp"
+            app:layout_constraintTop_toBottomOf="@id/etPlaceName"
+            app:layout_constraintBottom_toTopOf="@id/btnNext"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPlaces"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
+        </FrameLayout>
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rvPlaces"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="385dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/etPlaceName"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/btnNext"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            android:background="@drawable/bg_box_border_12dp"-->
+<!--            />-->
 
     </LinearLayout>
 

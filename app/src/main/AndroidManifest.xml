@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
-        android:name=".YourTripApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -22,13 +21,17 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.MyAppTest"
         android:usesCleartextTraffic="true">
-        <!-- <meta-data -->
-        <!-- android:name="com.google.android.geo.API_KEY" -->
-        <!-- android:value="YOUR_API_KEY" /> -->
-        <!-- 네이버 map api 발급 -->
-        <meta-data
-            android:name="com.naver.maps.map.ncpClientID"
-            android:value="lm7f1yckad" /> <!-- 앱 실행 시 제일 먼저 실행될 Activity -->
+
+<!--        &lt;!&ndash; 네이버 map api 발급 &ndash;&gt;-->
+<!--        <meta-data-->
+<!--            android:name="com.naver.maps.map.NCP_KEY_ID"-->
+<!--            android:value="gkd6w4w1tu" />-->
+
+<!--        <meta-data-->
+<!--            android:name="com.kakao.vectormap.KAKAO_MAP_KEY"-->
+<!--            android:value="495d68c6d60965913bf464520c1f4e28"/>-->
+
+        <!-- 앱 실행 시 제일 먼저 실행될 Activity -->
         <activity
             android:name=".LauncherActivity"
             android:exported="true"
@@ -38,7 +41,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- 회원가입 및 로그인 -->
+        </activity>
+
+        <!-- 회원가입 및 로그인 -->
+
         <activity android:name=".auth.LoginActivity" />
         <activity
             android:name=".auth.SignupCompleteActivity"
@@ -54,8 +60,14 @@
             android:exported="false" />
         <activity
             android:name=".auth.SignupEmailActivity"
-            android:exported="false" /> <!-- 메인 화면 -->
-        <activity android:name=".MainActivity" /> <!-- 나의 여행 -->
+            android:exported="false" />
+
+        <!-- 메인 화면 -->
+
+        <activity android:name=".MainActivity" />
+
+        <!-- 나의 여행 -->
+
         <activity
             android:name=".mytrip.create_direct.CreateCourseBasicActivity"
             android:exported="false" />
