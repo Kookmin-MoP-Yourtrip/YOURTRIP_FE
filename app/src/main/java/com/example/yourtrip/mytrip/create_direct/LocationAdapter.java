@@ -232,7 +232,18 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void bind(LocationItem item, String number) {
             tvNumber.setText(number);
             tvPlaceName.setText(item.getPlaceName());
-            tvAddress.setText(item.getPlaceLocation());
+
+            // 주소 정보(placeLocation)가 있는지 확인
+            String address = item.getPlaceLocation();
+            if (address != null && !address.trim().isEmpty()) {
+                // 주소가 있으면 보여주고, 텍스트 설정
+                tvAddress.setText(address);
+                tvAddress.setVisibility(View.VISIBLE);
+            } else {
+                // 주소가 없으면 (null 이거나 공백이면) 완전히 숨김
+                tvAddress.setVisibility(View.GONE);
+            }
+
             etMemo.setText(item.getMemo());
 
             // 아이템의 startTime 값에 따라 초기 UI 설정
@@ -361,9 +372,9 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         } catch (ParseException e) {
             Log.e("LocationAdapter", "시간 포맷 변경 중 오류 발생", e);
-            return time;
+            return time; // 파싱 실패 시 원본 시간 반환
         }
-        return time;
+        return time; // 성공적으로 파싱되었으나 date가 null인 경우
     }
 
 

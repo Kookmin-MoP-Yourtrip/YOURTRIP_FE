@@ -7,6 +7,7 @@ import com.example.yourtrip.R;
 import com.example.yourtrip.network.NaverSearchApiService;
 import com.example.yourtrip.network.NaverSearchResponse;
 import com.example.yourtrip.network.NaverSearchRetrofitClient;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
@@ -60,12 +61,18 @@ public class PlaceSearchManager {
                     return;
                 }
 
-                // 응답 전체 JSON 로그
-                Log.d(TAG, " 응답 Body: " + response.body().toString());
+                try {
+                    String rawJsonResponse = new GsonBuilder().setPrettyPrinting().create().toJson(response.body());
+                    Log.d(TAG, "전체 응답 JSON:\n" + rawJsonResponse);
+                } catch (Exception e) {
+                    Log.e(TAG, "JSON 변환 중 오류 발생", e);
+                }
 
-                List<NaverSearchResponse.Item> items = response.body().items;
+                NaverSearchResponse responseBody = response.body();
+                List<NaverSearchResponse.Item> items = responseBody.items;
 
                 Log.d(TAG, " 검색 결과 개수 = " + (items != null ? items.size() : 0));
+                Log.d(TAG, " 전체 결과 개수 = " + responseBody.total);
 
                 if (items == null || items.isEmpty()) {
                     Log.w(TAG, "⚠ 검색 결과 없음");
@@ -73,15 +80,9 @@ public class PlaceSearchManager {
                     return;
                 }
 
-                // 각 item 로그
-                for (int i = 0; i < items.size(); i++) {
-                    NaverSearchResponse.Item item = items.get(i);
-                    Log.d(TAG, " Item " + i + ": " + item.title +
-                            " | " + item.roadAddress +
-                            " | x=" + item.mapx + " / y=" + item.mapy);
-                }
 
-                listener.onSuccess(items);
+                //아이템 목록과 총 개수를 함께 전달
+                listener.onSuccess(items, responseBody.total);
             }
 
             @Override
@@ -94,7 +95,8 @@ public class PlaceSearchManager {
 
     // 결과 상태 3가지로 분리하는 Listener
     public interface PlaceSearchListener {
-        void onSuccess(List<NaverSearchResponse.Item> items);
+        // onSuccess 메서드에 총 개수(total) 파라미터를 추가
+        void onSuccess(List<NaverSearchResponse.Item> items, int total);
         void onEmpty();
         void onFailure(String errorMessage);
     }
