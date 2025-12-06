@@ -46,7 +46,7 @@ public class MyUploadedCoursesFragment extends Fragment {
         adapter = new MyUploadCourseAdapter(courseList);
         adapter.setOnItemClickListener(item -> {
             // 클릭 시 AfterUploadCourseDetailActivity로 이동
-            Intent intent = new Intent(requireActivity(), AfterUploadCourseDetailActivity.class);
+            Intent intent = new Intent(requireActivity(), MyUploadCourseDetailActivity.class);
             intent.putExtra("uploadCourseId", (long) item.uploadCourseId);
             startActivity(intent);
         });
