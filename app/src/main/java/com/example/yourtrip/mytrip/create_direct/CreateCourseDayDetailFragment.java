@@ -283,19 +283,21 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            // '취소' 버튼 리스너
-            Button btnCancel = dialogView.findViewById(R.id.btnCancel);
-            btnCancel.setOnClickListener(v -> dialog.dismiss());
-
-            // '삭제' 버튼 리스너
-            Button btnDeleteConfirm = dialogView.findViewById(R.id.btnDeleteConfirm);
-            btnDeleteConfirm.setOnClickListener(v -> {
-                deletePlaceApiCall(placeId, position);
-                dialog.dismiss();
-            });
-
-            dialog.show();
         }
+
+        // '취소' 버튼 리스너
+        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+
+        // '삭제' 버튼 리스너
+        Button btnDeleteConfirm = dialogView.findViewById(R.id.btnDeleteConfirm);
+        btnDeleteConfirm.setOnClickListener(v -> {
+            deletePlaceApiCall(placeId, position);
+            dialog.dismiss();
+        });
+
+        dialog.show();
+
     }
 
 
