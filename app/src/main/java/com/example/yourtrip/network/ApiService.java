@@ -145,6 +145,15 @@ public interface ApiService {
             @Body PlaceMemoRequest requestBody
     );
 
+    //특정 장소 삭제 api
+    // 장소 삭제
+    @DELETE("api/my-courses/{courseId}/days/{dayId}/places/{placeId}")
+    Call<Void> deletePlace(
+            @Path("courseId") long courseId,
+            @Path("dayId") long dayId,
+            @Path("placeId") long placeId
+    );
+
     //코스 업로드 위한 Multipart API
     @Multipart
     @POST("/api/upload-courses/")

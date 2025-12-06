@@ -172,8 +172,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 
         // 메뉴 안의 버튼들과 클릭 이벤트를 연결
         LinearLayout btnUpload = dialog.findViewById(R.id.btn_upload);
-        LinearLayout btnEdit = dialog.findViewById(R.id.btn_edit);
-        LinearLayout btnDelete = dialog.findViewById(R.id.btn_delete);
+//        LinearLayout btnEdit = dialog.findViewById(R.id.btn_edit);
+//        LinearLayout btnDelete = dialog.findViewById(R.id.btn_delete);
 
         btnUpload.setOnClickListener(v -> {
             // 1. 클릭된 코스의 정보를 가져옵니다.
@@ -194,17 +194,17 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
             // 4. 새로운 액티비티를 시작합니다.
             context.startActivity(intent);
 
-            // 5. 클릭 후 다이얼로그를 닫습니다.
+            // 5. 클릭 후 다이얼로그를 닫습니다.ㅜ
             dialog.dismiss();
         });
-        btnEdit.setOnClickListener(v -> {
-            dialog.dismiss();
-            // TODO: 편집 기능 구현
-        });
-        btnDelete.setOnClickListener(v -> {
-            dialog.dismiss();
-            // TODO: 삭제 기능 구현
-        });
+//        btnEdit.setOnClickListener(v -> {
+//            dialog.dismiss();
+//            // TODO: 편집 기능 구현
+//        });
+//        btnDelete.setOnClickListener(v -> {
+//            dialog.dismiss();
+//            // TODO: 삭제 기능 구현
+//        });
 
         dialog.show();
     }
