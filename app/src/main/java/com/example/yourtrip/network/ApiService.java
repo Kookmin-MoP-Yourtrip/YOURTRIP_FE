@@ -22,6 +22,7 @@ import com.example.yourtrip.mypage.ProfileResponse;
 import com.example.yourtrip.mytrip.model.AICourseCreateRequest;
 import com.example.yourtrip.mytrip.model.AICourseCreateResponse;
 import com.example.yourtrip.mytrip.model.DayPlacesResponse;
+import com.example.yourtrip.mytrip.model.ForkCourseResponse;
 import com.example.yourtrip.mytrip.model.ImageUploadResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
@@ -179,6 +180,12 @@ public interface ApiService {
     //나의 업로드 코스 조회
     @GET("/api/upload-courses/me")
     Call<UploadCourseListResponse> getMyUploadedCourses();
+
+    //업로드 코스 fork
+    @POST("api/my-courses/fork/upload-courses/{uploadCourseId}")
+    Call<ForkCourseResponse> forkCourse(
+            @Path("uploadCourseId") long uploadCourseId
+    );
 
 
     //=============홈 api================//

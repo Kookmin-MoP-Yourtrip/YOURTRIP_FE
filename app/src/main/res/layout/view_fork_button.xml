@@ -12,25 +12,26 @@
     android:clickable="true"
     android:focusable="true">
 
-    <!-- 포크 아이콘 -->
+    <!-- 수정: 문제 원인 파악을 위해 잠시 주석 처리 -->
+<!--
     <ImageView
         android:id="@+id/iv_fork_icon"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:src="@drawable/ic_fork"
-        tools:tint="@color/blue_main"
-        android:layout_gravity="center_vertical" /> <!-- [핵심 수정] 아이콘 스스로 세로 중앙 정렬 -->
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/selector_fork_icon"
+        android:background="@android:color/transparent" />
 
-    <!-- 포크 카운트 숫자 -->
     <TextView
         android:id="@+id/tv_fork_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
-        android:textColor="@color/blue_main"
         android:textSize="12sp"
         android:textStyle="bold"
         tools:text="112"
-        android:layout_gravity="center_vertical" /> <!-- [핵심 수정] 텍스트 스스로 세로 중앙 정렬 -->
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/selector_fork_text_color" />
+-->
 
 </LinearLayout>

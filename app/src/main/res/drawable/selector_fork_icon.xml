@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    활성화 상태-->
+<!--    <item android:state_activated="true"-->
+<!--        android:drawable="@drawable/ic_fork_active" />-->
+    <item android:state_activated="true"
+        android:drawable="@drawable/ic_fork" />
+<!--    기본 상태-->
+    <item android:drawable="@drawable/ic_fork" />
+</selector>
+    

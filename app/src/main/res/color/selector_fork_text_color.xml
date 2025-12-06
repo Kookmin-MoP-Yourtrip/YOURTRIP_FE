@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 활성화 상태일 때 (배경이 파란색) -> 글씨는 흰색 -->
+    <item android:state_activated="true" android:color="@android:color/white" />
+    <!-- 기본 상태일 때 (테두리만 파란색) -> 글씨는 파란색 -->
+    <item android:color="@color/blue_main" />
+</selector>

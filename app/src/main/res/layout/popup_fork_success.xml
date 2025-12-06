@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="290dp"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="40dp"
+    android:background="@drawable/bg_box_round_12dp_white"
+    android:elevation="4dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/dialogMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lineSpacingExtra="6dp"
+        android:text="포크한 코스가 나의 여행 리스트에\n추가되었어요!"
+        android:textColor="@color/gray_700"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <!-- '확인' 버튼 -->
+    <android.widget.Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="230dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_box_border_12dp_blue"
+        android:text="확인"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <!-- '나의 여행 리스트 보기' 버튼 -->
+    <android.widget.Button
+        android:id="@+id/btnGoToList"
+        android:layout_width="230dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_box_border_12dp"
+        android:text="나의 여행 리스트 보기"
+        android:textColor="@color/blue_main"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
