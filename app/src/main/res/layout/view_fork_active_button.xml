@@ -8,19 +8,20 @@
     android:gravity="center_vertical"
     android:paddingHorizontal="12dp"
     android:paddingVertical="7dp"
-    android:background="@drawable/bg_fork_button"
+    android:background="@drawable/bg_fork_active_button"
     android:clickable="true"
     android:focusable="true">
 
 
-    <ImageView
+    <android.widget.ImageView
         android:id="@+id/iv_fork_icon"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_fork" />
+        android:src="@drawable/ic_fork_active_2"
+        android:background="@android:color/transparent" />
 
-    <TextView
+    <android.widget.TextView
         android:id="@+id/tv_fork_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +30,8 @@
         android:textStyle="bold"
         tools:text="112"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/blue_main" />
+        android:textColor="@color/white"
+        android:background="@android:color/transparent" />
 
 
 </LinearLayout>

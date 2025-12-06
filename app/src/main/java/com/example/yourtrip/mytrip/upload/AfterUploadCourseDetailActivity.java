@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -42,10 +41,15 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
     private ApiService apiService;
 
     // --- UI 뷰 멤버 변수 ---
-    private TextView tvTitleCard, tvDateCard, tvLocationCard, tvForkCount;
+    private TextView tvTitleCard, tvDateCard, tvLocationCard;
     private TextView tvIntroduction;
     private FlexboxLayout flexboxTags;
-    private View forkButtonLayout;
+
+    //  기본/활성화 상태의 버튼과 카운트 뷰를 모두 변수로 선언
+    private View forkButtonDefault;
+    private View forkButtonActive;
+    private TextView tvForkCountDefault;
+    private TextView tvForkCountActive;
 
     private final List<String> moveTypeKeywords = Arrays.asList("뚜벅이", "자차");
     private final List<String> partnerKeywords = Arrays.asList("혼자", "연인", "친구", "가족");
@@ -78,10 +82,11 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
         tvDateCard = tripCard.findViewById(R.id.tv_date);
         tvLocationCard = tripCard.findViewById(R.id.tv_location);
 
-        forkButtonLayout = tripCard.findViewById(R.id.fork_button);
-//        tvForkCount = forkButtonLayout.findViewById(R.id.tv_fork_count);
-
-        tvForkCount.setText("0"); // 초기값 설정
+        // 두 개의 버튼 레이아웃과 내부의 카운트 TextView를 모두 찾음
+        forkButtonDefault = tripCard.findViewById(R.id.fork_button_default);
+        forkButtonActive = tripCard.findViewById(R.id.fork_button_active);
+        tvForkCountDefault = forkButtonDefault.findViewById(R.id.tv_fork_count);
+        tvForkCountActive = forkButtonActive.findViewById(R.id.tv_fork_count);
 
         tvIntroduction = findViewById(R.id.tv_uploaded_content);
         flexboxTags = findViewById(R.id.flexbox_upload_confirm_tags);
@@ -128,8 +133,19 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
         tvDateCard.setText(dateText);
         tvLocationCard.setText(data.getLocation());
 
-        // API 응답으로 받은 forkCount만 UI에 반영
-        tvForkCount.setText(String.valueOf(data.getForkCount()));
+        //  초기 카운트를 두 버튼 모두에 설정
+        String forkCountStr = String.valueOf(data.getForkCount());
+        tvForkCountDefault.setText(forkCountStr);
+        tvForkCountActive.setText(forkCountStr);
+
+        // TODO: isForked 필드가 추가되면, 초기 visibility 상태를 여기서 설정
+        // if (data.isForked()) {
+        //     forkButtonDefault.setVisibility(View.GONE);
+        //     forkButtonActive.setVisibility(View.VISIBLE);
+        // } else {
+        //     forkButtonDefault.setVisibility(View.VISIBLE);
+        //     forkButtonActive.setVisibility(View.GONE);
+        // }
 
         tvIntroduction.setText(data.getIntroduction());
 
@@ -172,13 +188,14 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
      * 포크 버튼에 클릭 리스너를 설정하는 메서드
      */
     private void setForkButtonListener() {
-        forkButtonLayout.setOnClickListener(v -> {
-            // 버튼이 활성화(포크 완료) 상태가 아닐 때만 API를 호출 (중복 포크 방지)
-            if (!forkButtonLayout.isActivated()) {
-                forkCourseApiCall();
-            } else {
-                Toast.makeText(this, "이미 포크한 코스입니다.", Toast.LENGTH_SHORT).show();
-            }
+        //  '기본 상태' 버튼에만 클릭 리스너를 설정합니다.
+        forkButtonDefault.setOnClickListener(v -> {
+            forkCourseApiCall();
+        });
+
+        // '활성화 상태' 버튼은 눌러도 아무 동작도 하지 않도록 하거나, Toast 메시지를 띄움
+        forkButtonActive.setOnClickListener(v -> {
+            Toast.makeText(this, "이미 포크한 코스입니다.", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -191,14 +208,22 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<ForkCourseResponse> call, @NonNull Response<ForkCourseResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     // --- 포크 성공 ---
-                    int currentForkCount = Integer.parseInt(tvForkCount.getText().toString());
-                    tvForkCount.setText(String.valueOf(currentForkCount + 1));
-                    forkButtonLayout.setActivated(true);
+                    // 카운트 숫자 1 증가
+                    int currentForkCount = Integer.parseInt(tvForkCountDefault.getText().toString());
+                    String newForkCountStr = String.valueOf(currentForkCount + 1);
+                    
+                    // 두 버튼의 카운트를 모두 업데이트
+                    tvForkCountDefault.setText(newForkCountStr);
+                    tvForkCountActive.setText(newForkCountStr);
+
+                    // 버튼의 visibility를 교체하여 상태 변경
+                    forkButtonDefault.setVisibility(View.GONE);
+                    forkButtonActive.setVisibility(View.VISIBLE);
 
                     showForkSuccessDialog();
 
                 } else {
-                    // --- 포크 실패 : 자신의 코스 ---
+                    // --- 포크 실패 (자신의 코스 등) ---
                     Toast.makeText(AfterUploadCourseDetailActivity.this, "자신이 업로드한 코스는 포크할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -240,5 +265,4 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
 
         dialog.show();
     }
-
 }

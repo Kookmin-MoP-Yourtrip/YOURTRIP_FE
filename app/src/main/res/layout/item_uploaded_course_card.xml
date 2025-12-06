@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_more"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <!-- 코스제목-->
@@ -52,14 +52,6 @@
                 android:textColor="@color/gray_550" />
         </LinearLayout>
 
-        <!--더보기-->
-<!--        <ImageView-->
-<!--            android:id="@+id/btn_more"-->
-<!--            android:layout_width="23dp"-->
-<!--            android:layout_height="23dp"-->
-<!--            android:src="@drawable/ic_three_dots"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"/>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -104,14 +96,29 @@
                 android:ellipsize="end" />
         </LinearLayout>
 
-        <include
-            android:id="@+id/fork_button"
-            layout="@layout/view_fork_button"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- 기본 상태 버튼 (view_fork_button) -->
+            <include
+                android:id="@+id/fork_button_default"
+                layout="@layout/view_fork_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:visibility="visible" />
+
+            <!-- 활성화 상태 버튼 (view_fork_active_button) -->
+            <include
+                android:id="@+id/fork_button_active"
+                layout="@layout/view_fork_active_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" /> <!-- 처음에는 숨겨둡니다. -->
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
