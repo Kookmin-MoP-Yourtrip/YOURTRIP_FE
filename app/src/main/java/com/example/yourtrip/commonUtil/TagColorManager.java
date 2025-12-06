@@ -47,7 +47,7 @@ public class TagColorManager {
 
         // 예산
         map.put("가성비", new TagStyle(R.color.tag_purple, R.color.gray_600));
-        map.put("보통", new TagStyle(R.color.tag_purple, R.color.gray_600));
+        map.put("평균예산", new TagStyle(R.color.tag_purple, R.color.gray_600));
         map.put("프리미엄", new TagStyle(R.color.tag_purple, R.color.gray_600));
     }
 

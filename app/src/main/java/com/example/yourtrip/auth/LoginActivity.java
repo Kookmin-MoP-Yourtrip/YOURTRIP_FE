@@ -74,8 +74,12 @@ public class LoginActivity extends AppCompatActivity {
 
         // 로그인 없이 둘러보기 → MainActivity로 이동
         btnSkipLogin.setOnClickListener(v -> {
+
+            clearLoginState();   // 🔥 비로그인 모드 → 토큰 삭제
+
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();  // 로그인 화면 종료
         });
 
         // 로그인 버튼 클릭 시 → API 호출 실행
@@ -84,6 +88,16 @@ public class LoginActivity extends AppCompatActivity {
             String password = edtPassword.getText().toString().trim();
             doLogin(email, password);
         });
+    }
+    //이전 로그인 토크 없앰 -> 비로그인 버튼용
+    private void clearLoginState() {
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("accessToken");  // 토큰 삭제
+        editor.remove("userId");
+        editor.remove("nickname");
+        editor.remove("profileImageUrl");
+        editor.apply();
     }
 
     // 로그인 API 요청 함수
@@ -114,11 +128,18 @@ public class LoginActivity extends AppCompatActivity {
                         // userId
                         int userId = json.optInt("userId", -1);
 
+                        // ⭐ 닉네임 + 프로필 URL 가져오기
+                        String nickname = json.optString("nickname", "사용자이름");
+                        String profileImageUrl = json.optString("profileImageUrl", "");
+
+
                         // SharedPreferences에 JWT 토큰 저장
                         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                         prefs.edit()
                                 .putString("accessToken", token)
                                 .putInt("userId", userId)
+                                .putString("nickname", nickname)
+                                .putString("profileImageUrl", profileImageUrl)
                                 .apply();
 
                         // 저장된 토큰 Logcat 확인

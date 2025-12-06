@@ -36,7 +36,7 @@ public class MyCourseViewFragment extends Fragment {
         if (savedInstanceState == null) {
             getChildFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.my_course_container, new MyTripListFragment())
+                    .replace(R.id.my_course_container, new MyUploadedCoursesFragment())
                     .commit();
         }
 

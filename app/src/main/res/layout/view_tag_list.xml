@@ -315,7 +315,7 @@
                     style="@style/Tag.Budget"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="8dp"
-                    android:text="보통" />
+                    android:text="평균예산" />
 
                 <TextView
                     android:id="@+id/tag_search_premium"

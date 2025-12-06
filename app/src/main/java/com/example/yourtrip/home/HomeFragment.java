@@ -1,5 +1,6 @@
 package com.example.yourtrip.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.yourtrip.R;
 import com.example.yourtrip.model.UploadCourseItem;
 import com.example.yourtrip.model.UploadCourseListResponse;
+import com.example.yourtrip.mytrip.upload.AfterUploadCourseDetailActivity;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
 
@@ -76,6 +78,27 @@ public class HomeFragment extends Fragment {
 
         setupPopularRecycler();
         setupThemeRecycler();
+
+        // ⭐ 여기 추가!!
+        popularAdapter.setOnItemClickListener(item -> {
+            Log.d("UPLOAD_ID_SEND", "Home → 보내는 ID: " + item.uploadCourseId); // ⭐ 추가
+
+            Intent intent = new Intent(getContext(), AfterUploadCourseDetailActivity.class);
+            intent.putExtra("uploadCourseId", (long)item.uploadCourseId);
+            startActivity(intent);
+        });
+
+        themeAdapter.setOnItemClickListener(item -> {
+            Log.d("UPLOAD_ID_SEND", "Home → 보내는 ID: " + item.uploadCourseId); // ⭐ 추가
+
+            Intent intent = new Intent(getContext(), AfterUploadCourseDetailActivity.class);
+            intent.putExtra("uploadCourseId", (long)item.uploadCourseId);
+            startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+
+
+
         setupLocationClickEvents();
         setupTagClickListeners();
 
@@ -190,10 +213,11 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        List<UploadCourseItem> topFive =
-                matched.size() > 5 ? matched.subList(0, 5) : matched;
+        List<UploadCourseItem> topThree =
+                matched.size() > 3 ? matched.subList(0, 3) : matched;
 
-        themeAdapter.setItems(topFive);
+        themeAdapter.setItems(topThree);
+
     }
 
     // RecyclerView 기본 설정
@@ -260,17 +284,25 @@ public class HomeFragment extends Fragment {
 
                         List<UploadCourseItem> list = response.body().uploadCourses;
 
+
+                        // ⭐ ID 확인용 로그
+                        for (UploadCourseItem item : list) {
+                            Log.d("POPULAR_ID", "서버에서 받은 ID = " + item.uploadCourseId
+                                    + " | 제목 = " + item.title);
+                        }
+
                         // ⭐ 전체 저장 (태그 필터링용)
                         allCourseList = list;
 
-                        // 상위 5개만 추림
-                        List<UploadCourseItem> topFive =
-                                list.size() > 5 ? list.subList(0, 5) : list;
+                        // 상위 3개만 추림
+                        List<UploadCourseItem> topThree =
+                                list.size() > 3 ? list.subList(0, 3) : list;
 
-                        popularAdapter.setItems(topFive);
+
+                        popularAdapter.setItems(topThree);
 
                         // 디폴트: theme 도 인기 top5
-                        themeAdapter.setItems(topFive);
+                        themeAdapter.setItems(topThree);
                     }
 
                     @Override

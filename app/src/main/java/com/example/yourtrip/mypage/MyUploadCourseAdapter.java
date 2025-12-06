@@ -1,4 +1,4 @@
-package com.example.yourtrip.home;
+package com.example.yourtrip.mypage;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,12 +19,11 @@ import com.google.android.flexbox.FlexboxLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapter.ViewHolder> {
+public class MyUploadCourseAdapter extends RecyclerView.Adapter<MyUploadCourseAdapter.ViewHolder> {
 
     private List<UploadCourseItem> itemList = new ArrayList<>();
     private Context context;
 
-    // 클릭 이벤트
     public interface OnItemClickListener {
         void onClick(UploadCourseItem item);
     }
@@ -35,7 +34,7 @@ public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapte
         this.listener = listener;
     }
 
-    public UploadCourseAdapter(List<UploadCourseItem> list) {
+    public MyUploadCourseAdapter(List<UploadCourseItem> list) {
         this.itemList = list;
     }
 
@@ -46,34 +45,28 @@ public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapte
 
     @NonNull
     @Override
-    public UploadCourseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_upload_course, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UploadCourseAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         UploadCourseItem item = itemList.get(position);
 
-        // ✔ 썸네일 이미지 URL 로드
         Glide.with(context)
                 .load(item.thumbnailImageUrl)
-                .placeholder(R.drawable.ic_loading)  // 기본 이미지
+                .placeholder(R.drawable.ic_loading)
                 .into(holder.imgThumbnail);
 
         holder.tvLocation.setText(item.location);
         holder.tvTitle.setText(item.title);
         holder.tvLikeCount.setText(String.valueOf(item.forkCount));
 
-        // 태그 목록
         holder.tagContainer.removeAllViews();
         if (item.keywords != null) {
-            int maxTags = Math.min(item.keywords.size(), 4);  // ⭐ 최대 4개만 보여줌
-
-            for (int i = 0; i < maxTags; i++) {
-                String tag = item.keywords.get(i);
-
+            for (String tag : item.keywords) {
                 View tagView = LayoutInflater.from(context)
                         .inflate(R.layout.item_tag_for_list, holder.tagContainer, false);
 

@@ -4,14 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="0dp">
+    app:cardElevation="0dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="18dp"
-        android:paddingVertical="12dp">
+        android:paddingVertical="12dp"
+        android:clickable="false"
+        android:focusable="false"
+        >
 
         <!-- 사진 -->
         <androidx.constraintlayout.widget.ConstraintLayout
