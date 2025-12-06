@@ -37,7 +37,7 @@ public class ReadOnlyCourseDetailFragment extends Fragment  {
     private RecyclerView rvReadOnlyDays;
     private ReadOnlyDayAdapter dayAdapter;
     private RecyclerView rvReadOnlyLocations;
-    private ReadOnlyLocationAdapter locationAdapter; // [수정] 읽기 전용 어댑터로 변경 필요
+    private ReadOnlyLocationAdapter locationAdapter; // 읽기 전용 어댑터로 변경 필요
 
 
     //프래그먼트는 반드시 비어있는 기본 생성자를 가져야 함
@@ -65,7 +65,7 @@ public class ReadOnlyCourseDetailFragment extends Fragment  {
 
         // 이전 액티비티/프래그먼트로부터 전달받은 데이터 처리
         if (getArguments() != null) {
-            // [주의] ClassCastException 방지를 위해 안전하게 형변환합니다.
+            // [주의] ClassCastException 방지를 위해 안전하게 형변환
             try {
                 daySchedules = (List<UploadCourseResponse.DaySchedule>) getArguments().getSerializable(ARG_DAY_SCHEDULES);
             } catch (ClassCastException e) {
@@ -121,10 +121,8 @@ public class ReadOnlyCourseDetailFragment extends Fragment  {
      * 하단 장소 목록 RecyclerView를 설정하는 메서드.
      */
     private void setupLocationRecyclerView() {
-        // TODO: LocationAdapter를 '읽기 전용'으로 개조해야 합니다.
-        // 생성자에서 더 이상 courseId나 OnLocationInteractionListener를 받지 않아야 합니다.
-        // 어댑터 내부에서는 R.layout.item_readonly_location_card를 사용해야 합니다.
-        // '장소 추가' 버튼 아이템을 리스트에 추가하지 않습니다.
+        // 어댑터 내부에서는 R.layout.item_readonly_location_card를 사용함
+        // '장소 추가' 버튼 아이템을 리스트에 추가하지 않음
 
         locationAdapter = new ReadOnlyLocationAdapter();
         rvReadOnlyLocations.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -132,7 +130,7 @@ public class ReadOnlyCourseDetailFragment extends Fragment  {
     }
 
     /**
-     * [신규] 장소 목록 RecyclerView를 새로운 데이터로 업데이트하는 메서드
+     * 장소 목록 RecyclerView를 새로운 데이터로 업데이트하는 메서드
      */
     private void updateLocationList(List<UploadCourseResponse.Place> places) {
         if (locationAdapter != null && places != null) {

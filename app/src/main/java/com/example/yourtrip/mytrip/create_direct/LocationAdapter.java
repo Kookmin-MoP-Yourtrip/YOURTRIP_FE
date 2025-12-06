@@ -216,7 +216,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private final ImageView btnDelete;
         private final TextView tvPlaceName;
         private final TextView tvAddress;
-        private final ImageView ivMap;
+//        private final ImageView ivMap;
         private final ImageView ivAddedPhoto;
         private final LinearLayout btnAddPhoto;
         private final EditText etMemo;
@@ -228,7 +228,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             btnDelete = itemView.findViewById(R.id.btnDelete);
             tvPlaceName = itemView.findViewById(R.id.tvPlaceName);
             tvAddress = itemView.findViewById(R.id.tvAddress);
-            ivMap = itemView.findViewById(R.id.ivMap);
+//            ivMap = itemView.findViewById(R.id.ivMap);
             ivAddedPhoto = itemView.findViewById(R.id.ivAddedPhoto);
             btnAddPhoto = itemView.findViewById(R.id.btnAddPhoto);
             etMemo = itemView.findViewById(R.id.etMemo);
