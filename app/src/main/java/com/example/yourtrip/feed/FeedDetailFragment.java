@@ -1,6 +1,7 @@
 package com.example.yourtrip.feed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.example.yourtrip.R;
+import com.example.yourtrip.commonUtil.NotLoggedInActivity;
 import com.example.yourtrip.model.FeedDetailResponse;
 import com.example.yourtrip.model.FeedLikeResponse;
 import com.example.yourtrip.model.FeedMediaDetailResponse;
@@ -115,7 +117,17 @@ public class FeedDetailFragment extends Fragment {
 
         btnLike = view.findViewById(R.id.btn_like);
 
-        btnLike.setOnClickListener(v -> toggleLikeAPI());
+        btnLike.setOnClickListener(v -> {
+
+            if (!isLoggedIn()) {
+                Intent intent = new Intent(getContext(), NotLoggedInActivity.class);
+                startActivity(intent);
+                return;
+            }
+
+            toggleLikeAPI();
+        });
+
 
         loadFeedDetail();
 
@@ -250,6 +262,13 @@ public class FeedDetailFragment extends Fragment {
                 )
                 .start();
     }
+
+    private boolean isLoggedIn() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String token = prefs.getString("accessToken", null);
+        return token != null;
+    }
+
 
     private void toggleLikeAPI() {
 

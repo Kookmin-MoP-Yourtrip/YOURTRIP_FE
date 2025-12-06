@@ -74,8 +74,12 @@ public class LoginActivity extends AppCompatActivity {
 
         // 로그인 없이 둘러보기 → MainActivity로 이동
         btnSkipLogin.setOnClickListener(v -> {
+
+            clearLoginState();   // 🔥 비로그인 모드 → 토큰 삭제
+
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();  // 로그인 화면 종료
         });
 
         // 로그인 버튼 클릭 시 → API 호출 실행
@@ -84,6 +88,16 @@ public class LoginActivity extends AppCompatActivity {
             String password = edtPassword.getText().toString().trim();
             doLogin(email, password);
         });
+    }
+    //이전 로그인 토크 없앰 -> 비로그인 버튼용
+    private void clearLoginState() {
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("accessToken");  // 토큰 삭제
+        editor.remove("userId");
+        editor.remove("nickname");
+        editor.remove("profileImageUrl");
+        editor.apply();
     }
 
     // 로그인 API 요청 함수

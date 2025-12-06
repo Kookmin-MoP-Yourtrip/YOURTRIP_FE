@@ -4,7 +4,7 @@ package com.example.yourtrip.model;
 import java.util.List;
 
 public class UploadCourseItem {
-    public int uploadCourseId;
+    public long uploadCourseId;
     public String title;
     public String location;
     public String thumbnailImageUrl;

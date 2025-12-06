@@ -99,6 +99,11 @@
         <activity android:name=".mytrip.upload.AfterUploadCourseDetailActivity"
             android:exported="false"/>
 
+        <activity
+            android:name=".commonUtil.NotLoggedInActivity"
+            android:exported="false" />
+
+
     </application>
 
 </manifest>

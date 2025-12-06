@@ -1,5 +1,8 @@
 package com.example.yourtrip.feed;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.commonUtil.NotLoggedInActivity;
 import com.example.yourtrip.model.FeedChat;
 import com.example.yourtrip.model.FeedCommentDetailResponse;
 import com.example.yourtrip.model.FeedCommentListResponse;
@@ -81,6 +85,13 @@ public class FeedChatFragment extends Fragment {
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
 
         btnChatSend.setOnClickListener(v -> {
+            // ⭐ 댓글 전송 시 로그인 체크
+            if (!isLoggedIn()) {
+                Intent intent = new Intent(getContext(), NotLoggedInActivity.class);
+                startActivity(intent);
+                return;
+            }
+
             String newComment = editFeedChat.getText().toString().trim();
             if (newComment.isEmpty()) return;
 
@@ -124,6 +135,13 @@ public class FeedChatFragment extends Fragment {
         });
 
     }
+
+    private boolean isLoggedIn() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String token = prefs.getString("accessToken", null);
+        return token != null;
+    }
+
 
     private void loadComments(int feedId) {
         // ⭐ 스켈레톤 ON

@@ -81,16 +81,22 @@ public class HomeFragment extends Fragment {
 
         // ⭐ 여기 추가!!
         popularAdapter.setOnItemClickListener(item -> {
+            Log.d("UPLOAD_ID_SEND", "Home → 보내는 ID: " + item.uploadCourseId); // ⭐ 추가
+
             Intent intent = new Intent(getContext(), AfterUploadCourseDetailActivity.class);
-            intent.putExtra("uploadCourseId", item.uploadCourseId);  // ← 수정!
+            intent.putExtra("uploadCourseId", (long)item.uploadCourseId);
             startActivity(intent);
         });
 
         themeAdapter.setOnItemClickListener(item -> {
+            Log.d("UPLOAD_ID_SEND", "Home → 보내는 ID: " + item.uploadCourseId); // ⭐ 추가
+
             Intent intent = new Intent(getContext(), AfterUploadCourseDetailActivity.class);
-            intent.putExtra("uploadCourseId", item.uploadCourseId);  // ← 수정!
+            intent.putExtra("uploadCourseId", (long)item.uploadCourseId);
             startActivity(intent);
+            requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
+
 
 
         setupLocationClickEvents();
@@ -277,6 +283,13 @@ public class HomeFragment extends Fragment {
                         }
 
                         List<UploadCourseItem> list = response.body().uploadCourses;
+
+
+                        // ⭐ ID 확인용 로그
+                        for (UploadCourseItem item : list) {
+                            Log.d("POPULAR_ID", "서버에서 받은 ID = " + item.uploadCourseId
+                                    + " | 제목 = " + item.title);
+                        }
 
                         // ⭐ 전체 저장 (태그 필터링용)
                         allCourseList = list;

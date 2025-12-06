@@ -37,7 +37,7 @@ public class TagConverter {
 
             // -------- 예산 --------
             case "가성비": return "COST_EFFECTIVE";
-            case "보통": return "NORMAL";
+            case "평균예산": return "NORMAL";
             case "프리미엄": return "PREMIUM";
         }
 
