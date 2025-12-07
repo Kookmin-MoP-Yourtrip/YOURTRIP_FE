@@ -39,7 +39,6 @@ public class MyUploadCourseDetailActivity extends AppCompatActivity {
     private TextView tvTitleCard, tvDateCard, tvLocationCard, tvForkCount;
     private TextView tvIntroduction;
     private FlexboxLayout flexboxTags;
-    private View forkButtonLayout;
 
     // 태그 스타일 카테고리 키워드 리스트
     private final List<String> moveTypeKeywords = Arrays.asList("뚜벅이", "자차");
@@ -75,9 +74,20 @@ public class MyUploadCourseDetailActivity extends AppCompatActivity {
         tvDateCard = tripCard.findViewById(R.id.tv_date);
         tvLocationCard = tripCard.findViewById(R.id.tv_location);
 
-        forkButtonLayout = tripCard.findViewById(R.id.fork_button);
-        tvForkCount = forkButtonLayout.findViewById(R.id.tv_fork_count);
-        tvForkCount.setText("0");
+        // 수정: 새로운 레이아웃 구조에 맞게 ID를 찾고 상태를 설정
+        View forkButtonDefault = tripCard.findViewById(R.id.fork_button_default);
+        View forkButtonActive = tripCard.findViewById(R.id.fork_button_active);
+
+        // '내가 올린 코스'에서는 포크할 수 없으므로, 기본 상태의 버튼만 보여줌
+        forkButtonDefault.setVisibility(View.VISIBLE);
+        forkButtonActive.setVisibility(View.GONE);
+
+        tvForkCount = forkButtonDefault.findViewById(R.id.tv_fork_count);
+
+        // '내가 올린 코스'에서는 포크 버튼이 눌리지 않도록 하거나, 안내 메시지를 표시
+        forkButtonDefault.setOnClickListener(v ->
+            Toast.makeText(this, "자신이 업로드한 코스는 포크할 수 없습니다.", Toast.LENGTH_SHORT).show()
+        );
 
         tvIntroduction = findViewById(R.id.tv_uploaded_content);
         flexboxTags = findViewById(R.id.flexbox_upload_confirm_tags);

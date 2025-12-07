@@ -45,10 +45,19 @@ public class SignupPasswordActivity extends AppCompatActivity {
         tvPasswordError = findViewById(R.id.tvPasswordError);
         btnBack = findViewById(R.id.btnBack);
 
-        // include된 상단바 안의 ProgressBar 접근
+        // include된 상단바 안의 뷰 접근
         View header = findViewById(R.id.signupHeader);
         progressBar = header.findViewById(R.id.progressSignup);
-        progressBar.setProgress(3); // 3단계 진행 표시
+        TextView headerTitle = header.findViewById(R.id.tv_title);
+
+        if (headerTitle != null) {
+            headerTitle.setText(" ");
+        }
+        if (progressBar != null) {
+            progressBar.setProgress(3);
+        }
+
+
 
         // 상단바 뒤로가기 버튼 동작
         btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
@@ -152,8 +161,6 @@ public class SignupPasswordActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     // 비밀번호 설정 성공 시 다음 페이지로 이동
-                    //Intent intent = new Intent(SignupPasswordActivity.this, SignupProfileActivity.class);
-                    //startActivity(intent);
                     Intent intent = new Intent(SignupPasswordActivity.this, SignupProfileActivity.class);
                     intent.putExtra("email", getIntent().getStringExtra("email"));  // ✅ 이메일 다시 전달
                     startActivity(intent);
@@ -179,5 +186,3 @@ public class SignupPasswordActivity extends AppCompatActivity {
         outState.putString("password_confirm_text", edtPasswordConfirm.getText().toString());
     }
 }
-
-

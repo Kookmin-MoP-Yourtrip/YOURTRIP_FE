@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -36,14 +38,37 @@ public class SignupEmailActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_signup_email);
 
+        // 공통 헤더의 뷰에 접근
+        View headerView = findViewById(R.id.signupHeader); // 다른 Signup 화면과 동일한 ID로 가정
+
         // View 초기화
         edtEmail = findViewById(R.id.edtEmail);
         tvEmailError = findViewById(R.id.tvEmailError);
         btnNext = findViewById(R.id.btnNext);
-        btnBack = findViewById(R.id.btnBack);
+        
+        // 헤더 안에서 버튼을 다시 찾아야 함
+        if (headerView != null) {
+            btnBack = headerView.findViewById(R.id.btnBack); 
+        }
 
-        // 상단바 뒤로가기 버튼 동작
-        btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+        // 헤더 UI 설정: 제목 제거, 프로그레스바 설정
+        if (headerView != null) {
+            TextView headerTitle = headerView.findViewById(R.id.tv_title);
+            ProgressBar progressBar = headerView.findViewById(R.id.progressSignup);
+            if (headerTitle != null) {
+                headerTitle.setText("");
+            }
+            if (progressBar != null) {
+                progressBar.setProgress(1);
+            }
+        }
+
+        // btnBack이 null이 아닐 때만 리스너를 설정
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+        } else {
+            Log.e("SignupEmailActivity", "뒤로가기 버튼(btnBack)을 헤더에서 찾을 수 없습니다.");
+        }
 
         // onCreate 시점에서 저장된 상태 복원
         if (savedInstanceState != null) {
@@ -51,7 +76,7 @@ public class SignupEmailActivity extends AppCompatActivity {
             edtEmail.setText(savedEmail);
             btnNext.setEnabled(savedEmail != null && !savedEmail.isEmpty());
         } else {
-            btnNext.setEnabled(false); // 초기엔 비활성화
+            btnNext.setEnabled(false);
         }
 
         // 이메일 입력 시 버튼 활성화/비활성화 처리
@@ -101,7 +126,7 @@ public class SignupEmailActivity extends AppCompatActivity {
                                     tvEmailError.setText("이미 사용 중인 이메일입니다.");
                                     tvEmailError.setVisibility(TextView.VISIBLE);
                                 } else if (errorMessage.contains("INVALID_REQUEST_FIELD")) {
-                                    tvEmailError.setText("이메일 형식이 올바르지 않거나 비어있습니다."); //백에서 에러 메시지까지 담아서 보내준지는 모르겠음
+                                    tvEmailError.setText("이메일 형식이 올바르지 않거나 비어있습니다.");
                                     tvEmailError.setVisibility(TextView.VISIBLE);
                                 }
                             } catch (Exception e) { //서버 응답을 처리하는 도중 예외 발생 상황
@@ -130,6 +155,3 @@ public class SignupEmailActivity extends AppCompatActivity {
         outState.putString("email_text", edtEmail.getText().toString());
     }
 }
-
-
-

@@ -53,10 +53,17 @@ public class SignupVerificationActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btnBack);
         btnResend = findViewById(R.id.btnResend);  // 인증번호 다시 받기 버튼
 
-        // include 안의 ProgressBar 접근 (공통 헤더)
+        // include 안의 뷰 접근 (공통 헤더)
         View header = findViewById(R.id.signupHeader);
         progressBar = header.findViewById(R.id.progressSignup);
-        progressBar.setProgress(2); // 두 번째 단계로 표시
+        TextView headerTitle = header.findViewById(R.id.tv_title);
+
+        if (headerTitle != null) {
+            headerTitle.setText(" ");
+        }
+        if (progressBar != null) {
+            progressBar.setProgress(2);
+        }
 
         // 상단바 뒤로가기 버튼 동작
         btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
@@ -159,6 +166,9 @@ public class SignupVerificationActivity extends AppCompatActivity {
                             tvCodeError.setText("인증에 실패했습니다.");  // 주석을 날리지 않고 메시지 수정
                             tvCodeError.setVisibility(View.VISIBLE);
                         }
+                    } else {
+                        tvCodeError.setText("인증에 실패했습니다.");
+                        tvCodeError.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -178,5 +188,3 @@ public class SignupVerificationActivity extends AppCompatActivity {
         outState.putString("code_text", edtCode.getText().toString());
     }
 }
-
-

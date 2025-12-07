@@ -68,12 +68,19 @@ public class SignupProfileActivity extends AppCompatActivity {
         edtNickname = findViewById(R.id.edtNickname);
         btnComplete = findViewById(R.id.btnComplete);
         tvNicknameError = findViewById(R.id.tvNicknameError);
-        btnBack = findViewById(R.id.btnBack);
 
-        // 상단 진행바 4단계 표시
+        // 상단바 UI 설정
         View header = findViewById(R.id.signupHeader);
         progressBar = header.findViewById(R.id.progressSignup);
-        progressBar.setProgress(4);
+        btnBack = header.findViewById(R.id.btnBack);
+        TextView headerTitle = header.findViewById(R.id.tv_title);
+
+        if (headerTitle != null) {
+            headerTitle.setText(" ");
+        }
+        if (progressBar != null) {
+            progressBar.setProgress(4);
+        }
 
         // 상단바 뒤로가기 버튼 동작
         btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
@@ -122,7 +129,6 @@ public class SignupProfileActivity extends AppCompatActivity {
         imgProfileField.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
-//            startActivityForResult(intent, REQUEST_IMAGE_PICK);
             imagePickerLauncher.launch(intent);
         });
 
@@ -132,20 +138,17 @@ public class SignupProfileActivity extends AppCompatActivity {
             if (!btnComplete.isEnabled()) return;
 
             String nickname = edtNickname.getText().toString().trim();
-            String profileUrl = (selectedImageUri != null) ? selectedImageUri.toString() : null;
 
             //  디버깅 로그 추가
             Log.d("SignupProfileActivity", "email=" + email + ", nickname=" + nickname);
 
             submitProfile(email, nickname);
         });
-
-
     }
 
     // 프로필 등록 API 호출
     private void submitProfile(String email, String nickname) {
-        ApiService apiService = RetrofitClient.getInstance(this).create(ApiService.class);
+        ApiService apiService = RetrofitClient.getAuthService(this);
 
         // 텍스트 데이터(JSON)를 RequestBody로 변환
         JsonObject jsonObject = new JsonObject();
@@ -245,69 +248,4 @@ public class SignupProfileActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-//    private void submitProfile(String email, String nickname, String profileUrl) {
-//        ApiService apiService = RetrofitClient.getInstance(this).create(ApiService.class);
-//        ProfileRequest request = new ProfileRequest(email, nickname, profileUrl);
-//
-//        apiService.setProfile(request).enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                // 요청하신 서버 응답 코드를 확인하는 로그를 추가합니다.
-//                Log.d("SignupProfileActivity", "Server Response Code: " + response.code());
-//                if (response.isSuccessful()) {
-//                    // 가입 완료 → 축하 화면 이동
-//                    Intent intent = new Intent(SignupProfileActivity.this, SignupCompleteActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                } else { // 201 아닌 상태코드를 반환하는 경우
-//                    try {
-//                        // 서버에서 내려준 오류 메시지 파싱
-//                        String errorBody = response.errorBody().string();
-//                        JSONObject json = new JSONObject(errorBody);
-//
-//                        // 서버 응답에서 code, message 추출
-//                        String code = json.optString("code", "");
-//                        String message;
-//
-//                        // 에러 코드별 처리
-//                        switch (code) {
-//                            case "EMAIL_NOT_VERIFIED":
-//                                message = "이메일 인증이 완료되지 않았습니다. 다시 인증을 진행해주세요.";
-//                                break;
-//                            case "INVALID_REQUEST_FIELD":
-//                                message = "닉네임 형식이 올바르지 않거나 입력이 누락되었습니다.";
-//                                break;
-//                            case "USER_NOT_FOUND":
-//                                message = "가입 정보를 찾을 수 없습니다. 처음부터 다시 시도해주세요.";
-//                                break;
-//                            case "EMAIL_ALREADY_EXIST":
-//                                message = "이미 가입이 완료된 이메일입니다. 로그인 화면으로 이동해주세요.";
-//                                break;
-//                            default:
-//                                message = json.optString("message", "회원가입 중 오류가 발생했습니다.");
-//                                break;
-//                        }
-//
-//                        tvNicknameError.setText(message);
-//                        tvNicknameError.setVisibility(View.VISIBLE);
-//
-//                    } catch (Exception e) {
-//                        // JSON 파싱 실패 또는 서버 응답 이상
-//                        tvNicknameError.setText("회원가입 요청 처리 중 오류가 발생했습니다.");
-//                        tvNicknameError.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                // 서버랑 연동 아예 실패
-//                tvNicknameError.setText("서버와의 연결을 실패했습니다. 네트워크 상태를 확인해주세요.");
-//                tvNicknameError.setVisibility(View.VISIBLE);
-//            }
-//        });
-//    }
 }
