@@ -69,7 +69,7 @@ public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapte
         // 태그 목록
         holder.tagContainer.removeAllViews();
         if (item.keywords != null) {
-            int maxTags = Math.min(item.keywords.size(), 4);  // ⭐ 최대 4개만 보여줌
+            int maxTags = Math.min(item.keywords.size(), 3);  // ⭐ 최대 3개만 보여줌
 
             for (int i = 0; i < maxTags; i++) {
                 String tag = item.keywords.get(i);
