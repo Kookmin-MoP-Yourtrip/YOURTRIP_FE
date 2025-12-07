@@ -32,9 +32,19 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottomNav);
 
-        // 처음 실행 시 홈화면 표시
+        //앱이 처음 실행될 때 어떤 프래그먼트를 보여줄지 여기서 결정
         if (savedInstanceState == null) {
-            switchFragment(new HomeFragment(), false);
+            Intent intent = getIntent();
+            // "navigateTo" 정보가 있고, 로그인이 되어 있으며, "MyTripListFragment"로 이동하라는 요청이 있을 경우
+            if (intent != null && "MyTripListFragment".equals(intent.getStringExtra("navigateTo")) && isLoggedIn()) {
+                switchFragment(new MyTripListFragment(), false);
+                bottomNav.setSelectedItemId(R.id.nav_trip);
+                // 이미 처리한 Intent 정보는 제거
+                intent.removeExtra("navigateTo");
+            } else {
+                // 일반적인 첫 실행의 경우, '홈' 프래그먼트
+                switchFragment(new HomeFragment(), false);
+            }
         }
 
         // 하단 네비게이션 바 클릭 리스너
@@ -44,28 +54,20 @@ public class MainActivity extends AppCompatActivity {
 
             if (id == R.id.nav_home) target = new HomeFragment();
             else if (id == R.id.nav_trip) {
-                // ⭐ 여기서 로그인 여부 확인
                 if (!isLoggedIn()) {
-                    // 로그인 안 되어 있으면 로그인 요청 화면으로 이동
                     Intent intent = new Intent(MainActivity.this, NotLoggedInActivity.class);
                     startActivity(intent);
-                    return false;   // 마이페이지 프래그먼트로 이동 막기
+                    return false;
                 }
-
                 target = new MyTripListFragment();
             }
             else if (id == R.id.nav_feed) target = new FeedFragment();
             else if (id == R.id.nav_my) {
-
-                // ⭐ 여기서 로그인 여부 확인
                 if (!isLoggedIn()) {
-                    // 로그인 안 되어 있으면 로그인 요청 화면으로 이동
                     Intent intent = new Intent(MainActivity.this, NotLoggedInActivity.class);
                     startActivity(intent);
-                    return false;   // 마이페이지 프래그먼트로 이동 막기
+                    return false;
                 }
-
-                // 로그인되어있으면 마이페이지로 이동
                 target = new MypageFragment();
             }
 
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        // ✅ 새 방식의 뒤로가기 처리
+        // 뒤로가기 처리
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private boolean isLoggedIn() {
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         String token = prefs.getString("accessToken", null);
@@ -99,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
             finish(); // 앱 종료
         }
 
-        // 뒤로가기로 복귀할 때 상단바·하단바 상태 복원
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             bottomNav.setVisibility(View.VISIBLE);
         }
@@ -117,124 +119,4 @@ public class MainActivity extends AppCompatActivity {
             bottomNav.setVisibility(View.VISIBLE); // 하단바 표시
         }
     }
-
 }
-
-//시연 코드
-//package com.example.yourtrip;
-//
-//import android.os.Bundle;
-//import android.view.View;
-//import android.widget.LinearLayout;
-//import android.content.Intent;
-//
-//import androidx.activity.OnBackPressedCallback;
-//import androidx.annotation.NonNull;
-//import androidx.appcompat.app.AppCompatActivity;
-//import androidx.fragment.app.Fragment;
-//
-//import com.example.yourtrip.feed.FeedFragment;
-//import com.example.yourtrip.home.HomeFragment;
-//import com.example.yourtrip.mypage.MypageFragment;
-//import com.example.yourtrip.mytrip.list.MyTripListFragment;
-//import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;  // MyCourseListItemResponse import 추가
-//import com.google.android.material.appbar.MaterialToolbar;
-//import com.google.android.material.bottomnavigation.BottomNavigationView;
-//
-//public class MainActivity extends AppCompatActivity {
-//    private BottomNavigationView bottomNav;
-//    private MaterialToolbar topNav;
-//    private LinearLayout logoContainer;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//
-//        bottomNav = findViewById(R.id.bottomNav);
-//
-//        // 처음 실행 시 홈화면 표시
-//        if (savedInstanceState == null) {
-//            switchFragment(new HomeFragment(), false);
-//        }
-//
-//        // 하단 네비게이션 바 클릭 리스너
-//        bottomNav.setOnItemSelectedListener(item -> {
-//            Fragment target = null;
-//            int id = item.getItemId();
-//
-//            if (id == R.id.nav_home) target = new HomeFragment();
-//            else if (id == R.id.nav_trip) target = new MyTripListFragment(); // 기존 코드에서 MyTripListFragment 연결
-//            else if (id == R.id.nav_feed) target = new FeedFragment();
-//            else if (id == R.id.nav_my) target = new MypageFragment();
-//
-//            if (target != null) {
-//                switchFragment(target, false);
-//                bottomNav.setVisibility(View.VISIBLE);
-//                return true;
-//            }
-//            return false;
-//        });
-//
-//        // ✅ 새 방식의 뒤로가기 처리
-//        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-//            @Override
-//            public void handleOnBackPressed() {
-//                handleBackPress();
-//            }
-//        });
-//
-//        // MainActivity에서 전달받은 데이터를 처리
-//        handleIntentData();
-//    }
-//
-//    /** 공통 뒤로가기 처리 */
-//    private void handleBackPress() {
-//        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-//            getSupportFragmentManager().popBackStack(); // 프래그먼트 뒤로가기
-//        } else {
-//            finish(); // 앱 종료
-//        }
-//
-//        // 뒤로가기로 복귀할 때 상단바·하단바 상태 복원
-//        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-//            bottomNav.setVisibility(View.VISIBLE);
-//        }
-//    }
-//
-//    public void switchFragment(@NonNull Fragment fragment, boolean isSubPage) {
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.fragmentContainer, fragment)
-//                .addToBackStack(isSubPage ? fragment.getClass().getSimpleName() : null)
-//                .commit();
-//
-//        if (isSubPage) {
-//            bottomNav.setVisibility(View.GONE); // 하단바 숨김
-//        } else {
-//            bottomNav.setVisibility(View.VISIBLE); // 하단바 표시
-//        }
-//    }
-//
-//    // Intent로 전달된 여행 코스 데이터 처리
-//    private void handleIntentData() {
-//        Intent intent = getIntent();
-//        if (intent != null && intent.hasExtra("newCourse")) {
-//            // MyCourseListItemResponse 객체를 Intent에서 가져오기
-//            MyCourseListItemResponse newCourse = (MyCourseListItemResponse) intent.getSerializableExtra("newCourse");
-//
-//            // MyTripListFragment에 새로운 코스를 추가할 수 있도록 처리
-//            if (newCourse != null) {
-//                MyTripListFragment tripListFragment = new MyTripListFragment();
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("newCourse", newCourse); // 코스 데이터를 전달
-//                tripListFragment.setArguments(bundle);
-//
-//                // MyTripListFragment를 동적으로 추가
-//                switchFragment(tripListFragment, false);
-//            }
-//        }
-//    }
-//}
-
-

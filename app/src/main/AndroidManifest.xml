@@ -62,6 +62,19 @@
             android:name=".auth.SignupEmailActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".auth.FindPasswordEmailActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".auth.FindPasswordVerifyActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".auth.FindPasswordResetActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".auth.FindPasswordCompleteActivity"
+            android:exported="false"/>
+
         <!-- 메인 화면 -->
 
         <activity android:name=".MainActivity" />

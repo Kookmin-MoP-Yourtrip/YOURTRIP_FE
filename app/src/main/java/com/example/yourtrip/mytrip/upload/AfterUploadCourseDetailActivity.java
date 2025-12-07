@@ -257,6 +257,7 @@ public class AfterUploadCourseDetailActivity extends AppCompatActivity {
         Button btnGoToList = dialogView.findViewById(R.id.btnGoToList);
         btnGoToList.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("navigateTo", "MyTripListFragment");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             dialog.dismiss();

@@ -329,25 +329,24 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void showTimePickerDialog(LocationItem currentItem, int position) {
         if (listener == null) return;
 
-        Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+        int initialHour = 0;
+        int initialMinute = 0;
 
-        // MaterialTimePicker 빌더를 생성
+        // 기존 값이 있으면 그걸 기본값으로
+        if (currentItem.getStartTime() != null && currentItem.getStartTime().length() >= 5) {
+            initialHour = Integer.parseInt(currentItem.getStartTime().substring(0, 2));
+            initialMinute = Integer.parseInt(currentItem.getStartTime().substring(3, 5));
+        }
+
         MaterialTimePicker timePicker = new MaterialTimePicker.Builder()
-                // 커스텀 테마를 적용
                 .setTheme(R.style.CustomMaterialTimePicker)
-                // 시계 화면(CLOCK)을 기본 설정
-                .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
-                // 12시간 형식(AM/PM)으로 설정
                 .setTimeFormat(TimeFormat.CLOCK_12H)
-                // 현재 시간을 다이얼로그의 초기 시간으로 설정
-                .setHour(hour)
-                .setMinute(minute)
-                .setTitleText("방문 시간 설정") // 다이얼로그의 제목을 설정
+                .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
+                .setHour(initialHour)
+                .setMinute(initialMinute)
+                .setTitleText("방문 시간 설정")
                 .build();
 
-        // 'OK' 버튼을 눌렀을 때의 동작을 정의
         timePicker.addOnPositiveButtonClickListener(v -> {
             int selectedHour = timePicker.getHour();
             int selectedMinute = timePicker.getMinute();
@@ -355,9 +354,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             listener.onTimeUpdateRequested(currentItem.getPlaceId(), timeForServer, position);
         });
 
-        //  TimePicker를 화면에 보여줌
         timePicker.show(fragment.requireActivity().getSupportFragmentManager(), "MaterialTimePicker");
-
     }
 
     // --- 시간 포맷을 변환하는 메서드 ---

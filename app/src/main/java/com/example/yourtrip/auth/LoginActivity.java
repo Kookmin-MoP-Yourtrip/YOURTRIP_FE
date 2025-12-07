@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView; // 수정: TextView import 추가
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +28,8 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Button btnSignUp, btnSkipLogin, btnLogin;
+    private Button btnSignUp, btnLogin;
+    private TextView btnSkipLogin, tvFindPassword;
     private EditText edtEmail, edtPassword;
 
     @Override
@@ -41,8 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
+        tvFindPassword = findViewById(R.id.tvFindPassword);
 
-        // 처음에는 로그인 버튼 비활성화
         btnLogin.setEnabled(false);
 
         //  입력값 감지 → 버튼 활성화 로직
@@ -75,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         // 로그인 없이 둘러보기 → MainActivity로 이동
         btnSkipLogin.setOnClickListener(v -> {
 
-            clearLoginState();   // 🔥 비로그인 모드 → 토큰 삭제
+            clearLoginState();   //  비로그인 모드 → 토큰 삭제
 
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
@@ -87,6 +89,12 @@ public class LoginActivity extends AppCompatActivity {
             String email = edtEmail.getText().toString().trim();
             String password = edtPassword.getText().toString().trim();
             doLogin(email, password);
+        });
+
+        // 비밀번호 찾기 버튼 클릭 리스너
+        tvFindPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, FindPasswordEmailActivity.class);
+            startActivity(intent);
         });
     }
     //이전 로그인 토크 없앰 -> 비로그인 버튼용
@@ -116,19 +124,15 @@ public class LoginActivity extends AppCompatActivity {
                 //  로그인 성공 - 200
                 if (response.isSuccessful()) {
                     try {
-                        // 서버 응답 본문(JSON) 읽기
                         String body = response.body().string();
 
-                        //  응답 내용 Logcat에 출력
                         Log.d("LoginResponse", "서버 응답: " + body);
 
                         JSONObject json = new JSONObject(body);
-                        // accessToken 추출
+                        // accessToken, userId 추출
                         String token = json.optString("accessToken", "");
-                        // userId
                         int userId = json.optInt("userId", -1);
 
-                        // ⭐ 닉네임 + 프로필 URL 가져오기
                         String nickname = json.optString("nickname", "사용자이름");
                         String profileImageUrl = json.optString("profileImageUrl", "");
 
@@ -199,4 +203,3 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 }
-

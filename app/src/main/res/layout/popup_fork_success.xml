@@ -29,8 +29,7 @@
         android:background="@drawable/bg_box_border_12dp_blue"
         android:text="확인"
         android:textColor="@color/white"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:textSize="12sp" />
 
     <!-- '나의 여행 리스트 보기' 버튼 -->
     <android.widget.Button
@@ -41,7 +40,6 @@
         android:background="@drawable/bg_box_border_12dp"
         android:text="나의 여행 리스트 보기"
         android:textColor="@color/blue_main"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:textSize="12sp" />
 
 </LinearLayout>

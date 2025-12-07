@@ -3,8 +3,9 @@ package com.example.yourtrip.network;
 
 import com.example.yourtrip.auth.model.EmailRequest;
 import com.example.yourtrip.auth.model.LoginRequest;
+import com.example.yourtrip.auth.model.FindPasswordEmailRequest;
 import com.example.yourtrip.auth.model.PasswordRequest;
-import com.example.yourtrip.auth.model.ProfileRequest;
+import com.example.yourtrip.auth.model.FindPasswordResetRequest;
 import com.example.yourtrip.auth.model.VerificationRequest;
 import com.example.yourtrip.model.FeedCommentListResponse;
 import com.example.yourtrip.model.FeedCommentWriteRequest;
@@ -14,7 +15,6 @@ import com.example.yourtrip.model.FeedLikeResponse;
 import com.example.yourtrip.model.FeedListResponse;
 import com.example.yourtrip.model.FeedUpdateResponse;
 import com.example.yourtrip.model.UploadCourseListResponse;
-import com.example.yourtrip.model.UploadedCourseDetailResponse;
 import com.example.yourtrip.mypage.NicknameChangeRequest;
 import com.example.yourtrip.mypage.PasswordChangeRequest;
 import com.example.yourtrip.mypage.ProfileImageResponse;
@@ -27,15 +27,11 @@ import com.example.yourtrip.mytrip.model.ImageUploadResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateBasicResponse;
 import com.example.yourtrip.mytrip.model.MyCourseCreateRequest;
 import com.example.yourtrip.mytrip.model.MyCourseDetailResponse;
-import com.example.yourtrip.mytrip.model.MyCourseListItemResponse;
 import com.example.yourtrip.mytrip.model.MyCourseListResponse;
 import com.example.yourtrip.mytrip.model.PlaceAddRequest;
 import com.example.yourtrip.mytrip.model.PlaceAddResponse;
-import com.example.yourtrip.mytrip.model.DayPlacesResponse;
-import com.example.yourtrip.mytrip.model.LocationItem;
 import com.example.yourtrip.mytrip.model.PlaceMemoRequest;
 import com.example.yourtrip.mytrip.model.PlaceTimeRequest;
-import com.example.yourtrip.mytrip.model.ImageUploadResponse;
 
 import java.util.List;
 
@@ -55,7 +51,6 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.PATCH;
 import retrofit2.http.Query;
 
 
@@ -84,6 +79,20 @@ public interface ApiService {
     // 로그인 API
     @POST("/api/users/login")
     Call<ResponseBody> login(@Body LoginRequest request);
+
+
+    // 비밀번호 찾기 - 인증번호 발송
+    @POST("/api/users/password/find/email")
+    Call<ResponseBody> findPasswordEmail(@Body FindPasswordEmailRequest request);
+
+    // 비밀번호 찾기 - 인증번호 검증
+    @POST("/api/users/password/find/verify")
+    Call<ResponseBody> findPasswordVerify(@Body VerificationRequest request);
+
+    // 비밀번호 재설정
+    @POST("/api/users/password/find/reset")
+    Call<ResponseBody> findPasswordReset(@Body FindPasswordResetRequest request);
+
 
     //=============나의 코스 api================//
     // 나의 코스 기본 생성 api
