@@ -119,56 +119,38 @@
         android:layout_marginBottom="120dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="3"><!-- 3개의 항목을 균등하게 나누기 위해 weightSum 설정 -->
+        android:weightSum="3">
 
-        <!--        <android.widget.Button-->
-        <!--            android:id="@+id/tvFindEmail"-->
-        <!--            style="@style/RoundedButton.OutlineBlue"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:background="@color/white"-->
-        <!--            android:text="이메일 찾기"-->
-        <!--            android:textColor="@color/gray_600"-->
-        <!--            android:textSize="12sp" />-->
-
-        <!--        <TextView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text=" | "-->
-        <!--            android:textColor="@color/gray_600"-->
-        <!--            android:textSize="12sp" />-->
-
-        <android.widget.Button
+        <android.widget.TextView
             android:id="@+id/tvFindPassword"
-            style="@style/RoundedButton.OutlineBlue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
             android:text="비밀번호 찾기"
             android:textColor="@color/gray_600"
-            android:textSize="12sp" />
+            android:gravity="end"
+            android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:text=" "
-                    android:textColor="@color/gray_600"
-                    android:textSize="12sp" />
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:text="|"
+                    android:textColor="@color/gray_300"
+                    android:textSize="14sp" />
 
-        <android.widget.Button
+        <android.widget.TextView
             android:id="@+id/btnSignUp"
-            style="@style/RoundedButton.OutlineBlue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
             android:text="회원가입"
+            android:gravity="start"
             android:textColor="@color/gray_600"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <!-- 로그인 없이 둘러보기 -->

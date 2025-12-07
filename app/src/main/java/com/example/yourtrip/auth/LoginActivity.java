@@ -28,8 +28,8 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Button btnSignUp, btnLogin;
-    private TextView btnSkipLogin, tvFindPassword;
+    private Button btnLogin;
+    private TextView btnSkipLogin, tvFindPassword, btnSignUp;
     private EditText edtEmail, edtPassword;
 
     @Override
