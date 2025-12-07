@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="16dp">
 
     <!-- 상단 영역 (번호, 시간) -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical">
@@ -24,26 +24,27 @@
             android:background="@drawable/bg_circle_blue"
             android:textSize="14sp" />
 
-        <!-- 시간 표시 -->
-        <TextView
-            android:id="@+id/tvTime"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="16dp"
-            android:text="PM 2:00"
-            android:textSize="12sp"
-            android:textColor="@color/blue_main" />
 
     </LinearLayout>
+
+
 
     <!-- 장소 정보 전체를 감싸는 묶음 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="40dp"
-        android:layout_marginTop="8dp">
+        android:paddingLeft="10dp">
+
+        <!-- 시간 표시 -->
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="PM 2:00"
+            android:textSize="12sp"
+            android:textColor="@color/blue_main" />
 
         <!-- 장소 이름 -->
         <TextView

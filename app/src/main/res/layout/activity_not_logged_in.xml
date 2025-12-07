@@ -26,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@id/btn_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="60dp" />
+        android:layout_marginTop="150dp" />
 
     <!-- 안내 문구 -->
     <TextView
