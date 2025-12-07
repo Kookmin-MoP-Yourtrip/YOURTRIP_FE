@@ -60,6 +60,19 @@ public class HomeSearchFragment extends Fragment {
         });
 
 
+        etSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+
+                if (btnSearch.isEnabled()) {
+                    btnSearch.performClick();   // ⭐ 엔터 → 검색 실행
+                }
+                return true;   // 엔터 기본동작(포커스 이동) 막기
+            }
+            return false;
+        });
+
+
         return view;
     }
 

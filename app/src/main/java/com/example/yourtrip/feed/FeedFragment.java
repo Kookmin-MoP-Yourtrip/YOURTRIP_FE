@@ -122,6 +122,17 @@ public class FeedFragment extends Fragment {
                 searchFeedList(keyword);
             }
         });
+        // ⭐ 엔터키 → 검색 버튼 자동 클릭
+        etSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH ||
+                    actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+
+                btnSearch.performClick();   // 🔹 검색 실행
+                return true;                // 기본 엔터 동작(포커스 이동) 막기
+            }
+            return false;
+        });
+
 
         ImageView btnAddFeed = view.findViewById(R.id.btn_add_feed);
 
