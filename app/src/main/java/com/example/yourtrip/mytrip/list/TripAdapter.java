@@ -176,7 +176,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 //        LinearLayout btnDelete = dialog.findViewById(R.id.btn_delete);
 
         btnUpload.setOnClickListener(v -> {
-            // 1. 클릭된 코스의 정보를 가져옵니다.
             MyCourseListItemResponse courseItem = courseList.get(position);
             Long courseId = courseItem.getCourseId();
             if (courseId == null) {
@@ -185,16 +184,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                 return;
             }
 
-            // 2. UploadCourseTagsActivity로 향하는 Intent를 생성합니다.
             Intent intent = new Intent(context, UploadCourseTagsActivity.class);
 
-            // 3. [중요] 업로드할 코스의 ID를 Intent에 담아 전달합니다.
             intent.putExtra("courseId", courseId);
 
-            // 4. 새로운 액티비티를 시작합니다.
             context.startActivity(intent);
 
-            // 5. 클릭 후 다이얼로그를 닫습니다.ㅜ
             dialog.dismiss();
         });
 //        btnEdit.setOnClickListener(v -> {
