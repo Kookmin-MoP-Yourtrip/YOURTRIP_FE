@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LayerDrawable을 사용하여 아이콘 주변에 충분한 여백을 만듭니다. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--배경 레이어 (투명) - 전체 캔버스 크기를 108dp x 108dp로 설정 -->
+    <item
+        android:width="108dp"
+        android:height="108dp" />
+
+    <!-- 실제 로고 이미지 레이어 - 중앙에 72dp x 72dp 크기로 배치 -->
+    <item
+        android:width="72dp"
+        android:height="72dp"
+        android:gravity="center"
+        android:drawable="@mipmap/yourtrip_logo" />
+
+</layer-list>
