@@ -66,7 +66,11 @@ public class MyUploadCourseAdapter extends RecyclerView.Adapter<MyUploadCourseAd
 
         holder.tagContainer.removeAllViews();
         if (item.keywords != null) {
-            for (String tag : item.keywords) {
+            int maxTags = Math.min(item.keywords.size(), 3);  // 최대 3개만 표시
+
+            for (int i = 0; i < maxTags; i++) {
+                String tag = item.keywords.get(i);
+
                 View tagView = LayoutInflater.from(context)
                         .inflate(R.layout.item_tag_for_list, holder.tagContainer, false);
 
@@ -80,6 +84,7 @@ public class MyUploadCourseAdapter extends RecyclerView.Adapter<MyUploadCourseAd
                 holder.tagContainer.addView(tagView);
             }
         }
+
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onClick(item);
