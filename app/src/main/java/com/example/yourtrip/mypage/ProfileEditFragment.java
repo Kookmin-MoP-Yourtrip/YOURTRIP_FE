@@ -42,6 +42,7 @@ public class ProfileEditFragment extends Fragment {
     private EditText edtNickname, editCurrentPw, editNewPw, editConfirmPw;
     private TextView tvNicknameError, btnDeleteUser;
     private Button btnSave;
+    private TextView btnLogout;
 
     private Uri selectedImageUri = null;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
@@ -79,6 +80,7 @@ public class ProfileEditFragment extends Fragment {
 
         btnDeleteUser = v.findViewById(R.id.btnDeleteUser);
         btnSave = v.findViewById(R.id.btnSave);
+        btnLogout = v.findViewById(R.id.btnLogout);
 
         ImageView btnBack = v.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(vv ->
@@ -104,6 +106,7 @@ public class ProfileEditFragment extends Fragment {
         btnAddPhoto.setOnClickListener(vv -> pickImage());
         btnSave.setOnClickListener(vv -> saveProfile());
         btnDeleteUser.setOnClickListener(vv -> showDeleteConfirmDialog());
+        btnLogout.setOnClickListener(vv -> showLogoutDialog());
 
         edtNickname.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int st, int c, int a) {}
@@ -263,6 +266,92 @@ public class ProfileEditFragment extends Fragment {
 
         Toast.makeText(requireContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
         ((MainActivity) requireActivity()).switchFragment(new MypageFragment(), false);
+    }
+
+    // 로그아웃 확인 다이얼로그 
+    private void showLogoutDialog() {
+        // 커스텀 다이얼로그 사용
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.TransparentDialogStyle);
+        View view = getLayoutInflater().inflate(R.layout.dialog_logout, null);
+        builder.setView(view);
+
+        final AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        Button btnConfirm = view.findViewById(R.id.btnConfirmLogout);
+        Button btnCancel = view.findViewById(R.id.btnCancelLogout);
+
+        btnConfirm.setOnClickListener(v -> {
+            dialog.dismiss();
+            requestLogoutApi();
+        });
+
+        btnCancel.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    //  로그아웃 API 요청
+    private void requestLogoutApi() {
+        ApiService api = RetrofitClient.getInstance(requireContext()).create(ApiService.class);
+
+        api.logout().enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                // 에러코드 처리
+                if (response.isSuccessful()) {
+                    // 200 OK: 성공
+                    Toast.makeText(getContext(), "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // 401, 404 등 그 외 실패 응답
+                    String errorMessage;
+                    switch (response.code()) {
+                        case 401:
+                            errorMessage = "인증 정보가 만료되었습니다. 다시 로그인해주세요.";
+                            break;
+                        case 404:
+                            errorMessage = "사용자 정보를 찾을 수 없습니다.";
+                            break;
+                        default:
+                            errorMessage = "로그아웃에 실패했습니다. (코드: " + response.code() + ")";
+                            break;
+                    }
+                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                }
+
+                // API 응답 성공/실패 여부와 관계없이 후처리 진행
+                handlePostLogout();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // 네트워크 오류가 발생해도 클라이언트에서는 로그아웃 처리 진행
+                Toast.makeText(getContext(), "오프라인 상태에서 로그아웃합니다.", Toast.LENGTH_SHORT).show();
+                handlePostLogout();
+            }
+        });
+    }
+
+    // 로그아웃 후처리 - 토큰 삭제 및 화면 전환)
+    private void handlePostLogout() {
+        // haredPreferences에서 토큰 삭제
+        android.content.SharedPreferences prefs = requireContext().getSharedPreferences("user_prefs", android.content.Context.MODE_PRIVATE);
+        android.content.SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("access_token");
+        editor.remove("refresh_token");
+        editor.apply();
+
+        // 앱의 모든 액티비티 스택을 지우고 로그인 화면으로 이동
+        Intent intent = new Intent(requireContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        // 현재 액티비티 종료
+        requireActivity().finish();
     }
 
     // 탈퇴 확인 다이얼로그

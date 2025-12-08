@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -11,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:alpha="0">
+        android:alpha="0"
+        tools:visibility="visible"
+        tools:alpha="1">
 
         <!-- 상단바 -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -198,18 +201,69 @@
                     android:inputType="textPassword"
                     android:textSize="13sp"/>
 
-
-                <!-- 회원 탈퇴 -->
-                <TextView
-                    android:id="@+id/btnDeleteUser"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="회원 탈퇴"
-                    android:textColor="#EE3E3E"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="24dp"
-                    android:paddingVertical="8dp"/>
+                    android:orientation="horizontal"
+
+                    android:layout_marginTop="32dp">
+
+                    <!-- 로그아웃 -->
+                    <TextView
+                        android:id="@+id/btnLogout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="로그아웃"
+                        android:textColor="@color/gray_700"
+                        android:textSize="13sp"
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground"/>
+
+                    <!-- 구분선 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="|"
+                        android:textColor="@color/gray_300"
+                        android:textSize="14sp"
+                        android:layout_marginHorizontal="4dp"/>
+
+                    <!-- 회원 탈퇴 -->
+                    <TextView
+                        android:id="@+id/btnDeleteUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="회원 탈퇴"
+                        android:textColor="#EE3E3E"
+                        android:textSize="13sp"
+                        android:padding="8dp"
+                        android:background="?attr/selectableItemBackground"/>
+
+                </LinearLayout>
+
+                <!-- 로그아웃 -->
+<!--                <TextView-->
+<!--                    android:id="@+id/btnLogout"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="로그아웃"-->
+<!--                    android:textColor="#EE3E3E"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:layout_marginTop="24dp"-->
+<!--                    android:paddingVertical="8dp"/>-->
+<!--ㅜ-->
+<!--                &lt;!&ndash; 회원 탈퇴 &ndash;&gt;-->
+<!--                <TextView-->
+<!--                    android:id="@+id/btnDeleteUser"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="회원 탈퇴"-->
+<!--                    android:textColor="#EE3E3E"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:layout_marginTop="4dp"-->
+<!--                    android:paddingVertical="8dp"/>-->
             </LinearLayout>
         </ScrollView>
 
@@ -237,7 +291,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:shimmer_auto_start="true"
-        android:visibility="visible">
+        android:visibility="visible"
+        tools:visibility="gone">
 
         <include layout="@layout/layout_profile_edit_loading"/>
     </com.facebook.shimmer.ShimmerFrameLayout>

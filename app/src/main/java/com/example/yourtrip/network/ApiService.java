@@ -45,6 +45,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -306,5 +307,9 @@ public interface ApiService {
     // 5. 회원 탈퇴
     @DELETE("/api/mypage/profile")
     Call<Void> deleteUser();
+
+    // 6. 로그아웃
+    @POST("/api/users/logout")
+    Call<Void> logout();
 
 }

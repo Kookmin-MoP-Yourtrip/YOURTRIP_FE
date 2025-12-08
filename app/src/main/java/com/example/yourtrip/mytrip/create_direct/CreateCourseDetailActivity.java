@@ -21,6 +21,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -157,6 +162,7 @@ public class CreateCourseDetailActivity extends AppCompatActivity {
         TextView dateTextView = tripCard.findViewById(R.id.tv_date);
         TextView partyTextView = tripCard.findViewById(R.id.tv_party);
 
+
         titleTextViewCard.setText(data.getTitle());
         locationTextViewCard.setText(data.getLocation());
         partyTextView.setText(data.getMemberCount() + "명 참여 중");
@@ -170,18 +176,20 @@ public class CreateCourseDetailActivity extends AppCompatActivity {
     private String calculatePeriod(String startDate, String endDate) {
         if (startDate == null || endDate == null) return "";
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate start = LocalDate.parse(startDate, formatter);
-            LocalDate end = LocalDate.parse(endDate, formatter);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date start = formatter.parse(startDate);
+            Date end = formatter.parse(endDate);
 
-            long diffDays = ChronoUnit.DAYS.between(start, end);
+            long diffInMillis = end.getTime() - start.getTime();
+            long diffDays = TimeUnit.MILLISECONDS.toDays(diffInMillis);
+
             long nights = diffDays;
             long days = diffDays + 1;
 
             return nights + "박 " + days + "일";
         } catch (Exception e) {
             Log.e(TAG, "날짜 계산 중 오류 발생", e);
-            return ""; // 오류 발생 시 빈 문자열 반환
+            return "";
         }
     }
 
