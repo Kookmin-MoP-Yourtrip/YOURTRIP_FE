@@ -2,32 +2,41 @@ package com.example.yourtrip;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.content.SharedPreferences;
+
 import androidx.appcompat.app.AppCompatActivity;
-//스플래시
-import androidx.core.splashscreen.SplashScreen;
 
 import com.example.yourtrip.auth.LoginActivity;
 
+
 public class LauncherActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        //  시스템 스플래시 적용
-        SplashScreen.installSplashScreen(this);
-        super.onCreate(savedInstanceState);
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_launcher);
 
-        //  로그인 상태 확인 (SharedPreferences 등)
-        boolean isLoggedIn = getSharedPreferences("UserPrefs", MODE_PRIVATE)
-                .getBoolean("isLoggedIn", false);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-        //  분기 이동
-        if (isLoggedIn) {
-            startActivity(new Intent(this, MainActivity.class));
-        } else {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
+            // 로그인 상태 확인 -> 화면 전환
+            SharedPreferences prefs = getSharedPreferences("user_prefs", MODE_PRIVATE);
+            String accessToken = prefs.getString("access_token", null);
 
-        //  LauncherActivity 종료 (뒤로가기시 안돌아오게)
-        finish();
+            Intent intent;
+            if (accessToken != null && !accessToken.isEmpty()) {
+                intent = new Intent(this, MainActivity.class);
+            } else {
+                intent = new Intent(this, LoginActivity.class);
+            }
+            startActivity(intent);
+            //애니메이션 - fade 효과
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            
+            finish();
+
+        }, 2000); // 2초
     }
+
 }
