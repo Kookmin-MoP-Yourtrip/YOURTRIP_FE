@@ -89,6 +89,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
+                    android:clipToOutline="true"
+                    android:background="@drawable/bg_box_round"
+                    android:backgroundTint="@android:color/transparent"
                     android:visibility="gone" /> <!-- 처음엔 숨겨둠 -->
 
                 <ImageView

@@ -39,6 +39,7 @@ import com.example.yourtrip.mytrip.model.PlaceMemoRequest;
 import com.example.yourtrip.mytrip.model.PlaceTimeRequest;
 import com.example.yourtrip.network.ApiService;
 import com.example.yourtrip.network.RetrofitClient;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
@@ -398,6 +399,11 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
                 @Override
                 public void onResponse(Call<ImageUploadResponse> call, Response<ImageUploadResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
+                        // 서버로부터 받은 응답 본문 전체를 로그로 출력
+                        Log.d(TAG, "사진 업로드 응답 성공: " + response.body().toString());
+                        Log.d(TAG, "업로드 응답(JSON): " + new Gson().toJson(response.body()));
+
+
                         if (getContext() != null) Toast.makeText(getContext(), "사진이 추가되었습니다.", Toast.LENGTH_SHORT).show();
 
                         // 서버 응답에서 새로운 이미지 URL을 추출
