@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 화면 왼쪽 바깥(-100%)에서 원래 위치(0%)로 들어오는 애니메이션 -->
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="@android:integer/config_shortAnimTime"
+    android:fromXDelta="-100%p"
+    android:toXDelta="0%p" />
+    

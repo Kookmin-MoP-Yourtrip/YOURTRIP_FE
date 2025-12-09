@@ -1,30 +1,56 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
+    <!-- 모든 일반 액티비티가 사용할 앱의 기본 테마 (불투명) -->
     <style name="Base.Theme.MyAppTest" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
         <item name="android:background">@color/white</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
-    <!--  스플래시 화면 전용 테마 -->
-<!--    <style name="Theme.YourTrip.Launcher" parent="Theme.SplashScreen">-->
-<!--        &lt;!&ndash; 스플래시 배경 &ndash;&gt;-->
-<!--        &lt;!&ndash;        배경 안먹음 고쳐야함&ndash;&gt;-->
-<!--&lt;!&ndash;        <item name="windowSplashScreenBackground">@drawable/gradient_splash</item>&ndash;&gt;-->
-<!--        <item name="windowSplashScreenBackground">@android:color/white</item>-->
+    <!--LauncherActivity만 사용할 전용 테마 (반투명) -->
+    <style name="Theme.MyApp.Launcher" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:background">@color/white</item>
+<!--        <item name="android:windowIsTranslucent">true</item>-->
+        <item name="android:windowDisablePreview">true</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
 
 
-<!--        &lt;!&ndash; 앱 로고 이미지  &ndash;&gt;-->
-<!--        <item name="windowSplashScreenAnimatedIcon">@drawable/wrapper_splash_logo</item>-->
+    </style>
 
-<!--        <item name="postSplashScreenTheme">@style/Theme.YourTrip.Launcher</item>-->
 
-<!--        &lt;!&ndash; 애니메이션 지속시간 (1초) &ndash;&gt;-->
-<!--        <item name="windowSplashScreenAnimationDuration">1000</item>-->
+    <!-- 화면 전환 애니메이션 스타일 -->
+    <style name="WindowAnimationTransition">
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in_general</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out_general</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in_general</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out_general</item>
+    </style>
 
-<!--        &lt;!&ndash; 전환 애니메이션 (선택) &ndash;&gt;-->
-<!--        &lt;!&ndash;        애니메이션 안먹음&ndash;&gt;-->
-<!--        &lt;!&ndash;        <item name="windowSplashScreenExitAnimation">@anim/fade_out</item>&ndash;&gt;-->
-<!--    </style>-->
 </resources>
+
+
+
+
+    <!--<resources xmlns:tools="http://schemas.android.com/tools">-->
+<!--    &lt;!&ndash; Base application theme. &ndash;&gt;-->
+<!--    <style name="Base.Theme.MyAppTest" parent="Theme.Material3.DayNight.NoActionBar">-->
+<!--        &lt;!&ndash; Customize your light theme here. &ndash;&gt;-->
+<!--        <item name="android:background">@color/white</item>-->
+<!--        <item name="android:windowIsTranslucent">true</item>-->
+<!--        <item name="android:windowDisablePreview">true</item>-->
+
+<!--        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>-->
+<!--    </style>-->
+
+<!--    <style name="WindowAnimationTransition">-->
+<!--        &lt;!&ndash; 새 액티비티가 나타날 때 (제자리에서 서서히 나타남) &ndash;&gt;-->
+<!--        <item name="android:activityOpenEnterAnimation">@anim/fade_in_general</item>-->
+<!--        &lt;!&ndash; 기존 액티비티가 사라질 때 (제자리에서 서서히 사라짐) &ndash;&gt;-->
+<!--        <item name="android:activityOpenExitAnimation">@anim/fade_out_general</item>-->
+<!--        &lt;!&ndash; 뒤로가기로 이전 액티비티가 나타날 때 (제자리에서 서서히 나타남) &ndash;&gt;-->
+<!--        <item name="android:activityCloseEnterAnimation">@anim/fade_in_general</item>-->
+<!--        &lt;!&ndash; 뒤로가기로 현재 액티비티가 사라질 때 (제자리에서 서서히 사라짐) &ndash;&gt;-->
+<!--        <item name="android:activityCloseExitAnimation">@anim/fade_out_general</item>-->
+<!--    </style>-->
+
+<!--</resources>-->

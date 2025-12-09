@@ -26,7 +26,7 @@
         <activity
             android:name=".LauncherActivity"
             android:exported="true"
-            android:theme="@style/Base.Theme.MyAppTest"
+            android:theme="@style/Theme.MyApp.Launcher"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
