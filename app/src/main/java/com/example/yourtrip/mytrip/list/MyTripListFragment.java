@@ -88,21 +88,17 @@ public class MyTripListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-        // 🟡 [수정] 어댑터에 아이템 클릭 리스너를 설정
+        // 어댑터에 아이템 클릭 리스너를 설정
         adapter.setOnItemClickListener(myTrip -> {
 
             // 더미 데이터는 courseId가 null이므로, 실제 데이터(서버 응답)에만 클릭 이벤트가 동작
             if (myTrip != null && myTrip.getCourseId() != null) {
-                // 1. 새로운 Intent를 생성하여 CreateCourseDetailActivity를 타겟으로 설정
                 Intent intent = new Intent(requireActivity(), CreateCourseDetailActivity.class);
 
-                // 2. "courseId" 라는 키로, 클릭된 아이템의 courseId를 Intent에 담습니다.
                 intent.putExtra("courseId", myTrip.getCourseId());
 
-                // 로그 추가: 전달하는 courseId 확인
                 Log.d("MyTripListFragment", "CreateCourseDetailActivity로 이동. 전달하는 courseId: " + myTrip.getCourseId());
 
-                // 3. Activity를 시작합니다.
                 startActivity(intent);
             } else {
                 Toast.makeText(getContext(), "상세 정보를 볼 수 없는 코스입니다.", Toast.LENGTH_SHORT).show();
@@ -110,7 +106,7 @@ public class MyTripListFragment extends Fragment {
         });
     }
 
-    // ★★★ 서버에서 내 코스 목록을 불러오는 메서드 (오류 수정) ★★★
+    // 서버에서 내 코스 목록을 불러오는 메서드
     private void loadMyCourses() {
         Log.d("MyTripListFragment", "서버에서 코스 목록을 불러옵니다...");
         // getMyCourses()는 Call<MyCourseListResponse>를 반환하므로, Callback도 동일한 타입이어야 합니다.
@@ -119,10 +115,10 @@ public class MyTripListFragment extends Fragment {
             public void onResponse(Call<MyCourseListResponse> call, Response<MyCourseListResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d("MyTripListFragment", "코스 목록 API 호출 성공");
-                    courseList.clear(); // 1. 기존 리스트를 깨끗하게 비웁니다.
-                    courseList.addAll(response.body().getMyCourses()); // 2. 서버에서 받은 새로운 리스트를 추가합니다.
-                    courseList.addAll(getDummyCourses()); // 3. 더미 데이터도 같이 보여주기 위해 추가합니다.
-                    adapter.notifyDataSetChanged(); // 4. 어댑터에 데이터가 완전히 바뀌었음을 알립니다.
+                    courseList.clear(); //기존 리스트를 깨끗하게 비움
+                    courseList.addAll(response.body().getMyCourses());
+                    courseList.addAll(getDummyCourses());
+                    adapter.notifyDataSetChanged();
                 } else {
                     Log.e("MyTripListFragment", "코스 목록 API 호출 실패: " + response.code());
                     Toast.makeText(getContext(), "목록을 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
@@ -160,16 +156,16 @@ public class MyTripListFragment extends Fragment {
     private List<MyCourseListItemResponse> getDummyCourses() {
         List<MyCourseListItemResponse> list = new ArrayList<>();
         // API 응답과 형식을 맞추기 위해 courseId는 null로 설정합니다.
-        list.add(new MyCourseListItemResponse(null, "대전 빵집 투어 (더미)", "대전 중구, 서구", "2025-11-09", "2025-11-10", 3));
-        list.add(new MyCourseListItemResponse(null, "강릉 힐링 바다 여행 (더미)", "강원도 강릉", "2025-08-14", "2025-08-16", 2));
-        list.add(new MyCourseListItemResponse(null,"부산 야경 맛집 코스", "부산 해운대구", "2025-05-01", "2025-05-02", 4));
+        list.add(new MyCourseListItemResponse(null, "대전 빵집 투어", "대전 중구, 서구", "2025-11-09", "2025-11-10", 1));
+        list.add(new MyCourseListItemResponse(null, "강릉 힐링 바다 여행", "강원도 강릉", "2025-08-14", "2025-08-16", 1));
+        list.add(new MyCourseListItemResponse(null,"부산 야경 맛집 코스", "부산 해운대구", "2025-05-01", "2025-05-02", 1));
         list.add(new MyCourseListItemResponse(null,"제주도 감성 카페 일주", "제주 제주시", "2025-03-12", "2025-03-14", 1));
-        list.add(new MyCourseListItemResponse(null,"서울 종로 하루 산책", "서울 종로구", "2025-10-03", "2025-10-03", 2));
-        list.add(new MyCourseListItemResponse(null,"전주 한옥마을 먹방 여행", "전북 전주", "2025-09-20", "2025-09-21", 3));
-        list.add(new MyCourseListItemResponse(null,"속초 해변 드라이브", "강원도 속초", "2025-07-11", "2025-07-12", 2));
-        list.add(new MyCourseListItemResponse(null,"울산 고래문화마을 하루 코스", "울산 남구", "2025-02-22", "2025-02-22", 4));
-        list.add(new MyCourseListItemResponse(null,"수원 화성 당일 여행", "경기도 수원", "2025-04-18", "2025-04-18", 2));
-        list.add(new MyCourseListItemResponse(null,"경주 야간 사적지 투어", "경북 경주", "2025-09-08", "2025-09-09", 5));
+        list.add(new MyCourseListItemResponse(null,"서울 종로 하루 산책", "서울 종로구", "2025-10-03", "2025-10-03", 1));
+        list.add(new MyCourseListItemResponse(null,"전주 한옥마을 먹방 여행", "전북 전주", "2025-09-20", "2025-09-21", 1));
+        list.add(new MyCourseListItemResponse(null,"속초 해변 드라이브", "강원도 속초", "2025-07-11", "2025-07-12", 1));
+        list.add(new MyCourseListItemResponse(null,"울산 고래문화마을 하루 코스", "울산 남구", "2025-02-22", "2025-02-22", 1));
+        list.add(new MyCourseListItemResponse(null,"수원 화성 당일 여행", "경기도 수원", "2025-04-18", "2025-04-18", 1));
+        list.add(new MyCourseListItemResponse(null,"경주 야간 사적지 투어", "경북 경주", "2025-09-08", "2025-09-09", 1));
         return list;
     }
 

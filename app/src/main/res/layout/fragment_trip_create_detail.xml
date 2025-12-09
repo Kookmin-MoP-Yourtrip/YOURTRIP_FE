@@ -55,15 +55,7 @@
                 />
         </FrameLayout>
     </FrameLayout>
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerLocationList"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="@drawable/bg_simple_border_blue"-->
-<!--        android:padding="15dp"-->
-<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-<!--        tools:itemCount="1"-->
-<!--        tools:listitem="@layout/item_trip_location_card" />-->
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

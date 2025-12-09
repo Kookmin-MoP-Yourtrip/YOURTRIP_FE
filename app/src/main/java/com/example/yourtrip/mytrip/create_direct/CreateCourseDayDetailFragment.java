@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -99,7 +100,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
     }
 
 
-    // --- 1. 생명주기 메서드 ---
+    // --- 생명주기 메서드 ---
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,7 +127,6 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // fragment_trip_create_detail.xml 레이아웃을 인플레이트
         return inflater.inflate(R.layout.fragment_trip_create_detail, container, false);
     }
 
@@ -138,19 +138,20 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
         recyclerViewTripDays = view.findViewById(R.id.recyclerViewTripDays);
         recyclerLocationList = view.findViewById(R.id.recyclerLocationList);
 
+
         // RecyclerView 설정
         setupDayRecyclerView();
         setupLocationRecyclerView();
     }
 
 
-    // --- 2. 초기 설정 및 UI 관련 메서드 ---
+    // --- 초기 설정 및 UI 관련 메서드 ---
 
     /**
      * 모든 ActivityResultLauncher들을 초기화하는 메서드.
      */
     private void initializeLaunchers() {
-        // 2-1. 장소 추가 결과 처리 Launcher
+        // 장소 추가 결과 처리 Launcher
         addLocationLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -357,16 +358,16 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
             Log.d(TAG, "--- 이미지 업로드 시작 ---");
             Log.d(TAG, "선택된 이미지 URI: " + imageUri.toString());
 
-            // 1. 파일 이름 가져오기 (FileUtils 유틸리티 사용)
+            // 파일 이름 가져오기 (FileUtils 유틸리티 사용)
             String fileName = FileUtils.getFileName(requireContext(), imageUri);
 
-            // 2. ContentResolver를 사용해 파일의 내용(InputStream)을 열기
+            // ContentResolver를 사용해 파일의 내용(InputStream)을 열기
             InputStream inputStream = requireContext().getContentResolver().openInputStream(imageUri);
 
-            // 3. InputStream을 byte 배열로 변환 (FileUtils 유틸리티 사용)
+            // InputStream을 byte 배열로 변환 (FileUtils 유틸리티 사용)
             byte[] fileBytes = FileUtils.readBytes(inputStream);
 
-            // 4. MIME 타입을 확인하고, byte 배열로 RequestBody 생성
+            // MIME 타입을 확인하고, byte 배열로 RequestBody 생성
             String mimeType = requireContext().getContentResolver().getType(imageUri);
             if (mimeType == null) {
                 // 시스템이 타입을 알려주지 못할 경우, 파일 확장자를 보고 직접 유추
@@ -436,7 +437,8 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-                    if (getContext() != null) Toast.makeText(getContext(), "메모가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                    Log.d("MemoUpdate", "메모 자동 저장 성공: " + memo);
+
                     // API 성공 시, 로컬 데이터 모델의 메모도 업데이트하여 UI 일관성 유지
                     if (locationAdapter != null) {
                         Object item = locationAdapter.getItemAt(position);
@@ -446,11 +448,14 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
                     }
                 } else {
                     if (getContext() != null) Toast.makeText(getContext(), "메모 저장에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                    Log.e("MemoUpdate", "메모 자동 저장 실패: " + response.code());
                 }
             }
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                // 네트워크 오류 발생 시에도 사용자에게 Toast 메시지를 보여줍니다.
                 if (getContext() != null) Toast.makeText(getContext(), "네트워크 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                Log.e("MemoUpdate", "메모 저장 네트워크 오류", t);
             }
         });
     }

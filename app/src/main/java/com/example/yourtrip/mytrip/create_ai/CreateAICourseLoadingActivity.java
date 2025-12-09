@@ -42,8 +42,9 @@ public class CreateAICourseLoadingActivity extends AppCompatActivity {
         // GIF 로딩
         Glide.with(this)
                 .asGif()
-                .load(R.drawable.loading_circle2)   // drawable에 넣은 GIF 이름
-                .override(600, 600)     // 강제 확대
+//                .load(R.drawable.loading_circle2)   // drawable에 넣은 GIF 이름
+                .load(R.drawable.loading_ai_create_2)
+//                .override(100, 100)     // 강제 확대
                 .into(ivLoadingCircle);
 
         apiService = RetrofitClient.getAuthService(this);
