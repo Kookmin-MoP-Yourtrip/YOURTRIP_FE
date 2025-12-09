@@ -314,6 +314,8 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
             @Override
             public void onResponse(Call<DayPlacesResponse> call, Response<DayPlacesResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d(TAG, "일차별 장소 조회 api" + new Gson().toJson(response.body()));
+
                     if (locationAdapter != null) {
                         locationAdapter.updateItems(response.body().getPlaces());
                     }

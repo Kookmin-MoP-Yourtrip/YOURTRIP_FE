@@ -102,7 +102,7 @@ public class UploadCourseResponse implements Serializable {
         @SerializedName("placeImageId")
         private long placeImageId;
 
-        @SerializedName("imageUrl")
+        @SerializedName("placeImageUrl")
         private String imageUrl;
 
         // Getter

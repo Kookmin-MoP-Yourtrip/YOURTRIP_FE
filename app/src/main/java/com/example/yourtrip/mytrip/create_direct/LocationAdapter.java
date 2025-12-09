@@ -27,11 +27,14 @@ import com.example.yourtrip.mytrip.model.LocationItem;
 
 import android.app.AlertDialog;
 import android.widget.NumberPicker;
+
+import com.example.yourtrip.mytrip.model.PlaceImage;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -143,16 +146,38 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //Fragment로 부터 호출받아 특정 아이템 이미지 갱신하는 메서드
     public void updateItemImage(int position, String newImageUrl) {
         if (position >= 0 && position < items.size()) {
-            Object item = items.get(position);
-            if (item instanceof LocationItem) {
-                // 1. 데이터 모델에 새로운 이미지 URL을 추가합니다.
-                ((LocationItem) item).addImageUrl(newImageUrl);
-                // 2. RecyclerView에게 해당 위치의 아이템만 뷰를 새로 그리라고 알려줍니다.
-                //    이렇게 하면 전체 목록을 다시 불러올 필요 없이 부드럽게 화면이 갱신됩니다.
+
+            Object obj = items.get(position);
+            if (obj instanceof LocationItem) {
+
+                LocationItem item = (LocationItem) obj;
+
+                // placeImages가 없으면 새로 생성
+                if (item.getPlaceImages() == null) {
+                    item.setPlaceImages(new ArrayList<>());
+                }
+
+                // PlaceImage 객체 생성해서 넣기
+                PlaceImage image = new PlaceImage(newImageUrl);
+                item.getPlaceImages().add(image);
+
                 notifyItemChanged(position);
             }
         }
     }
+
+//    public void updateItemImage(int position, String newImageUrl) {
+//        if (position >= 0 && position < items.size()) {
+//            Object item = items.get(position);
+//            if (item instanceof LocationItem) {
+//                // 1. 데이터 모델에 새로운 이미지 URL을 추가합니다.
+//                ((LocationItem) item).addImageUrl(newImageUrl);
+//                // 2. RecyclerView에게 해당 위치의 아이템만 뷰를 새로 그리라고 알려줍니다.
+//                //    이렇게 하면 전체 목록을 다시 불러올 필요 없이 부드럽게 화면이 갱신됩니다.
+//                notifyItemChanged(position);
+//            }
+//        }
+//    }
 
     public Object getItemAt(int position) {
         if (position >= 0 && position < items.size()) {
@@ -277,21 +302,38 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
             // --- 이미지 표시 로직 (Glide 사용) ---
-            if (item.getImageUrls() != null && !item.getImageUrls().isEmpty()) {
-                // 이미지가 있는 경우
+            List<PlaceImage> images = item.getPlaceImages();
+
+            if (item.getPlaceImages() != null && !item.getPlaceImages().isEmpty()) {
                 ivAddedPhoto.setVisibility(View.VISIBLE);
                 btnAddPhoto.setVisibility(View.GONE);
 
-                // Glide로 첫 번째 이미지를 로드
+                String url = item.getPlaceImages().get(0).getImageUrl();
+
                 Glide.with(itemView.getContext())
-                        .load(item.getImageUrls().get(0))
+                        .load(url)
                         .centerCrop()
                         .into(ivAddedPhoto);
+
             } else {
-                // 이미지가 없는 경우
                 ivAddedPhoto.setVisibility(View.GONE);
                 btnAddPhoto.setVisibility(View.VISIBLE);
             }
+//            if (item.getImageUrls() != null && !item.getImageUrls().isEmpty()) {
+//                // 이미지가 있는 경우
+//                ivAddedPhoto.setVisibility(View.VISIBLE);
+//                btnAddPhoto.setVisibility(View.GONE);
+//
+//                // Glide로 첫 번째 이미지를 로드
+//                Glide.with(itemView.getContext())
+//                        .load(item.getImageUrls().get(0))
+//                        .centerCrop()
+//                        .into(ivAddedPhoto);
+//            } else {
+//                // 이미지가 없는 경우
+//                ivAddedPhoto.setVisibility(View.GONE);
+//                btnAddPhoto.setVisibility(View.VISIBLE);
+//            }
 
 
             // --- 클릭 이벤트 리스너 설정 ---
