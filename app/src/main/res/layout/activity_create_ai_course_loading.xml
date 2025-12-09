@@ -41,17 +41,17 @@
     <!-- 가운데 로딩 써클 (GIF) -->
     <ImageView
         android:id="@+id/ivLoadingCircle"
-        android:layout_width="400dp"
-        android:layout_height="590dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDescription"
-        tools:src="@drawable/loading_circle2" />
+        app:layout_constraintVertical_bias="0.363"
+        tools:src="@drawable/loading_ai_create_2" />
     <!-- 실제 사용 시: GIF 파일 이름으로 교체 (ex. @drawable/loading_circle) -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

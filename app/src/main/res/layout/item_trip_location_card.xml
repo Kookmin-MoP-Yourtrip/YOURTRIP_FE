@@ -89,10 +89,13 @@
 
 
             <!-- 사진 영역을 FrameLayout으로 감싸서 뷰를 겹칠 준비를 합니다. -->
-            <FrameLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="220dp"
                 android:layout_height="120dp"
-                android:layout_marginStart="2dp">
+                android:layout_marginStart="2dp"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
 
                 <!-- 2-1. 추가된 사진을 보여줄 ImageView (기본적으로 숨김) -->
 <!--                <ImageView-->
@@ -101,6 +104,7 @@
 <!--                    android:layout_height="match_parent"-->
 <!--                    android:scaleType="centerCrop"-->
 <!--                    android:visibility="gone" /> -->
+
                 <ImageView
                     android:id="@+id/ivAddedPhoto"
                     android:layout_width="match_parent"
@@ -138,7 +142,7 @@
                         android:background="@android:color/transparent"/>
                 </LinearLayout>
 
-            </FrameLayout>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -138,60 +139,105 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
      * @param anchor 메뉴가 나타날 기준점이 되는 뷰 (더보기 버튼)
      */
     private void showMoreMenu(View anchor, int position) {
-        //유효하지 않은 position에 대한 방어 코드
         if (position == RecyclerView.NO_POSITION) {
             return;
         }
 
         Context context = anchor.getContext();
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.menu_trip_card_more);
 
-        // 다이얼로그의 배경을 투명하게 만들어 둥근 모서리가 보이도록
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // 뒷배경 어둡게 하지 않음
-        }
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View menuView = inflater.inflate(R.layout.menu_trip_card_more, null);
 
-        // 다이얼로그의 위치를 앵커 뷰 기준으로 계산하여 조정
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setGravity(Gravity.TOP | Gravity.END); // 오른쪽 상단 정렬
-            WindowManager.LayoutParams params = window.getAttributes();
+        // PopupWindow를 생성
+        final PopupWindow popupWindow = new PopupWindow(menuView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
 
-            // 앵커 뷰의 화면상 절대 좌표
-            int[] location = new int[2];
-            anchor.getLocationOnScreen(location);
+        popupWindow.setElevation(8f);
 
-            // 앵커 뷰의 오른쪽 끝에 맞춰 팝업 위치를 계산
-            params.x = anchor.getContext().getResources().getDisplayMetrics().widthPixels - location[0] - anchor.getWidth() - 3; // x 위치 (오른쪽 정렬)
-            params.y = location[1] + anchor.getHeight() + 10; // y 위치 (앵커 아래)
-            window.setAttributes(params);
-        }
-
-        // 메뉴 안의 버튼들과 클릭 이벤트를 연결
-        LinearLayout btnUpload = dialog.findViewById(R.id.btn_upload);
-//        LinearLayout btnEdit = dialog.findViewById(R.id.btn_edit);
-//        LinearLayout btnDelete = dialog.findViewById(R.id.btn_delete);
-
+        // 메뉴 안의 '업로드하기' 버튼 클릭 리스너를 설정
+        LinearLayout btnUpload = menuView.findViewById(R.id.btn_upload);
         btnUpload.setOnClickListener(v -> {
             MyCourseListItemResponse courseItem = courseList.get(position);
             Long courseId = courseItem.getCourseId();
             if (courseId == null) {
                 Toast.makeText(context, "코스 ID가 없어 업로드할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                popupWindow.dismiss();
                 return;
             }
 
             Intent intent = new Intent(context, UploadCourseTagsActivity.class);
-
             intent.putExtra("courseId", courseId);
-
             context.startActivity(intent);
 
-            dialog.dismiss();
+            popupWindow.dismiss();
         });
+
+        // 팝업 윈도우
+        // x, y 오프셋 값을 조정 -> 위치 조정
+        int xOffset = -310; // 좌우 위치
+        int yOffset = 10;   // 상하 위치
+        popupWindow.showAsDropDown(anchor, xOffset, yOffset);
+    }
+
+
+//    private void showMoreMenu(View anchor, int position) {
+//        //유효하지 않은 position에 대한 방어 코드
+//        if (position == RecyclerView.NO_POSITION) {
+//            return;
+//        }
+//
+//        Context context = anchor.getContext();
+//
+//        final Dialog dialog = new Dialog(context);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setContentView(R.layout.menu_trip_card_more);
+//
+//        // 다이얼로그의 배경을 투명하게 만들어 둥근 모서리가 보이도록
+//        if (dialog.getWindow() != null) {
+//            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // 뒷배경 어둡게 하지 않음
+//        }
+//
+//        // 다이얼로그의 위치를 앵커 뷰 기준으로 계산하여 조정
+//        Window window = dialog.getWindow();
+//        if (window != null) {
+//            window.setGravity(Gravity.TOP | Gravity.END); // 오른쪽 상단 정렬
+//            WindowManager.LayoutParams params = window.getAttributes();
+//
+//            // 앵커 뷰의 화면상 절대 좌표
+//            int[] location = new int[2];
+//            anchor.getLocationOnScreen(location);
+//
+//            // 앵커 뷰의 오른쪽 끝에 맞춰 팝업 위치를 계산
+//            params.x = anchor.getContext().getResources().getDisplayMetrics().widthPixels - location[0] - anchor.getWidth() - 3; // x 위치 (오른쪽 정렬)
+//            params.y = location[1] + anchor.getHeight() + 10; // y 위치 (앵커 아래)
+//            window.setAttributes(params);
+//        }
+//
+//        // 메뉴 안의 버튼들과 클릭 이벤트를 연결
+//        LinearLayout btnUpload = dialog.findViewById(R.id.btn_upload);
+////        LinearLayout btnEdit = dialog.findViewById(R.id.btn_edit);
+////        LinearLayout btnDelete = dialog.findViewById(R.id.btn_delete);
+//
+//        btnUpload.setOnClickListener(v -> {
+//            MyCourseListItemResponse courseItem = courseList.get(position);
+//            Long courseId = courseItem.getCourseId();
+//            if (courseId == null) {
+//                Toast.makeText(context, "코스 ID가 없어 업로드할 수 없습니다.", Toast.LENGTH_SHORT).show();
+//                dialog.dismiss();
+//                return;
+//            }
+//
+//            Intent intent = new Intent(context, UploadCourseTagsActivity.class);
+//
+//            intent.putExtra("courseId", courseId);
+//
+//            context.startActivity(intent);
+//
+//            dialog.dismiss();
+//        });
 //        btnEdit.setOnClickListener(v -> {
 //            dialog.dismiss();
 //            // TODO: 편집 기능 구현
@@ -201,8 +247,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 //            // TODO: 삭제 기능 구현
 //        });
 
-        dialog.show();
-    }
+//        dialog.show();
+//    }
 }
 
 

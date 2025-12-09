@@ -161,6 +161,11 @@ public class CreateCourseDetailActivity extends AppCompatActivity {
         TextView locationTextViewCard = tripCard.findViewById(R.id.tv_location);
         TextView dateTextView = tripCard.findViewById(R.id.tv_date);
         TextView partyTextView = tripCard.findViewById(R.id.tv_party);
+        ImageView btnMore = tripCard.findViewById(R.id.btn_more);
+
+        if (btnMore != null) {
+            btnMore.setVisibility(View.GONE);
+        }
 
 
         titleTextViewCard.setText(data.getTitle());

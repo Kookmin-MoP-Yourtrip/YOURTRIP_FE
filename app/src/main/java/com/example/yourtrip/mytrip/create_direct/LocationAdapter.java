@@ -1,20 +1,32 @@
 package com.example.yourtrip.mytrip.create_direct;
 
 import android.content.Context;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 
 import com.bumptech.glide.Glide;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.yourtrip.R;
 import com.example.yourtrip.mytrip.model.LocationItem;
+
+import android.app.AlertDialog;
+import android.widget.NumberPicker;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -117,7 +129,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    // [추가] Fragment로부터 호출받아 시간 데이터와 UI를 최종 업데이트하는 메서드
+    // Fragment로부터 호출받아 시간 데이터와 UI를 최종 업데이트하는 메서드
     public void updateTime(int position, String time) {
         if (position >= 0 && position < items.size()) {
             Object item = items.get(position);
@@ -181,7 +193,6 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     // ViewHolder에 데이터 바인딩
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        // 순번은 0부터 시작하는 position에 1을 더해서 만듭니다.
         String number = String.valueOf(position + 1);
 
         // ViewHolder의 타입에 따라 다른 작업을 수행합니다.
@@ -221,6 +232,10 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private final LinearLayout btnAddPhoto;
         private final EditText etMemo;
 
+        // 메모 자동 저장을 위한 핸들러와 러너블
+        private final Handler memoSaveHandler = new Handler(Looper.getMainLooper());
+        private Runnable memoSaveRunnable;
+
         public LocationViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNumber = itemView.findViewById(R.id.tvNumber);
@@ -237,6 +252,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void bind(LocationItem item, String number) {
             tvNumber.setText(number);
             tvPlaceName.setText(item.getPlaceName());
+            etMemo.setText(item.getMemo());
 
             // 주소 정보(placeLocation)가 있는지 확인
             String address = item.getPlaceLocation();
@@ -245,28 +261,26 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 tvAddress.setText(address);
                 tvAddress.setVisibility(View.VISIBLE);
             } else {
-                // 주소가 없으면 (null 이거나 공백이면) 완전히 숨김
                 tvAddress.setVisibility(View.GONE);
             }
 
-            etMemo.setText(item.getMemo());
 
             // 아이템의 startTime 값에 따라 초기 UI 설정
             if (item.getStartTime() != null && !item.getStartTime().isEmpty()) {
                 // 서버에서 받은 시간(HH:mm 또는 HH:mm:ss)을 "오전/오후 hh:mm" 형식으로 변환
-                tvTime.setText(formatTime(item.getStartTime())); // 헬퍼 메서드 사용
-                tvTime.setTextColor(itemView.getContext().getResources().getColor(android.R.color.black));
+                tvTime.setText(formatTime(item.getStartTime()));
+                tvTime.setTextColor(itemView.getContext().getResources().getColor(R.color.blue_main));
             } else {
                 tvTime.setText("눌러서 시간 입력");
                 tvTime.setTextColor(itemView.getContext().getResources().getColor(R.color.gray_500));
             }
 
+
             // --- 이미지 표시 로직 (Glide 사용) ---
-            // 장소에 이미지가 하나 이상 있다면, 첫 번째 이미지를 ivMap에 표시
             if (item.getImageUrls() != null && !item.getImageUrls().isEmpty()) {
                 // 이미지가 있는 경우
-                ivAddedPhoto.setVisibility(View.VISIBLE); // 이미지 뷰 보이기
-                btnAddPhoto.setVisibility(View.GONE);    // '추가' 버튼 숨기기
+                ivAddedPhoto.setVisibility(View.VISIBLE);
+                btnAddPhoto.setVisibility(View.GONE);
 
                 // Glide로 첫 번째 이미지를 로드
                 Glide.with(itemView.getContext())
@@ -275,17 +289,12 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .into(ivAddedPhoto);
             } else {
                 // 이미지가 없는 경우
-                ivAddedPhoto.setVisibility(View.GONE);     // 이미지 뷰 숨기기
-                btnAddPhoto.setVisibility(View.VISIBLE); // '추가' 버튼 보이기
+                ivAddedPhoto.setVisibility(View.GONE);
+                btnAddPhoto.setVisibility(View.VISIBLE);
             }
 
 
-            // --- 메모 입력 리스너 ---
-            etMemo.setText(item.getMemo()); // 초기 메모 설정
-
-
             // --- 클릭 이벤트 리스너 설정 ---
-            // 클릭 시 Adapter에 구현된 showTimePickerDialog를 호출하도록 변경
             tvTime.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
@@ -295,27 +304,69 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             });
 
             // 사진 추가 클릭 리스너 설정
-            btnAddPhoto.setOnClickListener(v -> { // '+ 사진 추가' 버튼을 눌렀을 때
+            btnAddPhoto.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onPhotoAddRequested(item.getPlaceId(), position);
                 }
             });
 
-            //우선은 포커스르 잃었을 때로 설정했음  -> 추후에 협업 기능이 들어오면 수정하기
-            etMemo.setOnFocusChangeListener((v, hasFocus) -> {
-                // 포커스를 잃었을 때 (입력이 끝났다고 간주) API 호출
-                if (!hasFocus) {
-                    int position = getAdapterPosition();
-                    String newMemo = etMemo.getText().toString();
-                    // 기존 메모와 다를 경우에만 업데이트 요청
-                    if (position != RecyclerView.NO_POSITION && listener != null && !newMemo.equals(item.getMemo())) {
-                        listener.onMemoUpdateRequested(item.getPlaceId(), newMemo, position);
-                    }
-                }
-            });
 
-            //삭제 버튼 이벤트 리스너
+            // --- 메모 입력 리스너 ---
+            // 수정 : 텍스트 변경 감지 리스너 (자동 저장 로직)
+            // 이전 리스너를 제거하여 중복 실행 방지
+            if (etMemo.getTag() instanceof TextWatcher) {
+                etMemo.removeTextChangedListener((TextWatcher) etMemo.getTag());
+            }
+
+            TextWatcher textWatcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    // 텍스트 변경 전에 예약된 저장 작업을 취소
+                    memoSaveHandler.removeCallbacks(memoSaveRunnable);
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    // 이 메서드에서는 아무것도 하지 않음
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    // 텍스트 변경이 끝난 후 실행될 저장 작업을 정의
+                    memoSaveRunnable = () -> {
+                        int position = getAdapterPosition();
+                        String newMemo = s.toString();
+
+                        // 기존 메모와 다를 경우에만 업데이트 요청 (불필요한 API 호출 방지)
+                        if (position != RecyclerView.NO_POSITION && listener != null && !newMemo.equals(item.getMemo())) {
+                            listener.onMemoUpdateRequested(item.getPlaceId(), newMemo, position);
+                        }
+                    };
+                    // 1초 후에 위에서 정의한 저장 작업을 실행하도록 예약
+                    memoSaveHandler.postDelayed(memoSaveRunnable, 1000);
+                }
+            };
+
+            etMemo.addTextChangedListener(textWatcher);
+            etMemo.setTag(textWatcher);
+
+
+            //우선은 포커스르 잃었을 때로 설정했음  -> 추후에 협업 기능이 들어오면 수정하기
+//            etMemo.setOnFocusChangeListener((v, hasFocus) -> {
+//                // 포커스를 잃었을 때 (입력이 끝났다고 간주) API 호출
+//                if (!hasFocus) {
+//                    int position = getAdapterPosition();
+//                    String newMemo = etMemo.getText().toString();
+//                    // 기존 메모와 다를 경우에만 업데이트 요청
+//                    if (position != RecyclerView.NO_POSITION && listener != null && !newMemo.equals(item.getMemo())) {
+//                        listener.onMemoUpdateRequested(item.getPlaceId(), newMemo, position);
+//                    }
+//                }
+//            });
+
+
+            // --- 장소 삭제 리스너 ---
             btnDelete.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
@@ -329,32 +380,64 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void showTimePickerDialog(LocationItem currentItem, int position) {
         if (listener == null) return;
 
-        int initialHour = 0;
-        int initialMinute = 0;
+        AlertDialog.Builder builder = new AlertDialog.Builder(fragment.requireContext());
 
-        // 기존 값이 있으면 그걸 기본값으로
-        if (currentItem.getStartTime() != null && currentItem.getStartTime().length() >= 5) {
-            initialHour = Integer.parseInt(currentItem.getStartTime().substring(0, 2));
-            initialMinute = Integer.parseInt(currentItem.getStartTime().substring(3, 5));
+//        AlertDialog.Builder builder = new AlertDialog.Builder(fragment.requireContext(), androidx.appcompat.R.style.Theme_AppCompat_Light_Dialog_Alert);
+
+        LayoutInflater inflater = fragment.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_show_time_picker, null);
+        builder.setView(dialogView);
+
+        // 다이얼로그 내부의 뷰
+        final NumberPicker hourPicker = dialogView.findViewById(R.id.picker_hour);
+        final NumberPicker minutePicker = dialogView.findViewById(R.id.picker_minute);
+        final Button btnConfirm = dialogView.findViewById(R.id.btn_confirm);
+        final Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+
+        // NumberPicker의 범위
+        hourPicker.setMinValue(0);
+        hourPicker.setMaxValue(23);
+        minutePicker.setMinValue(0);
+        minutePicker.setMaxValue(59);
+
+        hourPicker.setFormatter(i -> String.format(Locale.US, "%02d", i));
+        minutePicker.setFormatter(i -> String.format(Locale.US, "%02d", i));
+
+        // 기존에 저장된 시간이 있으면 초기값으로 설정
+        if (currentItem.getStartTime() != null && !currentItem.getStartTime().isEmpty()) {
+            try {
+                // "HH:mm" 형식의 문자열에서 파싱
+                int initialHour = Integer.parseInt(currentItem.getStartTime().substring(0, 2));
+                int initialMinute = Integer.parseInt(currentItem.getStartTime().substring(3, 5));
+                hourPicker.setValue(initialHour);
+                minutePicker.setValue(initialMinute);
+            } catch (Exception e) {
+                // 시간 형식이 잘못된 경우, 기본값(예: 0시 0분)으로 설정
+                hourPicker.setValue(0);
+                minutePicker.setValue(0);
+            }
+        } else {
+            // 기존 시간이 없으면 기본값으로 설정
+            hourPicker.setValue(0);
+            minutePicker.setValue(0);
         }
 
-        MaterialTimePicker timePicker = new MaterialTimePicker.Builder()
-                .setTheme(R.style.CustomMaterialTimePicker)
-                .setTimeFormat(TimeFormat.CLOCK_12H)
-                .setInputMode(MaterialTimePicker.INPUT_MODE_KEYBOARD)
-                .setHour(initialHour)
-                .setMinute(initialMinute)
-                .setTitleText("방문 시간 설정")
-                .build();
+        //  다이얼로그 생성
+        final AlertDialog dialog = builder.create();
 
-        timePicker.addOnPositiveButtonClickListener(v -> {
-            int selectedHour = timePicker.getHour();
-            int selectedMinute = timePicker.getMinute();
+        // 확인 버튼 클릭 리스너를 설정
+        btnConfirm.setOnClickListener(v -> {
+            int selectedHour = hourPicker.getValue();
+            int selectedMinute = minutePicker.getValue();
             String timeForServer = String.format(Locale.US, "%02d:%02d", selectedHour, selectedMinute);
+
             listener.onTimeUpdateRequested(currentItem.getPlaceId(), timeForServer, position);
+            dialog.dismiss();
         });
 
-        timePicker.show(fragment.requireActivity().getSupportFragmentManager(), "MaterialTimePicker");
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     // --- 시간 포맷을 변환하는 메서드 ---
