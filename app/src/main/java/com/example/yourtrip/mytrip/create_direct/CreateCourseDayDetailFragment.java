@@ -455,7 +455,7 @@ public class CreateCourseDayDetailFragment extends Fragment implements LocationA
                         }
                     }
                 } else {
-                    if (getContext() != null) Toast.makeText(getContext(), "메모 저장에 실패했습니다.", Toast.LENGTH_SHORT).show();
+//                    if (getContext() != null) Toast.makeText(getContext(), "메모 저장에 실패했습니다.", Toast.LENGTH_SHORT).show();
                     Log.e("MemoUpdate", "메모 자동 저장 실패: " + response.code());
                 }
             }

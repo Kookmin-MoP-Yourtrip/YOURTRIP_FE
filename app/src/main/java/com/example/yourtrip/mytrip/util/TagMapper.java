@@ -20,14 +20,14 @@ public class TagMapper {
         // 동행유형
         put("혼자", "SOLO");
         put("연인", "COUPLE");
-        put("친구", "FRIEND");
+        put("친구", "FRIENDS");
         put("가족", "FAMILY");
 
         // 분위기
         put("맛집탐방", "FOOD");
         put("힐링", "HEALING");
         put("액티비티", "ACTIVITY");
-        put("감성", "SENTIMENTAL");
+        put("감성", "SENSIBILITY");
         put("문화·전시", "CULTURE");
         put("자연", "NATURE");
         put("쇼핑", "SHOPPING");
@@ -36,7 +36,7 @@ public class TagMapper {
         put("하루", "ONE_DAY");
         put("1박2일", "TWO_DAYS");
         put("주말", "WEEKEND");
-        put("장기", "LONG_TERM");
+        put("장기", "LONG");
 
         // 예산
         put("가성비", "COST_EFFECTIVE");
