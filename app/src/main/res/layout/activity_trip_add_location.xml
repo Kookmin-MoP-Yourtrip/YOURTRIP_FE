@@ -59,19 +59,21 @@
                 android:paddingEnd="40dp"
                 android:textSize="14sp"
                 android:layout_marginEnd="10dp"
+                android:inputType="text" 
+                android:imeOptions="actionSearch"
                 android:drawablePadding="8dp" />
 
             <!-- 검색 아이콘 버튼 -->
             <ImageView
+                android:id="@+id/btnSearch"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:id="@+id/btnSearch"
                 android:src="@drawable/ic_search"
+                android:tint="@color/search_icon_tint"
+                android:background="@android:color/transparent"
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
-                android:focusable="true"
-                app:tint="@color/gray_550"
-                android:background="@color/gray_150"/>
+                android:focusable="true" />
 
         </LinearLayout>
 
@@ -110,7 +112,17 @@
                     android:id="@+id/rvPlaces"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                />
+                    android:visibility="gone"/>
+                
+                <TextView
+                    android:id="@+id/tvEmptyResult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="검색 결과가 없습니다."
+                    android:textColor="@color/gray_500"
+                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
 
             </FrameLayout>
         </LinearLayout>
