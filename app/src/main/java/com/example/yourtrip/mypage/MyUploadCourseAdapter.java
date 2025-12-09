@@ -42,7 +42,6 @@ public class MyUploadCourseAdapter extends RecyclerView.Adapter<MyUploadCourseAd
         this.itemList = newList;
         notifyDataSetChanged();
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

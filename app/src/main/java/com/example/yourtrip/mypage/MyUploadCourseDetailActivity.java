@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.example.yourtrip.R;
+import com.example.yourtrip.commonUtil.NotLoggedInActivity;
 import com.example.yourtrip.mytrip.model.UploadCourseResponse;
 import com.example.yourtrip.mytrip.upload.ReadOnlyCourseDetailFragment;
 import com.example.yourtrip.mytrip.util.DateUtils;
@@ -85,9 +86,18 @@ public class MyUploadCourseDetailActivity extends AppCompatActivity {
         tvForkCount = forkButtonDefault.findViewById(R.id.tv_fork_count);
 
         // '내가 올린 코스'에서는 포크 버튼이 눌리지 않도록 하거나, 안내 메시지를 표시
-        forkButtonDefault.setOnClickListener(v ->
-            Toast.makeText(this, "자신이 업로드한 코스는 포크할 수 없습니다.", Toast.LENGTH_SHORT).show()
-        );
+        forkButtonDefault.setOnClickListener(v -> {
+            if (!isLoggedIn()) {
+                // 비로그인 → 로그인 유도 화면
+                Intent intent = new Intent(this, NotLoggedInActivity.class);
+                startActivity(intent);
+                return;
+            }
+
+            // 로그인은 되었지만 내 코스 → 포크 불가 안내
+            Toast.makeText(this, "자신이 업로드한 코스는 포크할 수 없습니다.", Toast.LENGTH_SHORT).show();
+        });
+
 
         tvIntroduction = findViewById(R.id.tv_uploaded_content);
         flexboxTags = findViewById(R.id.flexbox_upload_confirm_tags);
@@ -188,4 +198,11 @@ public class MyUploadCourseDetailActivity extends AppCompatActivity {
                 .replace(R.id.trip_fragment_container, fragment)
                 .commit();
     }
+
+    private boolean isLoggedIn() {
+        String token = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+                .getString("accessToken", null);
+        return token != null;
+    }
+
 }
