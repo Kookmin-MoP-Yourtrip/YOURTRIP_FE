@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -64,6 +65,14 @@ public class HomeSearchResultFragment extends Fragment {
 
         // 초기 상태: 메뉴 숨김
         sortMenu.setVisibility(View.GONE);
+
+        // 🔙 뒤로가기 버튼 연결
+        ImageView btnBack = view.findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> {
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .popBackStack();
+        });
 
         // 🔽 정렬 버튼 누르면 메뉴 열고 닫기
         btnSort.setOnClickListener(v -> {

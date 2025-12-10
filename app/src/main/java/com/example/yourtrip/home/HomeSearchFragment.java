@@ -42,6 +42,13 @@ public class HomeSearchFragment extends Fragment {
         initViews(view);
         btnSearch.setEnabled(false);  // ⭐ 초기 비활성화
 
+        // 🔙 뒤로가기 버튼 연결
+        ImageView btnBack = view.findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> {
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .popBackStack();
+        });
 
         // 모든 태그 초기 텍스트 색상 지정
         for (TextView tag : tagViews) {
@@ -77,7 +84,6 @@ public class HomeSearchFragment extends Fragment {
     }
 
     private void initViews(View view) {
-
         etSearch = view.findViewById(R.id.tvSearch);
         btnSearch = view.findViewById(R.id.btnSearch);
 

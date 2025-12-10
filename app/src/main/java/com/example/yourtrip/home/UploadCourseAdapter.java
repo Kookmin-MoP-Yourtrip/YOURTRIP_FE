@@ -56,10 +56,12 @@ public class UploadCourseAdapter extends RecyclerView.Adapter<UploadCourseAdapte
     public void onBindViewHolder(@NonNull UploadCourseAdapter.ViewHolder holder, int position) {
         UploadCourseItem item = itemList.get(position);
 
-        // ✔ 썸네일 이미지 URL 로드
+
+        // ✔ 썸네일 이미지 URL 로드 (저해상도 → 고해상도 순)
         Glide.with(context)
-                .load(item.thumbnailImageUrl)
-                .placeholder(R.drawable.ic_loading)  // 기본 이미지
+                .load(item.thumbnailImageUrl)     // 고해상도 이미지
+                .thumbnail(0.25f)                 // 25% 저해상도 이미지 먼저 표시
+                .centerCrop()                     // 코스 목록은 centerCrop 사용 추천
                 .into(holder.imgThumbnail);
 
         holder.tvLocation.setText(item.location);
